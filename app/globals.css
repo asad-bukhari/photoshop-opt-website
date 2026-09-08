@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Ink table / dark surfaces */
+  --color-ink: #0b0e13;
+  --color-ink-2: #10141b;
+  --color-ink-3: #161b24;
+  --color-ink-4: #1d2330;
+  --color-rule: #262c36;
+  --color-rule-2: #1a1f28;
+
+  /* Paper / light surfaces */
+  --color-paper: #f5f3ee;
+  --color-paper-2: #fbf9f4;
+  --color-paper-3: #ece7db;
+  --color-line: #ddd7c9;
+  --color-ink-soft: #4a4f5a;
+
+  /* Document accents */
+  --color-doc: #0c6b4f;
+  --color-doc-bright: #1b9a72;
+  --color-gold: #c89b3c;
+  --color-stamp: #c0432f;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased font-sans;
+  }
+
+  .dark body {
+    @apply bg-ink text-paper;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes optipack-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes optipack-scale-up {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-fade-in {
+    animation: optipack-fade-in 0.5s ease both;
+  }
+
+  .animate-scale-up {
+    animation: optipack-scale-up 0.25s ease both;
+  }
+}
