@@ -39,8 +39,13 @@ export interface ProcessedImageItem {
 }
 
 export type CnicPaperSize = 'a4' | 'letter' | 'legal' | '3r';
-export type CnicLayoutPreset = 'standard-top-bottom' | 'side-by-side' | 'dual-copy-a4' | 'quad-copy-a4';
-export type CnicFilterMode = 'enhanced' | 'high-contrast-bw' | 'grayscale' | 'color-boost';
+export type CnicLayoutPreset =
+  | 'standard-top-bottom'
+  | 'side-by-side'
+  | 'dual-copy-a4'
+  | 'quad-copy-a4'
+  | 'pakistani-style';
+export type CnicFilterMode = 'original' | 'enhanced' | 'high-contrast-bw' | 'grayscale' | 'color-boost';
 
 export interface CnicPrintOptions {
   paperSize: CnicPaperSize;

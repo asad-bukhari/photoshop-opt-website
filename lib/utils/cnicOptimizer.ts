@@ -57,7 +57,7 @@ export async function generateCnicPrintCanvas(
       const cnicBaseWidth = Math.round(500 * options.customScale);
       const cnicBaseHeight = Math.round(315 * options.customScale);
 
-      const drawCard = (img: HTMLImageElement | null, x: number, y: number, label: string) => {
+      const drawCard = (img: HTMLImageElement | null, x: number, y: number) => {
         ctx.save();
 
         ctx.strokeStyle = '#94A3B8';
@@ -72,9 +72,11 @@ export async function generateCnicPrintCanvas(
 
           cardCtx.drawImage(img, 0, 0, cnicBaseWidth, cnicBaseHeight);
 
-          const imageData = cardCtx.getImageData(0, 0, cnicBaseWidth, cnicBaseHeight);
-          applyImageFilters(imageData, options);
-          cardCtx.putImageData(imageData, 0, 0);
+          if (options.filter !== 'original') {
+            const imageData = cardCtx.getImageData(0, 0, cnicBaseWidth, cnicBaseHeight);
+            applyImageFilters(imageData, options);
+            cardCtx.putImageData(imageData, 0, 0);
+          }
 
           ctx.drawImage(cardCanvas, x, y);
         } else {
@@ -83,13 +85,8 @@ export async function generateCnicPrintCanvas(
           ctx.fillStyle = '#64748B';
           ctx.font = 'bold 16px sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText(`[ ${label} Image Pending ]`, x + cnicBaseWidth / 2, y + cnicBaseHeight / 2);
+          ctx.fillText('[ Image Pending ]', x + cnicBaseWidth / 2, y + cnicBaseHeight / 2);
         }
-
-        ctx.fillStyle = '#1E293B';
-        ctx.font = '500 13px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(label, x + 4, y - 8);
 
         ctx.restore();
       };
@@ -99,51 +96,60 @@ export async function generateCnicPrintCanvas(
         const topY = pageHeight * 0.22;
         const bottomY = topY + cnicBaseHeight + 80;
 
-        drawCard(frontImg, centerX, topY, 'CNIC FRONT SIDE');
-        drawCard(backImg, centerX, bottomY, 'CNIC BACK SIDE');
+        drawCard(frontImg, centerX, topY);
+        drawCard(backImg, centerX, bottomY);
       } else if (options.layout === 'side-by-side') {
         const spacing = 40;
         const totalWidth = cnicBaseWidth * 2 + spacing;
         const startX = (pageWidth - totalWidth) / 2;
         const startY = pageHeight * 0.35;
 
-        drawCard(frontImg, startX, startY, 'CNIC FRONT SIDE');
-        drawCard(backImg, startX + cnicBaseWidth + spacing, startY, 'CNIC BACK SIDE');
+        drawCard(frontImg, startX, startY);
+        drawCard(backImg, startX + cnicBaseWidth + spacing, startY);
       } else if (options.layout === 'dual-copy-a4') {
         const centerX = (pageWidth - cnicBaseWidth) / 2;
-        drawCard(frontImg, centerX, pageHeight * 0.12, 'SET 1 - CNIC FRONT');
-        drawCard(backImg, centerX, pageHeight * 0.12 + cnicBaseHeight + 40, 'SET 1 - CNIC BACK');
+        drawCard(frontImg, centerX, pageHeight * 0.12);
+        drawCard(backImg, centerX, pageHeight * 0.12 + cnicBaseHeight + 40);
 
-        drawCard(frontImg, centerX, pageHeight * 0.56, 'SET 2 - CNIC FRONT');
-        drawCard(backImg, centerX, pageHeight * 0.56 + cnicBaseHeight + 40, 'SET 2 - CNIC BACK');
+        drawCard(frontImg, centerX, pageHeight * 0.56);
+        drawCard(backImg, centerX, pageHeight * 0.56 + cnicBaseHeight + 40);
       } else if (options.layout === 'quad-copy-a4') {
         const col1X = pageWidth * 0.08;
         const col2X = pageWidth * 0.52;
 
-        drawCard(frontImg, col1X, pageHeight * 0.1, 'COPY 1 - FRONT');
-        drawCard(backImg, col1X, pageHeight * 0.1 + cnicBaseHeight + 30, 'COPY 1 - BACK');
+        drawCard(frontImg, col1X, pageHeight * 0.1);
+        drawCard(backImg, col1X, pageHeight * 0.1 + cnicBaseHeight + 30);
 
-        drawCard(frontImg, col2X, pageHeight * 0.1, 'COPY 2 - FRONT');
-        drawCard(backImg, col2X, pageHeight * 0.1 + cnicBaseHeight + 30, 'COPY 2 - BACK');
+        drawCard(frontImg, col2X, pageHeight * 0.1);
+        drawCard(backImg, col2X, pageHeight * 0.1 + cnicBaseHeight + 30);
 
-        drawCard(frontImg, col1X, pageHeight * 0.55, 'COPY 3 - FRONT');
-        drawCard(backImg, col1X, pageHeight * 0.55 + cnicBaseHeight + 30, 'COPY 3 - BACK');
+        drawCard(frontImg, col1X, pageHeight * 0.55);
+        drawCard(backImg, col1X, pageHeight * 0.55 + cnicBaseHeight + 30);
 
-        drawCard(frontImg, col2X, pageHeight * 0.55, 'COPY 4 - FRONT');
-        drawCard(backImg, col2X, pageHeight * 0.55 + cnicBaseHeight + 30, 'COPY 4 - BACK');
+        drawCard(frontImg, col2X, pageHeight * 0.55);
+        drawCard(backImg, col2X, pageHeight * 0.55 + cnicBaseHeight + 30);
       }
 
       if (options.enableWatermark && options.watermarkText) {
         ctx.save();
-        ctx.rotate((-25 * Math.PI) / 180);
-        ctx.fillStyle = `rgba(220, 38, 38, ${options.watermarkOpacity})`;
-        ctx.font = 'bold 32px sans-serif';
-        ctx.textAlign = 'center';
-
+        const angle = (-25 * Math.PI) / 180;
         const text = options.watermarkText.toUpperCase();
+        ctx.font = 'bold 32px sans-serif';
+        ctx.fillStyle = `rgba(220, 38, 38, ${options.watermarkOpacity})`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
 
-        for (let x = -pageWidth; x < pageWidth * 2; x += 380) {
-          for (let y = -pageHeight; y < pageHeight * 2; y += 180) {
+        const fontSize = 32;
+        const textWidth = ctx.measureText(text).width;
+        const colStep = Math.ceil(textWidth + 90);
+        const rowStep = Math.ceil(fontSize + 110);
+        const radius = Math.ceil(Math.hypot(pageWidth, pageHeight) / 2);
+
+        ctx.translate(pageWidth / 2, pageHeight / 2);
+        ctx.rotate(angle);
+
+        for (let x = -radius; x <= radius; x += colStep) {
+          for (let y = -radius; y <= radius; y += rowStep) {
             ctx.fillText(text, x, y);
           }
         }
@@ -187,46 +193,146 @@ function loadImage(src: File | string): Promise<HTMLImageElement> {
   });
 }
 
+function clamp255(value: number): number {
+  return value < 0 ? 0 : value > 255 ? 255 : value;
+}
+
+function computeOtsuThreshold(values: Float32Array, count: number): number {
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < count; i++) {
+    hist[Math.min(255, Math.max(0, Math.round(values[i])))]++;
+  }
+
+  let sum = 0;
+  for (let i = 0; i < 256; i++) sum += i * hist[i];
+
+  let sumB = 0;
+  let weightB = 0;
+  let best = 127;
+  let bestVariance = 0;
+
+  for (let i = 0; i < 256; i++) {
+    weightB += hist[i];
+    if (weightB === 0) continue;
+
+    const weightF = count - weightB;
+    if (weightF === 0) break;
+
+    sumB += i * hist[i];
+    const meanB = sumB / weightB;
+    const meanF = (sum - sumB) / weightF;
+    const between = weightB * weightF * (meanB - meanF) * (meanB - meanF);
+
+    if (between > bestVariance) {
+      bestVariance = between;
+      best = i;
+    }
+  }
+
+  return best;
+}
+
 function applyImageFilters(imageData: ImageData, options: CnicPrintOptions) {
   const d = imageData.data;
+  const w = imageData.width;
+  const h = imageData.height;
+
+  if (options.filter === 'original') return;
+
   const bMult = 1 + options.brightness / 100;
   const cFactor = (259 * (options.contrast + 255)) / (255 * (259 - options.contrast));
 
-  for (let i = 0; i < d.length; i += 4) {
-    let r = d[i];
-    let g = d[i + 1];
-    let b = d[i + 2];
+  const n = w * h;
+  const mono = options.filter === 'grayscale' || options.filter === 'high-contrast-bw';
+  const lumas = mono ? new Float32Array(n) : null;
+  let lo = 255;
+  let hi = 0;
 
-    r = Math.min(255, Math.max(0, cFactor * (r - 128) + 128));
-    g = Math.min(255, Math.max(0, cFactor * (g - 128) + 128));
-    b = Math.min(255, Math.max(0, cFactor * (b - 128) + 128));
+  for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+    let r = clamp255(cFactor * (d[i] - 128) + 128);
+    let g = clamp255(cFactor * (d[i + 1] - 128) + 128);
+    let b = clamp255(cFactor * (d[i + 2] - 128) + 128);
 
-    r = Math.min(255, Math.max(0, r * bMult));
-    g = Math.min(255, Math.max(0, g * bMult));
-    b = Math.min(255, Math.max(0, b * bMult));
+    r = clamp255(r * bMult);
+    g = clamp255(g * bMult);
+    b = clamp255(b * bMult);
 
-    if (options.filter === 'grayscale') {
-      const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-      d[i] = gray;
-      d[i + 1] = gray;
-      d[i + 2] = gray;
-    } else if (options.filter === 'high-contrast-bw') {
-      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-      const threshold = 160;
-      const val = luminance > threshold ? 255 : 0;
-      d[i] = val;
-      d[i + 1] = val;
-      d[i + 2] = val;
+    if (mono && lumas) {
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      lumas[p] = lum;
+      if (lum < lo) lo = lum;
+      if (lum > hi) hi = lum;
     } else if (options.filter === 'enhanced') {
       const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-      const enhanced = gray < 180 ? Math.max(0, gray - 35) : Math.min(255, gray + 20);
-      d[i] = enhanced;
-      d[i + 1] = enhanced;
-      d[i + 2] = enhanced;
+      const sat = 1.18;
+      d[i] = clamp255(gray + (r - gray) * sat);
+      d[i + 1] = clamp255(gray + (g - gray) * sat);
+      d[i + 2] = clamp255(gray + (b - gray) * sat);
     } else {
       d[i] = r;
       d[i + 1] = g;
       d[i + 2] = b;
+    }
+  }
+
+  if (mono && lumas) {
+    if (options.filter === 'high-contrast-bw') {
+      const threshold = computeOtsuThreshold(lumas, n);
+      const softness = 24;
+
+      for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+        const v = clamp255(255 / (1 + Math.exp(-(lumas[p] - threshold) / softness)));
+        d[i] = v;
+        d[i + 1] = v;
+        d[i + 2] = v;
+      }
+    } else {
+      const span = Math.max(1, hi - lo);
+      const scale = (245 - 10) / span;
+
+      for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+        const v = clamp255(10 + (lumas[p] - lo) * scale);
+        d[i] = v;
+        d[i + 1] = v;
+        d[i + 2] = v;
+      }
+    }
+  }
+
+  if (options.sharpness > 0) {
+    applyUnsharpMask(d, w, h, (options.sharpness / 100) * 1.4);
+  }
+}
+
+function applyUnsharpMask(d: Uint8ClampedArray, w: number, h: number, amount: number) {
+  const src = d.slice();
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+
+      let r = 0;
+      let g = 0;
+      let b = 0;
+
+      for (let ky = -1; ky <= 1; ky++) {
+        for (let kx = -1; kx <= 1; kx++) {
+          const px = Math.min(w - 1, Math.max(0, x + kx));
+          const py = Math.min(h - 1, Math.max(0, y + ky));
+          const j = (py * w + px) * 4;
+          r += src[j];
+          g += src[j + 1];
+          b += src[j + 2];
+        }
+      }
+
+      r /= 9;
+      g /= 9;
+      b /= 9;
+
+      d[i] = clamp255(src[i] + amount * (src[i] - r));
+      d[i + 1] = clamp255(src[i + 1] + amount * (src[i + 1] - g));
+      d[i + 2] = clamp255(src[i + 2] + amount * (src[i + 2] - b));
     }
   }
 }

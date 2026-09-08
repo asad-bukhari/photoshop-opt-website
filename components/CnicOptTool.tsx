@@ -22,9 +22,9 @@ import { CornerMarks, ScaleRuler } from './CornerMarks';
 const DEFAULT_OPTIONS: CnicPrintOptions = {
   paperSize: 'a4',
   layout: 'standard-top-bottom',
-  filter: 'high-contrast-bw',
-  watermarkText: 'FOR BANK VERIFICATION ONLY',
-  enableWatermark: true,
+  filter: 'original',
+  watermarkText: '',
+  enableWatermark: false,
   watermarkOpacity: 0.18,
   customScale: 1.0,
   brightness: 10,
@@ -316,11 +316,12 @@ export function CnicOptTool() {
               <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft dark:text-rule">
                 Document scan mode filter
               </label>
-              <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-line bg-paper-3 p-1 dark:border-rule dark:bg-ink-3">
+              <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-line bg-paper-3 p-1 dark:border-rule dark:bg-ink-3">
                 {[
+                  { id: 'original', label: 'Original' },
                   { id: 'high-contrast-bw', label: 'B&W scan' },
                   { id: 'grayscale', label: 'Grayscale' },
-                  { id: 'enhanced', label: 'Original boost' }
+                  { id: 'enhanced', label: 'Color boost' }
                 ].map((f) => (
                   <button
                     key={f.id}
@@ -384,7 +385,14 @@ export function CnicOptTool() {
                 <input
                   type="checkbox"
                   checked={options.enableWatermark}
-                  onChange={(e) => setOptions({ ...options, enableWatermark: e.target.checked })}
+                  onChange={(e) => {
+                    const enabled = e.target.checked;
+                    setOptions({
+                      ...options,
+                      enableWatermark: enabled,
+                      watermarkText: enabled && !options.watermarkText ? CNIC_WATERMARK_PRESETS[0] : options.watermarkText
+                    });
+                  }}
                   className="h-4 w-4 rounded accent-doc"
                 />
               </label>
