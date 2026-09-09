@@ -5,6 +5,7 @@ import {
   Printer,
   Upload,
   Download,
+  FileDown,
   ShieldCheck,
   Sparkles,
   Sliders,
@@ -33,6 +34,56 @@ const DEFAULT_OPTIONS: CnicPrintOptions = {
   borderGrid: true,
   dateStamp: true
 };
+
+const PAPER_SIZE_MM: Record<CnicPaperSize, { w: number; h: number }> = {
+  a4: { w: 210, h: 297 },
+  letter: { w: 215.9, h: 279.4 },
+  legal: { w: 215.9, h: 355.6 },
+  '3r': { w: 88.9, h: 127 }
+};
+
+function loadJsPdfLibrary(): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const win = window as any;
+    if (win.jspdf?.jsPDF) {
+      resolve(win.jspdf.jsPDF);
+      return;
+    }
+
+    const existing = document.querySelector('script[src*="jspdf.umd.min.js"]') as HTMLScriptElement | null;
+    if (existing) {
+      existing.addEventListener('load', () => resolve(win.jspdf.jsPDF), { once: true });
+      existing.addEventListener('error', () => reject(new Error('Failed to load PDF library')), { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.async = true;
+    script.onload = () => resolve(win.jspdf?.jsPDF);
+    script.onerror = () => reject(new Error('Failed to load PDF library'));
+    document.head.appendChild(script);
+  });
+}
+
+function canvasToJpegDataUrl(dataUrl: string, quality = 0.92): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext('2d')!.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = () => reject(new Error('Failed to read sheet image'));
+    img.src = dataUrl;
+  });
+}
 
 export function CnicOptTool() {
   const [frontFile, setFrontFile] = useState<File | string | null>(null);
@@ -139,24 +190,97 @@ export function CnicOptTool() {
     if (!previewDataUrl) return;
 
     const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>CNIC Print Sheet - cnic-copy-print-opt</title>
-            <style>
-              body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: #fff; }
-              img { width: 100%; height: auto; max-width: 210mm; }
-              @page { size: A4 portrait; margin: 0; }
-            </style>
-          </head>
-          <body>
-            <img src="${previewDataUrl}" onload="window.print();window.close();" />
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
+    if (!printWindow) return;
+
+    const { w, h } = PAPER_SIZE_MM[options.paperSize];
+
+    const pageCount = options.layout === 'pakistani-style' ? 2 : 1;
+    const pages = Array.from(
+      { length: pageCount },
+      () => `<div class="page"><img src="${previewDataUrl}" alt="CNIC sheet" /></div>`
+    ).join('');
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>CNIC Print Sheet - cnic-copy-print-opt</title>
+          <style>
+            html, body { margin: 0; padding: 0; background: #fff; }
+            .page {
+              width: ${w}mm;
+              height: ${h}mm;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              page-break-after: always;
+              break-after: page;
+              overflow: hidden;
+            }
+            .page:last-child { page-break-after: auto; break-after: auto; }
+            .page img { width: 100%; height: 100%; object-fit: contain; }
+            @page { size: ${w}mm ${h}mm; margin: 0; }
+          </style>
+        </head>
+        <body>
+          ${pages}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    const images = printWindow.document.images;
+    if (images.length === 0) {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+      return;
+    }
+    let ready = 0;
+    Array.from(images).forEach((img) => {
+      const finish = () => {
+        ready++;
+        if (ready === images.length) {
+          printWindow.focus();
+          printWindow.print();
+          printWindow.close();
+        }
+      };
+      if (img.complete) finish();
+      else {
+        img.onload = finish;
+        img.onerror = finish;
+      }
+    });
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!previewDataUrl) return;
+
+    setIsGenerating(true);
+    try {
+      const jsPDF = await loadJsPdfLibrary();
+      if (!jsPDF) {
+        throw new Error('PDF library is not available. Check your connection and try again.');
+      }
+
+      const jpegDataUrl = await canvasToJpegDataUrl(previewDataUrl);
+      const { w, h } = PAPER_SIZE_MM[options.paperSize];
+
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [w, h] });
+      pdf.addImage(jpegDataUrl, 'JPEG', 0, 0, w, h, undefined, 'FAST');
+
+      if (options.layout === 'pakistani-style') {
+        pdf.addPage([w, h], 'portrait');
+        pdf.addImage(jpegDataUrl, 'JPEG', 0, 0, w, h, undefined, 'FAST');
+      }
+
+      pdf.save(`CNIC_Optimized_Print_${options.paperSize}_${options.layout}.pdf`);
+    } catch (err) {
+      console.error('Failed to generate CNIC PDF:', err);
+      alert(err instanceof Error ? err.message : 'Failed to generate PDF');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -295,7 +419,8 @@ export function CnicOptTool() {
                   { id: 'standard-top-bottom', label: 'Centered stacked (top/bottom)' },
                   { id: 'side-by-side', label: 'Side-by-side horizontal' },
                   { id: 'dual-copy-a4', label: 'Dual copy (2 sets / sheet)' },
-                  { id: 'quad-copy-a4', label: 'Quad copy (4 sets / sheet)' }
+                  { id: 'quad-copy-a4', label: 'Quad copy (4 sets / sheet)' },
+                  { id: 'pakistani-style', label: 'Pakistani print (grid)' }
                 ].map((l) => (
                   <button
                     key={l.id}
@@ -471,18 +596,33 @@ export function CnicOptTool() {
                 className="flex items-center justify-center gap-2 rounded-xl bg-doc py-3.5 text-sm font-bold text-white shadow-lg shadow-doc/25 transition-all hover:bg-doc-bright disabled:opacity-50"
               >
                 <Printer className="h-4 w-4" />
-                Print now (A4 sheet)
+                Print now
+              </button>
+
+              <button
+                onClick={handleDownloadPdf}
+                disabled={!previewDataUrl || isGenerating}
+                className="flex items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-bold text-ink shadow-lg shadow-gold/25 transition-all hover:opacity-90 disabled:opacity-50"
+              >
+                <FileDown className="h-4 w-4" />
+                Download PDF{options.layout === 'pakistani-style' ? ' (2 pages)' : ''}
               </button>
 
               <button
                 onClick={handleDownloadSheet}
                 disabled={!previewDataUrl}
-                className="flex items-center justify-center gap-2 rounded-xl border border-rule bg-ink-3 py-3.5 text-sm font-bold text-white transition-all hover:bg-ink-4 disabled:opacity-50"
+                className="col-span-2 flex items-center justify-center gap-2 rounded-xl border border-rule bg-ink-3 py-3 text-sm font-bold text-white transition-all hover:bg-ink-4 disabled:opacity-50"
               >
                 <Download className="h-4 w-4 text-doc-bright" />
                 Download PNG
               </button>
             </div>
+
+            {options.layout === 'pakistani-style' && (
+              <p className="pt-2 text-center font-mono text-[10px] font-semibold uppercase tracking-widest text-paper/60">
+                PDF prints 2 pages: original sheet + one duplicate
+              </p>
+            )}
           </div>
         </div>
       </div>

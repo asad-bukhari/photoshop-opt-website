@@ -57,23 +57,23 @@ export async function generateCnicPrintCanvas(
       const cnicBaseWidth = Math.round(500 * options.customScale);
       const cnicBaseHeight = Math.round(315 * options.customScale);
 
-      const drawCard = (img: HTMLImageElement | null, x: number, y: number) => {
+      const drawCard = (img: HTMLImageElement | null, x: number, y: number, w = cnicBaseWidth, h = cnicBaseHeight) => {
         ctx.save();
 
         ctx.strokeStyle = '#94A3B8';
         ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, cnicBaseWidth, cnicBaseHeight);
+        ctx.strokeRect(x, y, w, h);
 
         if (img) {
           const cardCanvas = document.createElement('canvas');
-          cardCanvas.width = cnicBaseWidth;
-          cardCanvas.height = cnicBaseHeight;
+          cardCanvas.width = w;
+          cardCanvas.height = h;
           const cardCtx = cardCanvas.getContext('2d')!;
 
-          cardCtx.drawImage(img, 0, 0, cnicBaseWidth, cnicBaseHeight);
+          cardCtx.drawImage(img, 0, 0, w, h);
 
           if (options.filter !== 'original') {
-            const imageData = cardCtx.getImageData(0, 0, cnicBaseWidth, cnicBaseHeight);
+            const imageData = cardCtx.getImageData(0, 0, w, h);
             applyImageFilters(imageData, options);
             cardCtx.putImageData(imageData, 0, 0);
           }
@@ -81,11 +81,11 @@ export async function generateCnicPrintCanvas(
           ctx.drawImage(cardCanvas, x, y);
         } else {
           ctx.fillStyle = '#F8FAFC';
-          ctx.fillRect(x, y, cnicBaseWidth, cnicBaseHeight);
+          ctx.fillRect(x, y, w, h);
           ctx.fillStyle = '#64748B';
           ctx.font = 'bold 16px sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText('[ Image Pending ]', x + cnicBaseWidth / 2, y + cnicBaseHeight / 2);
+          ctx.fillText('[ Image Pending ]', x + w / 2, y + h / 2);
         }
 
         ctx.restore();
@@ -128,6 +128,36 @@ export async function generateCnicPrintCanvas(
 
         drawCard(frontImg, col2X, pageHeight * 0.55);
         drawCard(backImg, col2X, pageHeight * 0.55 + cnicBaseHeight + 30);
+      } else if (options.layout === 'pakistani-style') {
+        const paperWidthPt =
+          options.paperSize === 'letter' || options.paperSize === 'legal'
+            ? 612
+            : options.paperSize === '3r'
+              ? 252
+              : 595;
+
+        const pt = pageWidth / paperWidthPt;
+        const cardRatio = 68 / 99.5;
+        let cardW = Math.round(99.5 * 2.83465 * pt);
+        let cardH = Math.round(cardW * cardRatio);
+        const margin = Math.round(10 * pt);
+        const spacing = Math.round(10 * pt);
+
+        const maxColWidth = (pageWidth - 2 * margin - spacing) / 2;
+        if (cardW > maxColWidth) {
+          const shrink = maxColWidth / cardW;
+          cardW = Math.round(cardW * shrink);
+          cardH = Math.round(cardH * shrink);
+        }
+
+        const xMargin = Math.round((pageWidth - (cardW * 2 + spacing)) / 2);
+        const rows = Math.max(1, Math.floor((pageHeight - 2 * margin + spacing) / (cardH + spacing)));
+
+        for (let r = 0; r < rows; r++) {
+          const y = margin + r * (cardH + spacing);
+          drawCard(frontImg, xMargin, y, cardW, cardH);
+          drawCard(backImg, xMargin + cardW + spacing, y, cardW, cardH);
+        }
       }
 
       if (options.enableWatermark && options.watermarkText) {
