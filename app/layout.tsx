@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Space_Grotesk, Archivo, IBM_Plex_Mono } from 'next/font/google';
 import { SiteShell } from '@/components/SiteShell';
 import './globals.css';
@@ -24,6 +23,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://zaibitools.com'),
   title: {
     default: 'Zaibi Tools — Image & CNIC Optimization Suite',
     template: '%s | Zaibi Tools'
@@ -43,16 +43,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark">
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
-        <Script
+        <script
+          async
           src="https://www.googletagmanager.com/gtag/js?id=G-3QKCPR8SR3"
-          strategy="afterInteractive"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-3QKCPR8SR3');`}
-        </Script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-3QKCPR8SR3');"
+          }}
+        />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

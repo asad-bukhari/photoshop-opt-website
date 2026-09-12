@@ -6,7 +6,7 @@ Guidance for AI agents working in this repository.
 
 `optipack-portal` (branded **Zaibi Tools**) — a Next.js 15 App Router site hosting two 100% client-side Canvas tools: a batch image optimizer and a CNIC/ID print-layout suite. Deployed as a Cloudflare Worker via OpenNext.
 
-Live: https://optipack-portal.asadbukhari65813.workers.dev
+Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
 ## Commands
 
@@ -24,8 +24,9 @@ There is no test suite. Always run `npm run lint` after changes.
 
 ## Architecture
 
-- `app/` — App Router. `layout.tsx` wires fonts, metadata, and `SiteShell`. Pages are thin wrappers around tool components. `api/health/route.ts` is the only server route.
+- `app/` — App Router. `layout.tsx` wires fonts, metadata (`metadataBase` = zaibitools.com), the Google Analytics 4 tag (`G-3QKCPR8SR3`, literal `<script>` in the initial HTML), and `SiteShell`. Pages are thin wrappers around tool components. `api/health/route.ts` is the only server route.
 - `components/` — UI. `SiteShell` owns the security-modal state; `Header`/`Footer` receive `onOpenSecurity`. Tool components (`ImageOptTool`, `CnicOptTool`) are `'use client'`.
+- `components/AdBanner.tsx` / `ResponsiveAd.tsx` / `StickyMobileAd.tsx` — Adsterra banner units; sizes/keys live in `lib/data/ads.ts`.
 - `lib/utils/` — pure Canvas processing engines (`imageOptimizer.ts`, `cnicOptimizer.ts`). No React, no network.
 - `lib/data/initialData.ts` — all copy, presets, and tool metadata.
 - `lib/types.ts` — shared domain types.
@@ -47,6 +48,7 @@ Path alias `@/*` → project root.
 - **AVIF fallback:** `imageOptimizer.ts` maps `avif` → `image/webp` (browser AVIF encoding is unreliable).
 - **Unused options:** `stripExif` and `lossless` are UI-only; the engine ignores them (Canvas re-encoding already drops EXIF).
 - **jsPDF** is loaded at runtime from cdnjs in `CnicOptTool.tsx`; PDF export needs network access.
+- **Adsterra ads:** each banner must render in its own `srcDoc` iframe (this isolates Adsterra's global `atOptions` so multiple units can coexist). Do **not** add a `sandbox` attribute — Adsterra's `invoke.js` needs `document.cookie`/`localStorage` and will silently fail if sandboxed.
 
 ## Deployment
 

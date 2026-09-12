@@ -48,7 +48,6 @@ export function AdBanner({
           width={width}
           height={height}
           loading={lazy ? 'lazy' : 'eager'}
-          sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms"
           srcDoc={buildSnippet(width, height, adKey)}
           style={{ border: 0, display: 'block' }}
         />

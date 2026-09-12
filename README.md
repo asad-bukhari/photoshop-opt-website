@@ -7,7 +7,7 @@ A browser-only, zero-server web portal hosting two document utilities:
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
 
-**Live:** https://optipack-portal.asadbukhari65813.workers.dev
+**Live:** https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
 ---
 
@@ -68,7 +68,7 @@ app/
   not-found.tsx         404 page
   globals.css           Tailwind v4 theme tokens + global styles
 components/
-  SiteShell.tsx         Header + main + footer + security modal
+  SiteShell.tsx         Header + main + footer + security modal + sticky mobile ad
   Header.tsx            Nav, brand, theme toggle, security trigger
   Footer.tsx            Links and privacy blurb
   HomeHub.tsx           Landing page sections (tools + FAQ)
@@ -77,9 +77,13 @@ components/
   SecurityModal.tsx     Privacy/security modal
   ThemeToggle.tsx       Light/dark switch (persisted in localStorage)
   CornerMarks.tsx       Decorative print marks + scale ruler
+  AdBanner.tsx          Isolated iframe Adsterra banner unit
+  ResponsiveAd.tsx      Picks desktop (728x90) or mobile (300x250) size
+  StickyMobileAd.tsx    Dismissible sticky 320x50 mobile bar
 lib/
   types.ts              Shared domain types
   data/initialData.ts   Tool metadata, presets, FAQ content
+  data/ads.ts           Adsterra ad keys and dimensions
   utils/imageOptimizer.ts  Image processing engine (Canvas)
   utils/cnicOptimizer.ts   CNIC sheet rendering + filters (Canvas)
 ```
@@ -126,6 +130,14 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 - **Zero-server:** all image and document processing runs client-side; nothing is uploaded.
 - **Metadata stripping:** re-encoding through Canvas drops EXIF/GPS data.
 - **Security headers** (set in `next.config.ts`): `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`.
+
+---
+
+## Analytics & ads
+
+- **Google Analytics 4** (`G-3QKCPR8SR3`) is embedded in `app/layout.tsx` as a literal `<script>` (async loader + inline config) so it is present in the initial server HTML on every route and does not depend on the Next.js client runtime.
+- **Adsterra** banner units are configured in `lib/data/ads.ts` and rendered by `AdBanner.tsx`. Each unit lives in its own `srcDoc` iframe, which isolates Adsterra's global `atOptions` so multiple banners can coexist. The iframe is intentionally **not** sandboxed — Adsterra's `invoke.js` needs cookies/localStorage.
+- Sizes in use: 300x250 (medium rectangle), 728x90 (leaderboard, desktop), 320x50 (sticky mobile bar).
 
 ---
 
