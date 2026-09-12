@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { Zap, Printer, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CornerMarks, ScaleRuler } from './CornerMarks';
+import { AdBanner } from './AdBanner';
+import { ResponsiveAd } from './ResponsiveAd';
+import { ADS } from '@/lib/data/ads';
 import { REPO_INFO, FAQ_ITEMS } from '@/lib/data/initialData';
 
 export function HomeHub() {
@@ -33,6 +36,8 @@ export function HomeHub() {
           <span className="font-mono text-[10px] uppercase tracking-widest text-rule">1:1 print calibration</span>
         </div>
       </section>
+
+      <ResponsiveAd />
 
       {/* Tool sheets */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -139,6 +144,8 @@ export function HomeHub() {
         </article>
       </div>
 
+      <AdBanner width={ADS.mediumRectangle.width} height={ADS.mediumRectangle.height} adKey={ADS.mediumRectangle.key} />
+
       {/* FAQ sheet */}
       <section className="relative rounded-2xl border border-rule bg-ink-2 p-6 text-paper shadow-2xl sm:p-8">
         <CornerMarks className="text-gold" />
@@ -161,6 +168,8 @@ export function HomeHub() {
           ))}
         </div>
       </section>
+
+      <ResponsiveAd />
     </div>
   );
 }

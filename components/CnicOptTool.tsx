@@ -19,6 +19,9 @@ import { CnicPrintOptions, CnicPaperSize, CnicLayoutPreset, CnicFilterMode } fro
 import { CNIC_WATERMARK_PRESETS, REPO_INFO } from '@/lib/data/initialData';
 import { generateCnicPrintCanvas } from '@/lib/utils/cnicOptimizer';
 import { CornerMarks, ScaleRuler } from './CornerMarks';
+import { AdBanner } from './AdBanner';
+import { ResponsiveAd } from './ResponsiveAd';
+import { ADS } from '@/lib/data/ads';
 
 const DEFAULT_OPTIONS: CnicPrintOptions = {
   paperSize: 'a4',
@@ -328,6 +331,8 @@ export function CnicOptTool() {
         </div>
       </section>
 
+      <ResponsiveAd />
+
       {/* Main grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Upload & controls */}
@@ -626,6 +631,8 @@ export function CnicOptTool() {
           </div>
         </div>
       </div>
+
+      <AdBanner width={ADS.mediumRectangle.width} height={ADS.mediumRectangle.height} adKey={ADS.mediumRectangle.key} />
     </div>
   );
 }

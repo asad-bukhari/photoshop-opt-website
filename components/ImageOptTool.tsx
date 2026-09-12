@@ -19,6 +19,9 @@ import { ImageOptimizationOptions, ProcessedImageItem, SocialPreset, ImageFormat
 import { SOCIAL_PRESETS, REPO_INFO } from '@/lib/data/initialData';
 import { processImageFile } from '@/lib/utils/imageOptimizer';
 import { CornerMarks, ScaleRuler } from './CornerMarks';
+import { AdBanner } from './AdBanner';
+import { ResponsiveAd } from './ResponsiveAd';
+import { ADS } from '@/lib/data/ads';
 
 const FORMAT_LABELS: Record<ImageFormat, string> = {
   jpeg: 'JPG',
@@ -172,6 +175,8 @@ export function ImageOptTool() {
           </div>
         </div>
       </section>
+
+      <ResponsiveAd />
 
       {/* Main grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -486,6 +491,8 @@ export function ImageOptTool() {
           )}
         </div>
       </div>
+
+      <AdBanner width={ADS.mediumRectangle.width} height={ADS.mediumRectangle.height} adKey={ADS.mediumRectangle.key} />
     </div>
   );
 }
