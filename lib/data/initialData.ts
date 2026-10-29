@@ -16,19 +16,19 @@ export const REPO_INFO = {
     ]
   },
   cnicOpt: {
-    name: "cnic-copy-print-opt",
-    fullName: "Zaibi Tools Enterprise / cnic-copy-print-opt",
+    name: "CNIC print tool",
+    fullName: "Zaibi Tools",
     description:
-      "Specialized CNIC & identity document front + back dual layout alignment optimizer for crisp A4 printouts with watermark protection.",
+      "Place a CNIC or another ID-1 card front and back on a card-sized A4, Letter, Legal or 3R sheet with an optional purpose watermark.",
     version: "v3.5",
     license: "Proprietary",
     techStack: ["React", "HTML5 Canvas API", "Image Enhancement Filters"],
     features: [
-      "Dual upload for CNIC front and CNIC back cards",
-      "Automated document boundary alignment and aspect ratio lock",
-      "Scan enhancement filters: high-contrast B&W scan mode & grayscale",
-      "Custom anti-fraud watermark overlays (e.g. 'FOR BANK USE ONLY')",
-      "1:1 true-size print calibration with A4, Letter, and Legal paper grid preview"
+      "Dual upload for the front and back of a card",
+      "Card-sized frames for CNIC and other ID-1 cards",
+      "Scan filters: B&W, grayscale and color boost",
+      "Optional purpose watermark",
+      "A4, Letter, Legal and 3R sheets at 150 DPI"
     ]
   }
 };
@@ -43,11 +43,10 @@ export const SOCIAL_PRESETS = [
 ];
 
 export const CNIC_WATERMARK_PRESETS = [
-  "FOR OFFICIAL USE ONLY",
+  "FOR VERIFICATION ONLY",
   "FOR BANK ACCOUNT VERIFICATION ONLY",
   "FOR VISA & PASSPORT APPLICATION ONLY",
-  "CONFIDENTIAL - DO NOT COPY",
-  "CUSTOM TEXT"
+  "CONFIDENTIAL - DO NOT COPY"
 ];
 
 export const FAQ_ITEMS = [

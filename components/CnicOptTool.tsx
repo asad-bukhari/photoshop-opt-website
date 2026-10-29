@@ -1,27 +1,26 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
 import {
-  Printer,
-  Upload,
-  Download,
-  FileDown,
-  ShieldCheck,
-  Sparkles,
-  Sliders,
   Check,
+  ChevronDown,
+  Download,
   Eye,
-  Lock,
+  FileDown,
   FileText,
-  RefreshCw
+  Lock,
+  Printer,
+  RefreshCw,
+  Sliders,
+  Sparkles,
+  Trash2,
+  Upload
 } from 'lucide-react';
-import { CnicPrintOptions, CnicPaperSize, CnicLayoutPreset, CnicFilterMode } from '@/lib/types';
-import { CNIC_WATERMARK_PRESETS, REPO_INFO } from '@/lib/data/initialData';
+import { CnicFilterMode, CnicLayoutPreset, CnicPaperSize, CnicPrintOptions } from '@/lib/types';
+import { CNIC_WATERMARK_PRESETS } from '@/lib/data/initialData';
 import { generateCnicPrintCanvas } from '@/lib/utils/cnicOptimizer';
-import { CornerMarks, ScaleRuler } from './CornerMarks';
-import { AdBanner } from './AdBanner';
 import { ResponsiveAd } from './ResponsiveAd';
-import { ADS } from '@/lib/data/ads';
 
 const DEFAULT_OPTIONS: CnicPrintOptions = {
   paperSize: 'a4',
@@ -44,6 +43,28 @@ const PAPER_SIZE_MM: Record<CnicPaperSize, { w: number; h: number }> = {
   legal: { w: 215.9, h: 355.6 },
   '3r': { w: 88.9, h: 127 }
 };
+
+const PAPER_LABELS: Record<CnicPaperSize, string> = {
+  a4: 'A4',
+  letter: 'Letter',
+  legal: 'Legal',
+  '3r': '3R'
+};
+
+const LAYOUT_OPTIONS: { id: CnicLayoutPreset; label: string }[] = [
+  { id: 'standard-top-bottom', label: 'Centered stacked' },
+  { id: 'side-by-side', label: 'Side by side' },
+  { id: 'dual-copy-a4', label: 'Dual copy (2 sets)' },
+  { id: 'quad-copy-a4', label: 'Quad copy (4 sets)' },
+  { id: 'pakistani-style', label: 'Pakistani grid' }
+];
+
+const FILTER_OPTIONS: { id: CnicFilterMode; label: string }[] = [
+  { id: 'original', label: 'Original' },
+  { id: 'high-contrast-bw', label: 'B&W scan' },
+  { id: 'grayscale', label: 'Grayscale' },
+  { id: 'enhanced', label: 'Color boost' }
+];
 
 function loadJsPdfLibrary(): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -79,8 +100,8 @@ function canvasToJpegDataUrl(dataUrl: string, quality = 0.92): Promise<string> {
         canvas.height = img.naturalHeight;
         canvas.getContext('2d')!.drawImage(img, 0, 0);
         resolve(canvas.toDataURL('image/jpeg', quality));
-      } catch (err) {
-        reject(err);
+      } catch (error) {
+        reject(error);
       }
     };
     img.onerror = () => reject(new Error('Failed to read sheet image'));
@@ -93,7 +114,32 @@ export function CnicOptTool() {
   const [backFile, setBackFile] = useState<File | string | null>(null);
   const [previewDataUrl, setPreviewDataUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [options, setOptions] = useState<CnicPrintOptions>(DEFAULT_OPTIONS);
+
+  const hasAnyImage = Boolean(frontFile || backFile);
+  const paperLabel = PAPER_LABELS[options.paperSize];
+  const activeLayout = LAYOUT_OPTIONS.find((item) => item.id === options.layout)?.label ?? 'Layout';
+  const activeFilter = FILTER_OPTIONS.find((item) => item.id === options.filter)?.label ?? 'Original';
+
+  const frontPreviewUrl = useMemo(
+    () => (frontFile instanceof File ? URL.createObjectURL(frontFile) : frontFile),
+    [frontFile]
+  );
+  const backPreviewUrl = useMemo(
+    () => (backFile instanceof File ? URL.createObjectURL(backFile) : backFile),
+    [backFile]
+  );
+
+  useEffect(() => {
+    if (!(frontFile instanceof File) || !frontPreviewUrl) return;
+    return () => URL.revokeObjectURL(frontPreviewUrl);
+  }, [frontFile, frontPreviewUrl]);
+
+  useEffect(() => {
+    if (!(backFile instanceof File) || !backPreviewUrl) return;
+    return () => URL.revokeObjectURL(backPreviewUrl);
+  }, [backFile, backPreviewUrl]);
 
   useEffect(() => {
     let isMounted = true;
@@ -105,8 +151,11 @@ export function CnicOptTool() {
         if (isMounted) {
           setPreviewDataUrl(result.dataUrl);
         }
-      } catch (err) {
-        console.error('Failed to generate CNIC print preview:', err);
+      } catch (error) {
+        console.error('Failed to generate CNIC print preview:', error);
+        if (isMounted) {
+          setActionMessage('The image could not be opened. Try a JPG or PNG file.');
+        }
       } finally {
         if (isMounted) setIsGenerating(false);
       }
@@ -123,91 +172,102 @@ export function CnicOptTool() {
     const frontCanvas = document.createElement('canvas');
     frontCanvas.width = 600;
     frontCanvas.height = 380;
-    const fctx = frontCanvas.getContext('2d')!;
+    const frontContext = frontCanvas.getContext('2d')!;
 
-    fctx.fillStyle = '#E0F2FE';
-    fctx.fillRect(0, 0, 600, 380);
-    fctx.strokeStyle = '#0284C7';
-    fctx.lineWidth = 4;
-    fctx.strokeRect(8, 8, 584, 364);
+    frontContext.fillStyle = '#E0F2FE';
+    frontContext.fillRect(0, 0, 600, 380);
+    frontContext.strokeStyle = '#0369A1';
+    frontContext.lineWidth = 4;
+    frontContext.strokeRect(8, 8, 584, 364);
 
-    fctx.fillStyle = '#0F172A';
-    fctx.font = 'bold 20px sans-serif';
-    fctx.fillText('ISLAMIC REPUBLIC OF PAKISTAN', 130, 45);
-    fctx.font = 'bold 16px sans-serif';
-    fctx.fillStyle = '#0369A1';
-    fctx.fillText('National Identity Card (CNIC)', 130, 72);
+    frontContext.fillStyle = '#0F172A';
+    frontContext.font = 'bold 20px sans-serif';
+    frontContext.fillText('SAMPLE ID CARD', 140, 50);
+    frontContext.font = 'bold 15px sans-serif';
+    frontContext.fillStyle = '#0369A1';
+    frontContext.fillText('NOT A REAL DOCUMENT', 140, 78);
 
-    fctx.fillStyle = '#94A3B8';
-    fctx.fillRect(25, 100, 100, 120);
-    fctx.fillStyle = '#FFFFFF';
-    fctx.font = '12px sans-serif';
-    fctx.fillText('PHOTO', 55, 165);
+    frontContext.fillStyle = '#94A3B8';
+    frontContext.fillRect(25, 105, 100, 120);
+    frontContext.fillStyle = '#FFFFFF';
+    frontContext.font = '12px sans-serif';
+    frontContext.fillText('PHOTO', 55, 170);
 
-    fctx.fillStyle = '#0F172A';
-    fctx.font = 'bold 14px sans-serif';
-    fctx.fillText('Name: ASAD BUKHARI', 140, 115);
-    fctx.fillText('Father Name: SYED BUKHARI', 140, 145);
-    fctx.fillText('Identity No: 61101-1234567-9', 140, 185);
-    fctx.fillText('Date of Birth: 15.08.1995', 140, 215);
+    frontContext.fillStyle = '#0F172A';
+    frontContext.font = 'bold 14px sans-serif';
+    frontContext.fillText('Name: SAMPLE NAME', 140, 120);
+    frontContext.fillText('Identity No: 00000-0000000-0', 140, 150);
+    frontContext.fillText('Date of Birth: 01.01.2000', 140, 180);
+    frontContext.fillText('Sample card for the demo only', 140, 210);
 
-    fctx.fillStyle = '#15803D';
-    fctx.beginPath();
-    fctx.arc(520, 50, 25, 0, Math.PI * 2);
-    fctx.fill();
+    frontContext.fillStyle = '#15803D';
+    frontContext.beginPath();
+    frontContext.arc(520, 50, 25, 0, Math.PI * 2);
+    frontContext.fill();
 
     setFrontFile(frontCanvas.toDataURL('image/png'));
 
     const backCanvas = document.createElement('canvas');
     backCanvas.width = 600;
     backCanvas.height = 380;
-    const bctx = backCanvas.getContext('2d')!;
+    const backContext = backCanvas.getContext('2d')!;
 
-    bctx.fillStyle = '#FEF3C7';
-    bctx.fillRect(0, 0, 600, 380);
-    bctx.strokeStyle = '#D97706';
-    bctx.lineWidth = 4;
-    bctx.strokeRect(8, 8, 584, 364);
+    backContext.fillStyle = '#FEF3C7';
+    backContext.fillRect(0, 0, 600, 380);
+    backContext.strokeStyle = '#D97706';
+    backContext.lineWidth = 4;
+    backContext.strokeRect(8, 8, 584, 364);
 
-    bctx.fillStyle = '#0F172A';
-    bctx.font = 'bold 16px sans-serif';
-    bctx.fillText('Address / Residence Details:', 25, 45);
-    bctx.font = '13px sans-serif';
-    bctx.fillText('House No. 104, Sector F-8/3, Islamabad, Pakistan', 25, 80);
-    bctx.fillText('Tracking ID: 890214-9981-CNIC', 25, 110);
+    backContext.fillStyle = '#0F172A';
+    backContext.font = 'bold 16px sans-serif';
+    backContext.fillText('SAMPLE ADDRESS', 25, 45);
+    backContext.font = '13px sans-serif';
+    backContext.fillText('Sample House, Sample Street, Sample City', 25, 80);
+    backContext.fillText('Sample card for the demo only', 25, 110);
 
-    bctx.fillStyle = '#000000';
+    backContext.fillStyle = '#000000';
     for (let x = 25; x < 550; x += 6) {
-      const w = Math.random() > 0.5 ? 3 : 1;
-      bctx.fillRect(x, 150, w, 60);
+      const width = Math.random() > 0.5 ? 3 : 1;
+      backContext.fillRect(x, 150, width, 60);
     }
 
-    bctx.fillStyle = '#B45309';
-    bctx.font = 'bold 14px sans-serif';
-    bctx.fillText('Valid Upto: 2035 | Issue Date: 2025', 25, 250);
+    backContext.fillStyle = '#B45309';
+    backContext.font = 'bold 14px sans-serif';
+    backContext.fillText('Sample expiry: 2035 | Sample issue: 2025', 25, 250);
 
     setBackFile(backCanvas.toDataURL('image/png'));
+    setActionMessage(null);
+  };
+
+  const handleClearImages = () => {
+    setFrontFile(null);
+    setBackFile(null);
+    setActionMessage(null);
   };
 
   const handlePrintDocument = async () => {
-    if (!previewDataUrl) return;
+    if (!previewDataUrl || !hasAnyImage) return;
 
     const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
+    if (!printWindow) {
+      setActionMessage('Your browser blocked the print window. Allow pop-ups and try again.');
+      return;
+    }
 
+    setActionMessage(null);
     const { w, h } = PAPER_SIZE_MM[options.paperSize];
 
     const pageCount = options.layout === 'pakistani-style' ? 2 : 1;
     const pages = Array.from(
       { length: pageCount },
-      () => `<div class="page"><img src="${previewDataUrl}" alt="CNIC sheet" /></div>`
+      () => `<div class="page"><img src="${previewDataUrl}" alt="CNIC print sheet" /></div>`
     ).join('');
 
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
-          <title>CNIC Print Sheet - cnic-copy-print-opt</title>
+          <title>CNIC print sheet - Zaibi Tools</title>
           <style>
             html, body { margin: 0; padding: 0; background: #fff; }
             .page {
@@ -239,6 +299,7 @@ export function CnicOptTool() {
       printWindow.close();
       return;
     }
+
     let ready = 0;
     Array.from(images).forEach((img) => {
       const finish = () => {
@@ -258,13 +319,14 @@ export function CnicOptTool() {
   };
 
   const handleDownloadPdf = async () => {
-    if (!previewDataUrl) return;
+    if (!previewDataUrl || !hasAnyImage) return;
 
+    setActionMessage(null);
     setIsGenerating(true);
     try {
       const jsPDF = await loadJsPdfLibrary();
       if (!jsPDF) {
-        throw new Error('PDF library is not available. Check your connection and try again.');
+        throw new Error('The PDF library could not be loaded. Check your connection and try again.');
       }
 
       const jpegDataUrl = await canvasToJpegDataUrl(previewDataUrl);
@@ -278,361 +340,427 @@ export function CnicOptTool() {
         pdf.addImage(jpegDataUrl, 'JPEG', 0, 0, w, h, undefined, 'FAST');
       }
 
-      pdf.save(`CNIC_Optimized_Print_${options.paperSize}_${options.layout}.pdf`);
-    } catch (err) {
-      console.error('Failed to generate CNIC PDF:', err);
-      alert(err instanceof Error ? err.message : 'Failed to generate PDF');
+      pdf.save(`CNIC_Print_${options.paperSize}_${options.layout}.pdf`);
+    } catch (error) {
+      console.error('Failed to generate CNIC PDF:', error);
+      setActionMessage(
+        error instanceof Error ? error.message : 'The PDF could not be generated. Check your connection and try again.'
+      );
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handleDownloadSheet = () => {
-    if (!previewDataUrl) return;
-    const a = document.createElement('a');
-    a.href = previewDataUrl;
-    a.download = `CNIC_Optimized_Print_${options.paperSize}_${options.layout}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    if (!previewDataUrl || !hasAnyImage) return;
+    setActionMessage(null);
+
+    const anchor = document.createElement('a');
+    anchor.href = previewDataUrl;
+    anchor.download = `CNIC_Print_${options.paperSize}_${options.layout}.png`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Job sheet header */}
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-paper-2 p-6 text-ink shadow-sm md:p-8">
-        <CornerMarks className="text-gold" />
-        <div className="absolute -right-5 top-1/2 hidden -translate-y-1/2 rotate-[-8deg] rounded border-2 border-stamp/40 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-stamp/70 lg:block">
-          Official Use Only
-        </div>
+    <div className="space-y-8">
+      <header className="space-y-3">
+        <p className="font-mono text-xs uppercase tracking-widest text-doc">CNIC photocopy</p>
+        <h1 className="max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+          Print CNIC front and back on one A4 page
+        </h1>
+        <p className="max-w-2xl text-base leading-relaxed text-ink-soft">
+          Upload a photo or scan of each side. The tool places both sides on a card-sized sheet, lets you adjust the
+          layout and filter, and exports a print-ready PDF or PNG.
+        </p>
+      </header>
 
-        <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <div className="max-w-2xl space-y-2">
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest">
-              <span className="flex items-center gap-1 rounded border border-doc/40 bg-paper-3 px-2 py-1 font-bold text-doc-bright">
-                <ShieldCheck className="h-3.5 w-3.5 text-doc-bright" />
-                cnic-copy-print-opt engine
-              </span>
-              <span className="text-ink-soft">{REPO_INFO.cnicOpt.version}</span>
-            </div>
-            <h1 className="font-display text-2xl font-black tracking-tight md:text-3xl">
-              CNIC & ID document front + back A4 print layout optimizer
-            </h1>
-            <p className="text-sm leading-relaxed text-ink-soft">
-              Align identity card front and back photos onto a 1:1 true-size A4 sheet with anti-photocopy watermarks
-              and high-contrast ink-saving document filters.
-            </p>
-          </div>
-
-          <div className="flex flex-shrink-0 items-center gap-2 rounded-lg border border-line bg-paper-3 px-3 py-2 font-mono text-[10px] font-medium text-ink-soft">
-            <ShieldCheck className="h-4 w-4 text-doc-bright" />
-            <span>{REPO_INFO.cnicOpt.fullName}</span>
-          </div>
-        </div>
-      </section>
-
-      <ResponsiveAd />
-
-      {/* Main grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* Upload & controls */}
-        <div className="space-y-6 lg:col-span-5">
-          <div className="rounded-2xl border border-line bg-paper-2 p-6 shadow-sm ">
-            <div className="flex items-center justify-between border-b border-line pb-3 ">
+      <div className="grid gap-6 lg:grid-cols-12">
+        <div className="space-y-4 lg:col-span-5">
+          <section aria-labelledby="upload-title" className="rounded-2xl border border-line bg-paper-2 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
               <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-doc " />
-                <h3 className="font-display text-sm font-bold text-ink ">Identity card upload</h3>
+                <FileText className="h-4 w-4 text-doc" />
+                <h2 id="upload-title" className="font-display text-base font-bold text-ink">
+                  Add the card images
+                </h2>
               </div>
-              <button
-                onClick={handleLoadSampleCards}
-                className="flex items-center gap-1 rounded-lg border border-doc/30 bg-doc/10 px-2.5 py-1 text-xs font-semibold text-doc transition-colors hover:bg-doc/20 "
-              >
-                <Sparkles className="h-3.5 w-3.5" />
-                Load sample CNIC
-              </button>
+              <div className="flex items-center gap-1">
+                {hasAnyImage && (
+                  <button
+                    type="button"
+                    onClick={handleClearImages}
+                    className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-ink-soft transition-colors hover:bg-paper-3 hover:text-stamp"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Clear
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleLoadSampleCards}
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-line bg-paper-2 px-3 text-sm font-semibold text-doc transition-colors hover:bg-paper-3"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Load sample
+                </button>
+              </div>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-3">
-              <label className="group relative flex min-h-[120px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-line p-4 text-center transition-all hover:border-doc bg-paper-3/50 ">
+              <label className="group flex min-h-32 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-line bg-paper-3/50 p-3 text-center transition-colors hover:border-doc focus-within:ring-2 focus-within:ring-gold focus-within:ring-offset-2 focus-within:ring-offset-paper">
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => e.target.files?.[0] && setFrontFile(e.target.files[0])}
-                  className="hidden"
-                />
-                {frontFile ? (
-                  <div className="flex w-full flex-col items-center">
-                    <img
-                      src={frontFile instanceof File ? URL.createObjectURL(frontFile) : frontFile}
-                      alt="Front"
-                      className="h-16 w-full rounded-lg border border-line object-contain "
-                    />
-                    <span className="mt-1 flex items-center gap-1 text-[10px] font-bold text-doc ">
-                      <Check className="h-3 w-3" /> Front loaded
-                    </span>
-                  </div>
-                ) : (
-                  <>
-                    <Upload className="mb-1 h-6 w-6 text-ink-soft group-hover:text-doc " />
-                    <span className="text-xs font-semibold text-ink ">CNIC FRONT</span>
-                    <span className="text-[10px] text-ink-soft ">Upload image</span>
-                  </>
-                )}
-              </label>
-
-              <label className="group relative flex min-h-[120px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-line p-4 text-center transition-all hover:border-gold bg-paper-3/50 ">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => e.target.files?.[0] && setBackFile(e.target.files[0])}
-                  className="hidden"
-                />
-                {backFile ? (
-                  <div className="flex w-full flex-col items-center">
-                    <img
-                      src={backFile instanceof File ? URL.createObjectURL(backFile) : backFile}
-                      alt="Back"
-                      className="h-16 w-full rounded-lg border border-line object-contain "
-                    />
-                    <span className="mt-1 flex items-center gap-1 text-[10px] font-bold text-gold">
-                      <Check className="h-3 w-3" /> Back loaded
-                    </span>
-                  </div>
-                ) : (
-                  <>
-                    <Upload className="mb-1 h-6 w-6 text-ink-soft group-hover:text-gold " />
-                    <span className="text-xs font-semibold text-ink ">CNIC BACK</span>
-                    <span className="text-[10px] text-ink-soft ">Upload image</span>
-                  </>
-                )}
-              </label>
-            </div>
-          </div>
-
-          <div className="space-y-5 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm ">
-            <div className="flex items-center gap-2 border-b border-line pb-3 ">
-              <Sliders className="h-4 w-4 text-doc " />
-              <h3 className="font-display text-sm font-bold text-ink ">Print sheet layout</h3>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
-                Card positioning preset
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { id: 'standard-top-bottom', label: 'Centered stacked (top/bottom)' },
-                  { id: 'side-by-side', label: 'Side-by-side horizontal' },
-                  { id: 'dual-copy-a4', label: 'Dual copy (2 sets / sheet)' },
-                  { id: 'quad-copy-a4', label: 'Quad copy (4 sets / sheet)' },
-                  { id: 'pakistani-style', label: 'Pakistani print (grid)' }
-                ].map((l) => (
-                  <button
-                    key={l.id}
-                    onClick={() => setOptions({ ...options, layout: l.id as CnicLayoutPreset })}
-                    className={`rounded-xl border p-2.5 text-left text-xs font-medium transition-all ${
-                      options.layout === l.id
-                        ? 'border-doc bg-doc/10 font-semibold text-doc '
-                        : 'border-line text-ink-soft hover:border-doc/50 '
-                    }`}
-                  >
-                    {l.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
-                Document scan mode filter
-              </label>
-              <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-line bg-paper-3 p-1 ">
-                {[
-                  { id: 'original', label: 'Original' },
-                  { id: 'high-contrast-bw', label: 'B&W scan' },
-                  { id: 'grayscale', label: 'Grayscale' },
-                  { id: 'enhanced', label: 'Color boost' }
-                ].map((f) => (
-                  <button
-                    key={f.id}
-                    onClick={() => setOptions({ ...options, filter: f.id as CnicFilterMode })}
-                    className={`rounded-lg py-1.5 text-[11px] font-semibold transition-all ${
-                      options.filter === f.id
-                        ? 'bg-doc text-white shadow-md'
-                        : 'text-ink-soft hover:text-ink '
-                    }`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div>
-                <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
-                  Paper size
-                </label>
-                <select
-                  value={options.paperSize}
-                  onChange={(e) => setOptions({ ...options, paperSize: e.target.value as CnicPaperSize })}
-                  className="mt-1 w-full rounded-xl border border-line bg-paper-3 px-3 py-2 text-xs font-medium text-ink focus:outline-none focus:ring-2 focus:ring-gold "
-                >
-                  <option value="a4">Standard A4 sheet</option>
-                  <option value="letter">US letter</option>
-                  <option value="legal">Legal sheet</option>
-                  <option value="3r">3R photo paper</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
-                  Scale calibration
-                </label>
-                <div className="mt-1 flex items-center gap-2">
-                  <input
-                    type="range"
-                    min="0.7"
-                    max="1.3"
-                    step="0.05"
-                    value={options.customScale}
-                    onChange={(e) => setOptions({ ...options, customScale: parseFloat(e.target.value) })}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-paper-3 accent-doc "
-                  />
-                  <span className="font-mono text-xs font-bold text-doc ">
-                    {Math.round(options.customScale * 100)}%
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-3 border-t border-line pt-3 ">
-              <label className="flex cursor-pointer items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-gold" />
-                  <span className="text-xs font-bold text-ink ">Anti-photocopy watermark</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={options.enableWatermark}
-                  onChange={(e) => {
-                    const enabled = e.target.checked;
-                    setOptions({
-                      ...options,
-                      enableWatermark: enabled,
-                      watermarkText: enabled && !options.watermarkText ? CNIC_WATERMARK_PRESETS[0] : options.watermarkText
-                    });
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (file) {
+                      setFrontFile(file);
+                      setActionMessage(null);
+                    }
+                    event.target.value = '';
                   }}
-                  className="h-4 w-4 rounded accent-doc"
+                  className="sr-only"
                 />
+                {frontPreviewUrl ? (
+                  <>
+                    <img
+                      src={frontPreviewUrl}
+                      alt="Selected front side of the ID card"
+                      className="h-20 w-full rounded-lg border border-line object-contain"
+                    />
+                    <span className="mt-1 flex items-center gap-1 text-xs font-bold text-doc">
+                      <Check className="h-3 w-3" /> Front added
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mb-1 h-6 w-6 text-ink-soft group-hover:text-doc" />
+                    <span className="text-sm font-semibold text-ink">Front of card</span>
+                    <span className="text-xs text-ink-soft">Tap to choose</span>
+                  </>
+                )}
               </label>
 
-              {options.enableWatermark && (
-                <div className="space-y-2 rounded-xl border border-line bg-paper-3 p-3 ">
-                  <select
-                    value={options.watermarkText}
-                    onChange={(e) => setOptions({ ...options, watermarkText: e.target.value })}
-                    className="w-full rounded-xl border border-line bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink "
-                  >
-                    {CNIC_WATERMARK_PRESETS.map((wm) => (
-                      <option key={wm} value={wm}>
-                        {wm}
-                      </option>
-                    ))}
-                  </select>
+              <label className="group flex min-h-32 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-line bg-paper-3/50 p-3 text-center transition-colors hover:border-gold focus-within:ring-2 focus-within:ring-gold focus-within:ring-offset-2 focus-within:ring-offset-paper">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (file) {
+                      setBackFile(file);
+                      setActionMessage(null);
+                    }
+                    event.target.value = '';
+                  }}
+                  className="sr-only"
+                />
+                {backPreviewUrl ? (
+                  <>
+                    <img
+                      src={backPreviewUrl}
+                      alt="Selected back side of the ID card"
+                      className="h-20 w-full rounded-lg border border-line object-contain"
+                    />
+                    <span className="mt-1 flex items-center gap-1 text-xs font-bold text-gold">
+                      <Check className="h-3 w-3" /> Back added
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mb-1 h-6 w-6 text-ink-soft group-hover:text-gold" />
+                    <span className="text-sm font-semibold text-ink">Back of card</span>
+                    <span className="text-xs text-ink-soft">Tap to choose</span>
+                  </>
+                )}
+              </label>
+            </div>
+          </section>
 
-                  <div className="flex items-center justify-between pt-1 text-[11px] text-ink-soft ">
-                    <span>Watermark opacity:</span>
+          <details className="group rounded-2xl border border-line bg-paper-2">
+            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 p-4 [&::-webkit-details-marker]:hidden">
+              <span className="flex items-center gap-2">
+                <Sliders className="h-4 w-4 text-doc" />
+                <span className="font-display text-base font-bold text-ink">Print settings</span>
+              </span>
+              <span className="flex items-center gap-2 text-xs text-ink-soft">
+                <span className="hidden truncate sm:inline">
+                  {paperLabel} · {activeLayout} · {activeFilter}
+                </span>
+                <ChevronDown className="h-4 w-4 flex-shrink-0 transition-transform group-open:rotate-180" />
+              </span>
+            </summary>
+
+            <div className="space-y-5 border-t border-line p-4">
+              <fieldset className="space-y-2">
+                <legend className="text-sm font-medium text-ink">Layout</legend>
+                <div className="grid grid-cols-2 gap-2">
+                  {LAYOUT_OPTIONS.map((layout) => (
+                    <button
+                      key={layout.id}
+                      type="button"
+                      onClick={() => setOptions({ ...options, layout: layout.id })}
+                      aria-pressed={options.layout === layout.id}
+                      className={`min-h-11 rounded-lg border px-3 text-left text-sm font-medium transition-colors ${
+                        options.layout === layout.id
+                          ? 'border-doc bg-doc-soft text-doc'
+                          : 'border-line text-ink-soft hover:border-doc/40 hover:text-ink'
+                      }`}
+                    >
+                      {layout.label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="space-y-2">
+                <legend className="text-sm font-medium text-ink">Filter</legend>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {FILTER_OPTIONS.map((filter) => (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      onClick={() => setOptions({ ...options, filter: filter.id })}
+                      aria-pressed={options.filter === filter.id}
+                      className={`min-h-11 rounded-lg border text-sm font-medium transition-colors ${
+                        options.filter === filter.id
+                          ? 'border-doc bg-doc text-white'
+                          : 'border-line text-ink-soft hover:border-doc/40 hover:text-ink'
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <label htmlFor="paper-size" className="text-sm font-medium text-ink">
+                    Paper size
+                  </label>
+                  <select
+                    id="paper-size"
+                    value={options.paperSize}
+                    onChange={(event) => setOptions({ ...options, paperSize: event.target.value as CnicPaperSize })}
+                    className="min-h-11 w-full rounded-lg border border-line bg-paper-3 px-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-gold"
+                  >
+                    <option value="a4">A4</option>
+                    <option value="letter">US Letter</option>
+                    <option value="legal">Legal</option>
+                    <option value="3r">3R photo paper</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-sm font-medium text-ink">
+                    <label htmlFor="card-scale">Card scale</label>
+                    <span className="font-mono text-sm font-bold text-doc">
+                      {Math.round(options.customScale * 100)}%
+                    </span>
+                  </div>
+                  <div className="flex min-h-11 items-center">
                     <input
+                      id="card-scale"
                       type="range"
-                      min="0.05"
-                      max="0.4"
+                      min="0.7"
+                      max="1.3"
                       step="0.05"
-                      value={options.watermarkOpacity}
-                      onChange={(e) => setOptions({ ...options, watermarkOpacity: parseFloat(e.target.value) })}
-                      className="w-24 cursor-pointer accent-gold"
+                      value={options.customScale}
+                      onChange={(event) => setOptions({ ...options, customScale: parseFloat(event.target.value) })}
+                      className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-paper-3 accent-doc"
                     />
                   </div>
                 </div>
-              )}
+              </div>
+
+              <div className="space-y-3 border-t border-line pt-4">
+                <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3">
+                  <span className="flex items-center gap-2">
+                    <Lock className="h-4 w-4 text-gold" />
+                    <span className="text-sm font-medium text-ink">Purpose watermark</span>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={options.enableWatermark}
+                    onChange={(event) => {
+                      const enabled = event.target.checked;
+                      setOptions({
+                        ...options,
+                        enableWatermark: enabled,
+                        watermarkText:
+                          enabled && !options.watermarkText ? CNIC_WATERMARK_PRESETS[0] : options.watermarkText
+                      });
+                    }}
+                    className="h-5 w-5 rounded accent-doc"
+                  />
+                </label>
+
+                {options.enableWatermark && (
+                  <div className="space-y-3 rounded-xl border border-line bg-paper-3 p-3">
+                    <select
+                      value={options.watermarkText}
+                      onChange={(event) => setOptions({ ...options, watermarkText: event.target.value })}
+                      aria-label="Watermark text"
+                      className="min-h-11 w-full rounded-lg border border-line bg-paper-2 px-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gold"
+                    >
+                      {CNIC_WATERMARK_PRESETS.map((watermark) => (
+                        <option key={watermark} value={watermark}>
+                          {watermark}
+                        </option>
+                      ))}
+                    </select>
+
+                    <div className="flex items-center justify-between gap-3 text-sm text-ink-soft">
+                      <label htmlFor="watermark-opacity">Opacity</label>
+                      <input
+                        id="watermark-opacity"
+                        type="range"
+                        min="0.05"
+                        max="0.4"
+                        step="0.05"
+                        value={options.watermarkOpacity}
+                        onChange={(event) =>
+                          setOptions({ ...options, watermarkOpacity: parseFloat(event.target.value) })
+                        }
+                        className="h-2 w-32 cursor-pointer accent-gold"
+                      />
+                    </div>
+                    <p className="text-xs leading-relaxed text-ink-soft">
+                      A visible label discourages casual reuse, but it does not prevent copying.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </details>
         </div>
 
-        {/* Live preview & actions */}
         <div className="space-y-4 lg:col-span-7">
-          <div className="space-y-4 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm">
-            <div className="flex items-center justify-between border-b border-line pb-3">
+          <section aria-labelledby="preview-title" className="rounded-2xl border border-line bg-paper-2 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
               <div className="flex items-center gap-2">
                 <Eye className="h-4 w-4 text-gold" />
-                <h3 className="font-display text-sm font-bold text-ink">Live 1:1 print sheet preview</h3>
+                <h2 id="preview-title" className="font-display text-base font-bold text-ink">
+                  {paperLabel} print preview
+                </h2>
               </div>
-              <span className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink-soft">
-                {options.paperSize} @ 150 DPI
+              <span className="rounded-full border border-line px-2.5 py-0.5 font-mono text-xs font-bold uppercase tracking-widest text-ink-soft">
+                {paperLabel} · 150 DPI
               </span>
             </div>
 
-            <div className="relative flex h-[520px] w-full items-center justify-center overflow-auto rounded-xl border border-line bg-paper-3 p-4 shadow-inner">
+            <div className="relative mt-3 flex min-h-[240px] max-h-[60vh] w-full items-center justify-center overflow-hidden rounded-lg border border-line bg-white p-2">
               {isGenerating && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 bg-paper-2/90 text-doc backdrop-blur-sm">
                   <RefreshCw className="h-8 w-8 animate-spin" />
-                  <span className="font-mono text-xs font-bold">Rendering document sheet...</span>
+                  <span className="font-mono text-xs font-bold">Rendering the sheet...</span>
                 </div>
               )}
 
               {previewDataUrl ? (
                 <img
                   src={previewDataUrl}
-                  alt="A4 CNIC print sheet"
-                  className="max-h-full rounded border border-line object-contain shadow-sm "
+                  alt={`Preview of the ${paperLabel} sheet with the front and back of the ID card`}
+                  className="max-h-[55vh] w-auto max-w-full object-contain"
                 />
               ) : (
-                <div className="space-y-3 text-center text-xs text-ink-soft">
-                  <p>Upload CNIC front & back, or click &quot;Load sample CNIC&quot; to generate the print layout.</p>
-                  <ScaleRuler segments={10} className="mx-auto justify-center text-gold" />
-                </div>
+                <p className="text-sm text-ink-soft">The print sheet will appear here.</p>
+              )}
+
+              {!hasAnyImage && (
+                <p className="pointer-events-none absolute inset-x-3 bottom-3 rounded-lg bg-paper-2/95 px-3 py-2 text-center text-xs text-ink-soft">
+                  Add the front and back, or load the sample.
+                </p>
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-2">
+            <p className="mt-2 text-xs leading-relaxed text-ink-soft">
+              Print at 100% scale, not &quot;fit to page&quot;. Check the card size with a ruler before submitting.
+            </p>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
               <button
+                type="button"
                 onClick={handlePrintDocument}
-                disabled={!previewDataUrl}
-                className="flex items-center justify-center gap-2 rounded-xl bg-doc py-3.5 text-sm font-bold text-white shadow-lg shadow-doc/25 transition-all hover:bg-doc-bright disabled:opacity-50"
+                disabled={!hasAnyImage || isGenerating}
+                className="flex min-h-12 items-center justify-center gap-2 rounded-lg bg-doc px-4 text-base font-semibold text-white transition-colors hover:bg-doc-bright disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Printer className="h-4 w-4" />
-                Print now
+                Print
               </button>
 
               <button
+                type="button"
                 onClick={handleDownloadPdf}
-                disabled={!previewDataUrl || isGenerating}
-                className="flex items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-bold text-ink shadow-lg shadow-gold/25 transition-all hover:opacity-90 disabled:opacity-50"
+                disabled={!hasAnyImage || isGenerating}
+                className="flex min-h-12 items-center justify-center gap-2 rounded-lg bg-gold px-4 text-base font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <FileDown className="h-4 w-4" />
-                Download PDF{options.layout === 'pakistani-style' ? ' (2 pages)' : ''}
+                Download PDF
               </button>
 
               <button
+                type="button"
                 onClick={handleDownloadSheet}
-                disabled={!previewDataUrl}
-                className="col-span-2 flex items-center justify-center gap-2 rounded-xl border border-line bg-paper-3 py-3 text-sm font-bold text-ink transition-all hover:bg-line disabled:opacity-50"
+                disabled={!hasAnyImage || isGenerating}
+                className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-lg border border-line bg-paper-2 px-4 text-base font-semibold text-ink transition-colors hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <Download className="h-4 w-4 text-doc-bright" />
+                <Download className="h-4 w-4 text-doc" />
                 Download PNG
               </button>
             </div>
 
             {options.layout === 'pakistani-style' && (
-              <p className="pt-2 text-center font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft">
-                PDF prints 2 pages: original sheet + one duplicate
+              <p className="mt-2 text-center text-xs text-ink-soft">The PDF has two pages: the sheet and a duplicate.</p>
+            )}
+
+            {actionMessage && (
+              <p role="alert" className="mt-3 rounded-lg border border-stamp/30 bg-stamp/5 px-3 py-2 text-sm text-stamp">
+                {actionMessage}
               </p>
             )}
-          </div>
+          </section>
         </div>
       </div>
 
-      <AdBanner width={ADS.mediumRectangle.width} height={ADS.mediumRectangle.height} adKey={ADS.mediumRectangle.key} />
+      <ResponsiveAd />
+
+      <section aria-labelledby="cnic-how-title" className="space-y-4 border-t border-line pt-8">
+        <h2 id="cnic-how-title" className="font-display text-2xl font-bold tracking-tight text-ink">
+          How to print CNIC front and back
+        </h2>
+        <ol className="grid gap-3 sm:grid-cols-2">
+          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-ink">1. Add both sides.</strong> Upload a photo or scan of the front and back, or
+            load the sample.
+          </li>
+          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-ink">2. Choose the layout.</strong> Keep the centered stacked layout for a simple
+            front-and-back sheet, or pick another layout.
+          </li>
+          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-ink">3. Check the preview.</strong> Select A4, keep the scale at 100%, and add a
+            purpose watermark if you need one.
+          </li>
+          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-ink">4. Print or save.</strong> Use Print at 100% scale, or download a PDF or PNG
+            and print from your device.
+          </li>
+        </ol>
+        <p className="text-sm leading-relaxed text-ink-soft">
+          Zaibi Tools is not affiliated with NADRA. Use a copy only with lawful authority.
+        </p>
+        <p className="text-sm leading-relaxed text-ink-soft">
+          Need to shrink a photo first?{' '}
+          <Link href="/image-opt" className="font-semibold text-doc underline underline-offset-2 hover:text-doc-bright">
+            Open the image compressor
+          </Link>
+          .
+        </p>
+      </section>
     </div>
   );
 }
