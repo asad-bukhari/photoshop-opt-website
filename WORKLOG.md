@@ -39,7 +39,7 @@ Not tested:
 - Cloudflare/OpenNext preview and deploy.
 
 Docs updated:
-- `AGENTS.md`, `CLAUDE.md`, `README.md`, `WORKLOG.md`.
+- `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md`, `WORKLOG.md`.
 
 Commit/PR:
 - Commit: `8d6f439` — `feat: switch to a light-only theme`.
