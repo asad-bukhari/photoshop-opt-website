@@ -48,8 +48,8 @@ Docs updated:
 - `README.md`, `IMPROVE.md`, `WORKLOG.md`.
 
 Commit/PR:
-- Commit message: `feat: make the CNIC tool mobile-first`.
-- PR: pending (opened after push; link added in the follow-up docs commit).
+- Commit: `c6d78cb` — `feat: make the CNIC tool mobile-first`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/6. Do not merge without approval.
 
 Follow-ups:
 - Branch 5: replace the CNIC page title/description (still "anti-fraud"), add the full long-tail content, and decide whether to change the engine footer string.

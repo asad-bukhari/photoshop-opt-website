@@ -51,6 +51,6 @@ Move completed items here with the date and commit.
 - [x] **I-04 (2026-10-29)** Removed AVIF from the export UI, so the tool no longer downloads WebP bytes with an `.avif` name. The engine fallback is unchanged and unreachable from the UI. Commit `72feb3e`, PR #4.
 - [x] **I-11 (2026-10-29)** Removed the unused "Strip EXIF" and "Lossless quantization" controls. The UI now states that re-encoding removes EXIF automatically. Commit `72feb3e`, PR #4.
 - [x] **I-19 (2026-10-29)** Removed the "max 25MB" claim; the UI states that there is no enforced file-size limit. Commit `72feb3e`, PR #4.
-- [x] **I-03 (2026-10-29)** Corrected the copy to 150 DPI and about 85 x 53 mm; the engine and 500x315 px card frames are unchanged. Branch `feature/mobile-first-cnic-tool`.
-- [x] **I-06 (2026-10-29)** Removed the automatic boundary-alignment and aspect-lock claims. The UI now says the photo is fitted into a fixed card frame and is not straightened or cropped. Branch `feature/mobile-first-cnic-tool`.
-- [x] **I-16 (2026-10-29)** Removed the sticky mobile ad and reduced each page to one responsive ad unit (mobile 300x250, desktop 728x90). Branch `feature/mobile-first-cnic-tool`.
+- [x] **I-03 (2026-10-29)** Corrected the copy to 150 DPI and about 85 x 53 mm; the engine and 500x315 px card frames are unchanged. Commit `c6d78cb`, PR #6.
+- [x] **I-06 (2026-10-29)** Removed the automatic boundary-alignment and aspect-lock claims. The UI now says the photo is fitted into a fixed card frame and is not straightened or cropped. Commit `c6d78cb`, PR #6.
+- [x] **I-16 (2026-10-29)** Removed the sticky mobile ad and reduced each page to one responsive ad unit (mobile 300x250, desktop 728x90). Commit `c6d78cb`, PR #6.
