@@ -33,7 +33,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
             <ul className="mt-2">
               <li>
                 <Link
-                  href="/image-opt"
+                  href="/image-compressor"
                   className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
                 >
                   <Image className="h-4 w-4 text-doc" />
@@ -42,7 +42,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href="/cnic-opt"
+                  href="/cnic-photocopy"
                   className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
                 >
                   <Printer className="h-4 w-4 text-doc" />
@@ -63,6 +63,22 @@ export function Footer({ onOpenSecurity }: FooterProps) {
                   <ShieldCheck className="h-4 w-4 text-doc" />
                   How we handle files
                 </button>
+              </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="flex min-h-11 items-center text-sm text-ink-soft transition-colors hover:text-doc"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="flex min-h-11 items-center text-sm text-ink-soft transition-colors hover:text-doc"
+                >
+                  Terms of Use
+                </Link>
               </li>
             </ul>
           </div>

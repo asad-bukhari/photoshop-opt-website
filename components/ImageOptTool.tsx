@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React, { useState } from 'react';
 import {
   ArrowRight,
@@ -495,35 +494,6 @@ export function ImageOptTool() {
       </div>
 
       <ResponsiveAd />
-
-      <section aria-labelledby="image-how-title" className="space-y-4 border-t border-line pt-8">
-        <h2 id="image-how-title" className="font-display text-2xl font-bold tracking-tight text-ink">
-          How to compress an image
-        </h2>
-        <ol className="grid gap-3 sm:grid-cols-2">
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">1. Choose the output.</strong> Pick JPG, WebP or PNG and enter the target size
-            in KB.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">2. Add your images.</strong> Select one or more files, or load the demo image.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">3. Compress.</strong> The browser lowers quality and, if needed, resolution to
-            approach the target.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">4. Download.</strong> Check the comparison, then download each result.
-          </li>
-        </ol>
-        <p className="text-sm leading-relaxed text-ink-soft">
-          Need to print an ID card?{' '}
-          <Link href="/cnic-opt" className="font-semibold text-doc underline underline-offset-2 hover:text-doc-bright">
-            Open the CNIC photocopy tool
-          </Link>
-          .
-        </p>
-      </section>
     </div>
   );
 }

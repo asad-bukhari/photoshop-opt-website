@@ -16,13 +16,13 @@ export default function NotFound() {
           Go to home
         </Link>
         <Link
-          href="/image-opt"
+          href="/image-compressor"
           className="inline-flex min-h-11 items-center justify-center rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
         >
           Image Compressor
         </Link>
         <Link
-          href="/cnic-opt"
+          href="/cnic-photocopy"
           className="inline-flex min-h-11 items-center justify-center rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
         >
           CNIC Photocopy

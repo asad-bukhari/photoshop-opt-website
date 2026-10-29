@@ -4,6 +4,71 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — SEO routes and content (redesign step 5)
+
+Status: TESTED
+Branch: `feature/seo-pages-and-content` (stacked on `feature/mobile-first-cnic-tool`, PR #6)
+
+Goal:
+- Rename the tool URLs to `/image-compressor` and `/cnic-photocopy`, keep the old URLs working with `301`, and align titles, descriptions, canonicals, sitemap and internal links.
+- Add the long-tail content, FAQs and legal pages from the approved redesign plan without claiming anything the tools cannot do.
+
+Plan:
+- Rename the route folders and add `301` redirects in `next.config.ts`.
+- Update Header, Footer, home, tool and 404 links.
+- Add long-tail content components for both tools, with one H1 per page and truthful copy.
+- Add `/privacy`, `/terms` and `app/sitemap.ts`; link the legal pages from the footer.
+- Update the root metadata, README, CLAUDE, AGENTS, IMPROVE and this log.
+- Check typecheck, build, dev routes, redirects, sitemap, canonicals, copy and preview.
+
+What changed:
+- `app/image-opt` → `app/image-compressor`; `app/cnic-opt` → `app/cnic-photocopy`.
+- `next.config.ts`: `301` redirects for both old slugs. Next normalizes a trailing slash with its own `308` before the `301`.
+- `app/layout.tsx` and `app/page.tsx`: new home title, description, Open Graph copy; removed "Proprietary" and the suite language.
+- Tool page metadata: `Image Compressor to 20KB, 50KB or 100KB` and `Print CNIC Front and Back on One A4 Page`, with new descriptions, canonicals and `og:url`.
+- Added `components/ContentSheet.tsx`, `ImageOptContent.tsx`, `CnicOptContent.tsx`, `LegalPage.tsx`.
+- Moved the 4-step how-tos out of the client tool components and into the server content components, then added the long-tail H2/H3 sections and FAQ lists.
+- Added 12 image FAQs and 13 CNIC FAQs to `lib/data/initialData.ts`; removed the unused `REPO_INFO` block that repeated stale claims.
+- Added `/privacy` and `/terms` (light layout); the footer now links to both. Contact details are omitted until the owner confirms a mailbox (I-14).
+- Added `app/sitemap.ts` with fixed `lastModified` dates and the new routes.
+- Updated `Header.tsx`, `Footer.tsx`, `HomeHub.tsx`, `not-found.tsx` and both tool components to the new slugs.
+- Added a "Popular tasks" section on the home page linking to `#compress-jpg`, `#convert-formats`, `#how-to-print-cnic` and `#cnic-pdf` with `scroll-mt-24`.
+- Updated `README.md`, `CLAUDE.md`, `AGENTS.md` and `IMPROVE.md` (I-05, I-07, I-20, I-28; new I-30).
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 15.5.25; `/` 107 kB, `/image-compressor` 114 kB, `/cnic-photocopy` 117 kB, `/privacy` and `/terms` 103 kB first load.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/privacy` 200, `/terms` 200, `/api/health` 200, unknown route 404. The dev log had no errors.
+- Redirects in dev — PASS: `/image-opt`, `/image-opt/`, `/cnic-opt` and `/cnic-opt/` all end at the new route with 200 after following; the first hop is `301` (trailing slash first gets Next's `308`).
+- Sitemap in dev — PASS: `/sitemap.xml` 200 with `/`, `/image-compressor`, `/cnic-photocopy`, `/privacy`, `/terms` and a fixed `2026-10-29` date.
+- Rendered HTML audit — PASS: one H1 per page; titles, descriptions and canonicals match the plan; no `class="dark"`, "up to 80%", "without quality loss", "anti-fraud", "Proprietary", "HEIC", "300 DPI" or "Official Use Only" in the visible copy; no old-slug links; home popular-task anchors exist on the target pages.
+- `npm run preview` — FAIL. The script stops with `Next.js version 15.5.25 is not supported by the Next.js team.` This is a pre-existing version check, now recorded as I-30.
+- OpenNext + Wrangler workaround — PASS. `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion` succeeded and `wrangler dev` served `/`, both tools, `/privacy`, `/terms`, `/api/health` and `/sitemap.xml` with 200; the old slugs returned `301` and resolved to the new routes (trailing slash: `308` then `301`).
+- `git diff --check` — PASS.
+- Manual browser checks (375 px, 1280 px, tool flows, print/PDF/PNG, ads, keyboard) — NOT RUN. No browser is installed.
+- Lighthouse — NOT RUN. Chrome/Lighthouse are not installed.
+- Rich Results / schema validation — NOT RUN. JSON-LD is branch 6.
+
+Not tested:
+- Visual layout, tap targets, print output, PDF/PNG export, ad rendering and real-device behaviour.
+- Search Console reindexing and the real-world redirect status in production.
+- Legal wording and the missing contact channel need the owner's approval.
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit and PR pending. Do not merge without approval.
+
+Follow-ups:
+- Branch 6: `robots.ts`, Open Graph images, JSON-LD, Twitter metadata, sitemap/robots verification.
+- Owner decisions: approve the legal text and route rename, and confirm whether a contact email exists (I-14).
+- I-30: upgrade Next.js or add `--dangerouslyUseUnsupportedNextVersion` to the OpenNext scripts; `npm run preview` and the normal deploy path currently fail.
+- The generated CNIC sheet footer still reads `Prepared with cnic-copy-print-opt | Proprietary tool by Asad Bukhari` because the engine was not edited. This needs an owner decision.
+- Rebase this branch onto `main` after PR #6 merges.
+
+---
+
 ## 2026-10-29 — Mobile-first CNIC tool (redesign step 4)
 
 Status: TESTED
@@ -878,7 +943,7 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 | Item | Value |
 | --- | --- |
 | App package | `optipack-portal` v3.0.0 |
-| Tool labels | Image Optimizer v3.0; CNIC Print Suite v3.5 |
+| Tool labels | Image Compressor; CNIC Photocopy |
 | Next.js | `^15.3.3` (App Router) |
 | React | `^19.1.0` |
 | Tailwind CSS | `^4.1.14` |
@@ -892,12 +957,15 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Landing page with tool cards and FAQ |
-| `/image-opt` | Batch image optimizer |
-| `/cnic-opt` | CNIC / ID print suite |
+| `/` | Landing page with tool cards, popular tasks and FAQ |
+| `/image-compressor` | Image compressor and long-tail content |
+| `/cnic-photocopy` | CNIC photocopy tool and long-tail content |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms of use |
+| `/sitemap.xml` | Sitemap |
 | `/api/health` | Health check (`GET`) |
 
-`app/error.tsx` and `app/not-found.tsx` are error/404 boundaries. On `main` there is no `/privacy`, `/terms`, sitemap, robots, or Open Graph image route. See `IMPROVE.md`.
+`/image-opt` and `/cnic-opt` return `301` to the new slugs. `app/error.tsx` and `app/not-found.tsx` are error/404 boundaries. There is still no `/robots.txt` or Open Graph image route; see `IMPROVE.md`.
 
 ### Hosting and analytics
 
@@ -910,15 +978,16 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 ### Ads
 
 - Network: Adsterra via `lib/data/ads.ts`.
-- Units: 300x250 medium rectangle, 728x90 leaderboard, 320x50 mobile banner.
+- Units: 300x250 medium rectangle and 728x90 leaderboard, selected responsively.
 - Each unit renders in an isolated `srcDoc` iframe with no `sandbox` attribute.
-- Ad density on `main`: home has four units (two responsive, one 300x250, plus sticky mobile); each tool page has three (responsive, 300x250, plus sticky mobile). See `IMPROVE.md`.
+- Ad density: one responsive unit per page, placed after the tool result and before the long-tail content. The sticky mobile bar was removed.
 
 ### Verification status
 
 - No test framework or automated test suite.
 - Available checks: `npm run typecheck` / `npm run lint` (same command), `npm run build`, `npm run preview`, and manual browser checks.
 - No deployment has been verified in this log yet.
+- `npm run preview` currently fails when OpenNext checks the Next.js version; see I-30 in `IMPROVE.md`.
 - The repository currently tracks 89 `.open-next` build-output files. See `IMPROVE.md`.
 
 ---

@@ -6,7 +6,7 @@ import { FAQ_ITEMS } from '@/lib/data/initialData';
 
 const TOOLS = [
   {
-    href: '/image-opt',
+    href: '/image-compressor',
     label: 'Image compressor',
     title: 'Compress images to 20KB, 50KB or 100KB',
     description:
@@ -16,7 +16,7 @@ const TOOLS = [
     action: 'Open image compressor'
   },
   {
-    href: '/cnic-opt',
+    href: '/cnic-photocopy',
     label: 'CNIC photocopy',
     title: 'Print CNIC front and back on one A4 page',
     description:
@@ -25,6 +25,15 @@ const TOOLS = [
     icon: Printer,
     action: 'Open CNIC photocopy'
   }
+] as const;
+
+const POPULAR_TASKS = [
+  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 20KB' },
+  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 50KB' },
+  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 100KB' },
+  { href: '/cnic-photocopy#how-to-print-cnic', label: 'Print CNIC front and back on A4' },
+  { href: '/cnic-photocopy#cnic-pdf', label: 'Make a CNIC photocopy PDF' },
+  { href: '/image-compressor#convert-formats', label: 'Convert PNG to WebP' }
 ] as const;
 
 const STEPS = [
@@ -53,14 +62,14 @@ export function HomeHub() {
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Link
-            href="/image-opt"
+            href="/image-compressor"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-5 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
           >
             Open image compressor
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            href="/cnic-opt"
+            href="/cnic-photocopy"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
           >
             Open CNIC photocopy
@@ -109,6 +118,25 @@ export function HomeHub() {
             );
           })}
         </div>
+      </section>
+
+      <section aria-labelledby="tasks-title" className="space-y-4">
+        <h2 id="tasks-title" className="font-display text-2xl font-bold tracking-tight text-ink">
+          Popular tasks
+        </h2>
+        <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {POPULAR_TASKS.map((task) => (
+            <li key={`${task.href}-${task.label}`}>
+              <Link
+                href={task.href}
+                className="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-line bg-paper-2 px-4 py-3 text-sm font-medium text-ink transition-colors hover:border-doc/40 hover:text-doc"
+              >
+                {task.label}
+                <ArrowRight className="h-4 w-4 flex-shrink-0 text-doc" />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <ResponsiveAd />

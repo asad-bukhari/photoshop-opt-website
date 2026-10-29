@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  async redirects() {
+    return [
+      { source: "/image-opt", destination: "/image-compressor", statusCode: 301 },
+      { source: "/cnic-opt", destination: "/cnic-photocopy", statusCode: 301 },
+    ];
+  },
   async headers() {
     return [
       {
