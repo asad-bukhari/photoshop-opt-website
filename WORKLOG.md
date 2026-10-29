@@ -33,6 +33,8 @@ Tests run:
 - Built HTML audit on `/image-opt` — PASS: exactly one H1; 0 "img-opt core engine", "EXIF Stripped", "Strip EXIF", "Lossless quantization", "HEIC", or "25MB"; format buttons are JPG, WebP, PNG only.
 - Metadata still contains "up to 80%" and AVIF until branch 5; that is outside this UI branch.
 - Source audit — PASS: no `stripExif`/`lossless` references remain.
+- `npm run dev` — PASS. `/` 200, `/image-opt` 200, `/cnic-opt` 200, `/api/health` 200, unknown route 404. Dev log had no errors.
+- Dev HTML audit — PASS: `/` has no `class="dark"`; `/image-opt` has the new H1, "Add images", "Optimization settings", and "How to compress an image", with 0 hits for "img-opt core engine", "Strip EXIF", "Lossless quantization", "HEIC", or "25MB".
 - `git diff --check` — PASS.
 - `npm run preview` — NOT RUN (no routing/config change; branch 5).
 - Manual image flow (drop/picker, demo, 20/50/100 KB, presets, slider, download, reset, error path) — NOT RUN. No browser.
