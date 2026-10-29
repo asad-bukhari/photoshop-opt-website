@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, Archivo, IBM_Plex_Mono } from 'next/font/google';
 import { SiteShell } from '@/components/SiteShell';
 import './globals.css';
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: '%s | Zaibi Tools'
   },
   description:
-    'Proprietary browser-only suite for batch image optimization  and CNIC / ID document copy & print layout alignment . Files never leave your device.',
+    'Proprietary browser-only suite for batch image optimization and CNIC / ID document copy & print layout alignment. Files never leave your device.',
   robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
@@ -39,9 +39,16 @@ export const metadata: Metadata = {
   }
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#f7f5ef',
+  colorScheme: 'light'
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
         <script
           async

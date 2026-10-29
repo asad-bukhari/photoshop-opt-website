@@ -33,7 +33,7 @@ There is no test suite. Use `typecheck`, `build`, `preview`, and the manual chec
 - **jsPDF:** loaded at runtime from cdnjs in `components/CnicOptTool.tsx`; PDF export needs network access.
 - **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
 - **GA4:** `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`.
-- **Dark mode:** class-based and on by default (`<html className="dark">`). Use tokens from `app/globals.css`, not raw hex.
+- **Light-only theme:** no `dark:` variants, no theme switch, no stored preference. Use tokens from `app/globals.css`, not raw hex.
 - **Build output:** `.open-next/` is currently tracked; do not add more build output. See `IMPROVE.md` I-17.
 
 ## Deployment

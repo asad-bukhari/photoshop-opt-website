@@ -42,7 +42,6 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 - [ ] **I-24 — Stop hard-coding the health version.** `app/api/health/route.ts:8` returns `3.0.0`; read the package version or expose a build identifier.
 - [ ] **I-25 — Document the HSTS header.** `README.md:132` lists four security headers; `next.config.ts:19` also sets `Strict-Transport-Security`. Add it to the README.
-- [ ] **I-26 — Remove the light-mode flash.** `<html className="dark">` plus the `useEffect` in `components/ThemeToggle.tsx:9-14` means a stored light preference can flash dark before hydration. Apply the saved class before paint.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
 - [ ] **I-28 — Back up the "up to 80%" claim.** The number appears in metadata and FAQ copy but there is no benchmark or test. Add measured examples or soften the claim.
 - [ ] **I-29 — Add a minimal automated smoke suite.** There is no test framework. A small Playwright or Vitest smoke test could cover the two tool flows and `/api/health`. **DECISION:** approve a test dependency and runtime budget.
@@ -54,3 +53,4 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 Move completed items here with the date and commit.
 
 - [x] **I-00 (2026-10-29)** Confirmed the repository targets Cloudflare Workers via OpenNext, not Pages; no Pages configuration was found.
+- [x] **I-26 (2026-10-29)** Removed the dark mode and theme switch entirely; the site is light-only with `color-scheme: light`, so there is no stored-preference flash. Commit `8d6f439`, PR #2.

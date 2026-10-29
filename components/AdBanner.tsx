@@ -35,12 +35,12 @@ export function AdBanner({
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       {showLabel && (
-        <span className="mb-1 font-mono text-[9px] uppercase tracking-widest text-ink-soft/60 dark:text-rule/60">
+        <span className="mb-1 font-mono text-[9px] uppercase tracking-widest text-ink-soft/60 ">
           Advertisement
         </span>
       )}
       <div
-        className="overflow-hidden rounded-lg border border-line bg-paper-2 dark:border-rule dark:bg-ink-2"
+        className="overflow-hidden rounded-lg border border-line bg-paper-2 "
         style={{ width, height, maxWidth: '100%' }}
       >
         <iframe
