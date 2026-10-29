@@ -20,10 +20,16 @@ export function ResponsiveAd({ className, lazy }: ResponsiveAdProps) {
     return () => mq.removeEventListener('change', update);
   }, []);
 
+  const frameClass = `flex min-h-[286px] w-full items-center justify-center md:min-h-[126px] ${className ?? ''}`;
+
   if (isDesktop === null) {
-    return <div className="h-[250px] w-full md:h-[90px]" aria-hidden />;
+    return <div className={frameClass} aria-hidden />;
   }
 
   const ad = isDesktop ? ADS.leaderboard : ADS.mediumRectangle;
-  return <AdBanner width={ad.width} height={ad.height} adKey={ad.key} className={className} lazy={lazy} />;
+  return (
+    <div className={frameClass}>
+      <AdBanner width={ad.width} height={ad.height} adKey={ad.key} lazy={lazy} />
+    </div>
+  );
 }

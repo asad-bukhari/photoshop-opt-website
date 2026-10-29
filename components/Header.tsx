@@ -2,14 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Fragment } from 'react';
-import { Home, Image, Printer, Lock } from 'lucide-react';
-import { ScaleRuler } from './CornerMarks';
+import { useEffect, useRef, useState } from 'react';
+import { Menu, ShieldCheck, X } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Overview', mono: 'HOME', icon: Home },
-  { href: '/image-opt', label: 'image-optimation', mono: 'IMAGE-OPT', icon: Image },
-  { href: '/cnic-opt', label: 'cnic-copy-print-opt', mono: 'CNIC-PRINT', icon: Printer }
+  { href: '/', label: 'Home' },
+  { href: '/image-opt', label: 'Image Compressor' },
+  { href: '/cnic-opt', label: 'CNIC Photocopy' }
 ] as const;
 
 interface HeaderProps {
@@ -18,96 +17,121 @@ interface HeaderProps {
 
 export function Header({ onOpenSecurity }: HeaderProps) {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-line  bg-paper/95  backdrop-blur-md transition-colors duration-200">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        {/* Brand */}
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-doc font-display text-base font-black text-white shadow-sm transition-colors group-hover:bg-doc-bright">
-            P
-          </div>
-          <div className="hidden sm:block">
-            <div className="flex items-center gap-2">
-              <span className="font-display text-base font-bold tracking-tight text-ink ">
-                Zaibi Tools
-              </span>
-              <span className="rounded border border-gold/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-gold">
-                Proprietary
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-ink-soft ">
-              <ScaleRuler segments={6} className="text-gold" />
-              <span>Image & CNIC Optimization Suite</span>
-            </div>
-          </div>
+    <header className="sticky top-0 z-40 border-b border-line bg-paper-2/95 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6 lg:px-8">
+        <Link href="/" className="flex min-h-11 items-center gap-2.5" aria-label="Zaibi Tools home">
+          <span
+            aria-hidden
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-doc font-display text-base font-black text-white"
+          >
+            Z
+          </span>
+          <span className="font-display text-base font-bold tracking-tight text-ink">Zaibi Tools</span>
         </Link>
 
-        {/* Primary nav — job sheet index */}
-        <nav className="hidden items-center lg:flex" aria-label="Primary">
-          {NAV_ITEMS.map((item, i) => {
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+          {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             return (
-              <Fragment key={item.href}>
-                {i > 0 && <span className="h-4 w-px bg-line " />}
-                <Link
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                  className={`relative px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-widest transition-colors ${
-                    active
-                      ? 'text-doc '
-                      : 'text-ink-soft  hover:text-ink '
-                  }`}
-                >
-                  {item.mono}
-                  {active && <span className="absolute inset-x-4 -bottom-px h-0.5 bg-gold" />}
-                </Link>
-              </Fragment>
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium transition-colors ${
+                  active ? 'bg-doc-soft text-doc' : 'text-ink-soft hover:bg-paper-3 hover:text-ink'
+                }`}
+              >
+                {item.label}
+              </Link>
             );
           })}
         </nav>
 
-        {/* Right controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-doc   md:flex">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-doc opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-doc" />
-            </span>
-            All Systems Active
-          </div>
-
+        <div className="flex items-center gap-1">
           <button
             onClick={onOpenSecurity}
-            className="rounded-lg p-2 text-ink-soft transition-colors hover:bg-paper-3 hover:text-ink "
-            title="Privacy & security protocols"
-            aria-label="View privacy and security protocols"
+            className="hidden min-h-11 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-ink-soft transition-colors hover:bg-paper-3 hover:text-ink lg:flex"
           >
-            <Lock className="h-4 w-4" />
+            <ShieldCheck className="h-4 w-4" />
+            How we handle files
+          </button>
+          <button
+            ref={menuButtonRef}
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-ink transition-colors hover:bg-paper-3 lg:hidden"
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile sub-nav */}
-      <nav className="flex items-center justify-around border-t border-line bg-paper-2/80 px-2 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-widest   lg:hidden" aria-label="Primary mobile">
-        {NAV_ITEMS.map((item) => {
-          const active = isActive(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={active ? 'page' : undefined}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 ${
-                active ? 'text-doc ' : 'text-ink-soft '
-              }`}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.mono.split('-')[0]}
-            </Link>
-          );
-        })}
-      </nav>
+      <div
+        id="mobile-menu"
+        className={`absolute inset-x-0 top-full border-b border-line bg-paper-2 shadow-sm lg:hidden ${
+          menuOpen ? 'block' : 'hidden'
+        }`}
+      >
+        <nav className="mx-auto max-w-6xl px-3 py-2" aria-label="Mobile">
+          <ul className="space-y-1">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex min-h-11 items-center rounded-lg px-3 text-base font-medium ${
+                      active ? 'bg-doc-soft text-doc' : 'text-ink hover:bg-paper-3'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+            <li>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenSecurity();
+                }}
+                className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-base font-medium text-ink hover:bg-paper-3"
+              >
+                <ShieldCheck className="h-4 w-4 text-doc" />
+                How we handle files
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }
