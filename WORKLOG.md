@@ -42,8 +42,8 @@ Docs updated:
 - `AGENTS.md`, `CLAUDE.md`, `README.md`, `WORKLOG.md`.
 
 Commit/PR:
-- Commit message: `feat: switch to a light-only theme`.
-- PR: pending (opened after push; link added in the follow-up docs commit).
+- Commit: `8d6f439` — `feat: switch to a light-only theme`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/2. Do not merge without approval.
 
 Follow-ups:
 - Branch 2: mobile-first header/footer/home/shell and ad placement.
