@@ -65,7 +65,7 @@ npm run deploy
 
 Run this for tool, UI, ad, metadata, or config changes:
 
-- [ ] Light mode and dark mode both look correct.
+- [ ] Light mode looks correct and the OS dark-mode setting does not change the site.
 - [ ] Mobile (about 375 px wide) and desktop both work.
 - [ ] Ads render in their isolated iframes, labeled, without breaking layout.
 - [ ] Image tool: drag/drop and file picker, demo sample, JPEG/WebP/PNG/AVIF, target size, preset, compare slider, download, reset.
@@ -96,7 +96,7 @@ After **every** task, in the same commit:
 
 - Server Components by default. Add `'use client'` only for state, effects, refs, or browser APIs.
 - Use design tokens from `app/globals.css` (`ink`, `paper`, `doc`, `gold`, `stamp`, `rule`, `line`). No raw hex in components.
-- Dark mode is class-based and on by default. Keep the `.dark` variant working.
+- Light-only. Do not add `dark:` variants or a theme switch.
 - Use `lucide-react` icons only.
 - Do not add code comments unless the owner asks.
 - Keep components functional and typed. Prefer types from `lib/types.ts`.
@@ -114,7 +114,7 @@ After **every** task, in the same commit:
 - **jsPDF:** loaded at runtime from cdnjs in `CnicOptTool.tsx`. PDF export needs network access. Do not bundle it without approval.
 - **GA tag:** GA4 `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`, not a Next.js analytics package.
 - **Output mode:** `next.config.ts` uses `output: "standalone"` because OpenNext needs it.
-- **Dark mode default:** `<html className="dark">` and `ThemeToggle` default to dark.
+- **Light-only theme:** `<html lang="en">` with `color-scheme: light`; there is no theme switch or stored theme preference.
 - **No new third-party scripts:** do not add analytics, ads, fonts, or CDN scripts without owner approval.
 
 ## Safety rules

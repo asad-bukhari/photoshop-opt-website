@@ -1,35 +1,39 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@source not "../*.md";
+@source not "../.next";
+@source not "../.open-next";
 
 @theme {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Ink table / dark surfaces */
-  --color-ink: #0b0e13;
-  --color-ink-2: #10141b;
-  --color-ink-3: #161b24;
-  --color-ink-4: #1d2330;
-  --color-rule: #262c36;
-  --color-rule-2: #1a1f28;
-
   /* Paper / light surfaces */
-  --color-paper: #f5f3ee;
-  --color-paper-2: #fbf9f4;
-  --color-paper-3: #ece7db;
-  --color-line: #ddd7c9;
-  --color-ink-soft: #4a4f5a;
+  --color-paper: #f7f5ef;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #f1ece2;
+  --color-line: #e3ded3;
+  --color-rule: #d8d2c6;
+
+  /* Text */
+  --color-ink: #0f172a;
+  --color-ink-soft: #475569;
 
   /* Document accents */
-  --color-doc: #0c6b4f;
-  --color-doc-bright: #1b9a72;
-  --color-gold: #c89b3c;
-  --color-stamp: #c0432f;
+  --color-doc: #0b6b4f;
+  --color-doc-bright: #0f766e;
+  --color-doc-soft: #e8f3ee;
+  --color-gold: #8a6400;
+  --color-gold-soft: #f6ecd8;
+  --color-stamp: #b91c1c;
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
@@ -39,17 +43,13 @@
     @apply bg-paper text-ink antialiased font-sans;
   }
 
-  .dark body {
-    @apply bg-ink text-paper;
-  }
-
   ::selection {
-    background: var(--color-gold);
+    background: var(--color-gold-soft);
     color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 3px solid var(--color-gold);
     outline-offset: 2px;
   }
 

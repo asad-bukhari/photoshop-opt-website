@@ -145,7 +145,7 @@ export function ImageOptTool() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Job sheet header */}
-      <section className="relative overflow-hidden rounded-2xl border border-rule bg-ink-2 p-6 text-paper shadow-2xl md:p-8">
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-paper-2 p-6 text-ink shadow-sm md:p-8">
         <CornerMarks className="text-gold" />
         <div className="absolute -right-5 top-1/2 hidden -translate-y-1/2 rotate-[-8deg] rounded border-2 border-stamp/40 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-stamp/70 lg:block">
           EXIF Stripped
@@ -154,22 +154,22 @@ export function ImageOptTool() {
         <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-2xl space-y-2">
             <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest">
-              <span className="flex items-center gap-1 rounded border border-doc/40 bg-ink-3 px-2 py-1 font-bold text-doc-bright">
+              <span className="flex items-center gap-1 rounded border border-doc/40 bg-paper-3 px-2 py-1 font-bold text-doc-bright">
                 <Zap className="h-3.5 w-3.5 text-gold" />
                 img-opt core engine
               </span>
-              <span className="text-rule">{REPO_INFO.imageOpt.version}</span>
+              <span className="text-ink-soft">{REPO_INFO.imageOpt.version}</span>
             </div>
             <h1 className="font-display text-2xl font-black tracking-tight md:text-3xl">
               Batch image optimization & WebP/AVIF conversion
             </h1>
-            <p className="text-sm leading-relaxed text-paper/70">
+            <p className="text-sm leading-relaxed text-ink-soft">
               Compress JPEG, PNG, WebP & AVIF images by up to 80% directly in your browser. Strip sensitive EXIF
               location metadata and convert to responsive social presets.
             </p>
           </div>
 
-          <div className="flex flex-shrink-0 items-center gap-2 rounded-lg border border-rule bg-ink-3 px-3 py-2 font-mono text-[10px] font-medium text-paper/80">
+          <div className="flex flex-shrink-0 items-center gap-2 rounded-lg border border-line bg-paper-3 px-3 py-2 font-mono text-[10px] font-medium text-ink-soft">
             <ShieldCheck className="h-4 w-4 text-doc-bright" />
             <span>{REPO_INFO.imageOpt.fullName}</span>
           </div>
@@ -181,26 +181,26 @@ export function ImageOptTool() {
       {/* Main grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Controls */}
-        <aside className="space-y-5 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm transition-colors dark:border-rule dark:bg-ink-2 dark:shadow-xl lg:col-span-4">
-          <div className="flex items-center justify-between border-b border-line pb-4 dark:border-rule">
+        <aside className="space-y-5 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm transition-colors    lg:col-span-4">
+          <div className="flex items-center justify-between border-b border-line pb-4 ">
             <div className="flex items-center gap-2">
-              <Sliders className="h-4 w-4 text-doc dark:text-doc-bright" />
-              <h3 className="font-display text-sm font-bold text-ink dark:text-paper">Optimization settings</h3>
+              <Sliders className="h-4 w-4 text-doc " />
+              <h3 className="font-display text-sm font-bold text-ink ">Optimization settings</h3>
             </div>
             <button
               onClick={handleReset}
               disabled={isProcessing}
-              className="font-mono text-[10px] uppercase tracking-widest text-ink-soft transition-colors hover:text-doc disabled:cursor-not-allowed disabled:opacity-50 dark:text-rule dark:hover:text-doc-bright"
+              className="font-mono text-[10px] uppercase tracking-widest text-ink-soft transition-colors hover:text-doc disabled:cursor-not-allowed disabled:opacity-50 "
             >
               Reset
             </button>
           </div>
 
           <div className="space-y-2">
-            <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft dark:text-rule">
+            <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
               Target output format
             </label>
-            <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-line bg-paper-3 p-1 dark:border-rule dark:bg-ink-3">
+            <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-line bg-paper-3 p-1 ">
               {(['jpeg', 'webp', 'png', 'avif'] as ImageFormat[]).map((fmt) => (
                 <button
                   key={fmt}
@@ -208,7 +208,7 @@ export function ImageOptTool() {
                   className={`rounded-lg py-1.5 font-mono text-xs font-bold uppercase transition-all ${
                     options.format === fmt
                       ? 'bg-doc text-white shadow-md'
-                      : 'text-ink-soft hover:text-ink dark:text-rule dark:hover:text-paper'
+                      : 'text-ink-soft hover:text-ink '
                   }`}
                 >
                   {FORMAT_LABELS[fmt]}
@@ -219,8 +219,8 @@ export function ImageOptTool() {
 
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest">
-              <span className="font-semibold text-ink-soft dark:text-rule">Target file size</span>
-              <span className="font-bold text-doc dark:text-doc-bright">{options.targetSizeKB} KB</span>
+              <span className="font-semibold text-ink-soft ">Target file size</span>
+              <span className="font-bold text-doc ">{options.targetSizeKB} KB</span>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -231,25 +231,25 @@ export function ImageOptTool() {
                 onChange={(e) =>
                   setOptions({ ...options, targetSizeKB: Math.max(1, Number(e.target.value) || 1) })
                 }
-                className="w-full rounded-xl border border-line bg-paper-3 px-3 py-2 text-xs font-bold text-ink focus:outline-none focus:ring-2 focus:ring-gold dark:border-rule dark:bg-ink-3 dark:text-paper"
+                className="w-full rounded-xl border border-line bg-paper-3 px-3 py-2 text-xs font-bold text-ink focus:outline-none focus:ring-2 focus:ring-gold "
               />
-              <span className="flex-shrink-0 font-mono text-xs font-bold uppercase text-ink-soft dark:text-rule">
+              <span className="flex-shrink-0 font-mono text-xs font-bold uppercase text-ink-soft ">
                 KB
               </span>
             </div>
-            <p className="text-[10px] leading-relaxed text-ink-soft dark:text-rule">
+            <p className="text-[10px] leading-relaxed text-ink-soft ">
               Compression auto-tunes to hit this size; resolution shrinks if needed. PNG ignores this (lossless).
             </p>
           </div>
 
           <div className="space-y-2">
-            <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft dark:text-rule">
+            <label className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-soft ">
               Dimension preset
             </label>
             <select
               value={options.preset}
               onChange={(e) => setOptions({ ...options, preset: e.target.value as SocialPreset })}
-              className="w-full rounded-xl border border-line bg-paper-3 px-3 py-2 text-xs font-medium text-ink focus:outline-none focus:ring-2 focus:ring-gold dark:border-rule dark:bg-ink-3 dark:text-paper"
+              className="w-full rounded-xl border border-line bg-paper-3 px-3 py-2 text-xs font-medium text-ink focus:outline-none focus:ring-2 focus:ring-gold "
             >
               {SOCIAL_PRESETS.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -259,11 +259,11 @@ export function ImageOptTool() {
             </select>
           </div>
 
-          <div className="space-y-3 border-t border-line pt-3 dark:border-rule">
+          <div className="space-y-3 border-t border-line pt-3 ">
             <label className="flex cursor-pointer items-center justify-between">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-doc dark:text-doc-bright" />
-                <span className="text-xs font-medium text-ink dark:text-paper">Strip EXIF GPS privacy data</span>
+                <ShieldCheck className="h-4 w-4 text-doc " />
+                <span className="text-xs font-medium text-ink ">Strip EXIF GPS privacy data</span>
               </div>
               <input
                 type="checkbox"
@@ -276,7 +276,7 @@ export function ImageOptTool() {
             <label className="flex cursor-pointer items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-gold" />
-                <span className="text-xs font-medium text-ink dark:text-paper">Lossless quantization</span>
+                <span className="text-xs font-medium text-ink ">Lossless quantization</span>
               </div>
               <input
                 type="checkbox"
@@ -323,15 +323,15 @@ export function ImageOptTool() {
               className="hidden"
             />
 
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-doc/10 text-doc transition-transform group-hover:scale-110 dark:text-doc-bright">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-doc/10 text-doc transition-transform group-hover:scale-110 ">
               <Upload className="h-8 w-8" />
             </div>
 
             <div className="space-y-1">
-              <h4 className="font-display text-base font-bold text-ink dark:text-paper">
+              <h4 className="font-display text-base font-bold text-ink ">
                 Drag & drop images, or click to upload
               </h4>
-              <p className="text-xs text-ink-soft dark:text-rule">
+              <p className="text-xs text-ink-soft ">
                 Supports JPG, PNG, WebP, AVIF, HEIC (max 25MB per file)
               </p>
             </div>
@@ -343,7 +343,7 @@ export function ImageOptTool() {
                   e.stopPropagation();
                   handleLoadDemoSample();
                 }}
-                className="flex items-center gap-1.5 rounded-lg bg-doc/10 px-3 py-1.5 text-xs font-semibold text-doc transition-colors hover:bg-doc/20 dark:text-doc-bright"
+                className="flex items-center gap-1.5 rounded-lg bg-doc/10 px-3 py-1.5 text-xs font-semibold text-doc transition-colors hover:bg-doc/20 "
               >
                 <Sparkles className="h-3.5 w-3.5" />
                 Load demo HD sample image
@@ -353,14 +353,14 @@ export function ImageOptTool() {
 
           {files.length > 0 && (
             <div className="flex items-center justify-between rounded-xl border border-doc/30 bg-doc/5 px-4 py-3">
-              <div className="flex items-center gap-3 text-xs text-doc dark:text-doc-bright">
+              <div className="flex items-center gap-3 text-xs text-doc ">
                 <Layers className="h-4 w-4" />
                 <span>
-                  <strong className="text-ink dark:text-paper">{files.length}</strong> file(s) queued for{' '}
+                  <strong className="text-ink ">{files.length}</strong> file(s) queued for{' '}
                   <strong className="uppercase">{options.format}</strong> conversion.
                 </span>
               </div>
-              <button onClick={() => setFiles([])} className="flex items-center gap-1 text-xs text-ink-soft hover:text-stamp dark:text-rule">
+              <button onClick={() => setFiles([])} className="flex items-center gap-1 text-xs text-ink-soft hover:text-stamp ">
                 <Trash2 className="h-3.5 w-3.5" />
                 Clear queue
               </button>
@@ -368,30 +368,30 @@ export function ImageOptTool() {
           )}
 
           {selectedItem && (
-            <div className="space-y-4 rounded-2xl border border-rule bg-ink-2 p-6 shadow-2xl">
-              <div className="flex items-center justify-between border-b border-rule pb-3">
+            <div className="space-y-4 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm">
+              <div className="flex items-center justify-between border-b border-line pb-3">
                 <div className="flex items-center gap-2">
                   <Maximize2 className="h-4 w-4 text-gold" />
-                  <h4 className="font-display text-sm font-bold text-white">Visual comparison</h4>
-                  <span className="font-mono text-xs text-rule">({selectedItem.name})</span>
+                  <h4 className="font-display text-sm font-bold text-ink">Visual comparison</h4>
+                  <span className="font-mono text-xs text-ink-soft">({selectedItem.name})</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs">
-                  <span className="text-paper/60">
+                  <span className="text-ink-soft">
                     Original:{' '}
-                    <strong className="text-paper/90">{(selectedItem.originalSize / 1024).toFixed(1)} KB</strong>
+                    <strong className="text-ink">{(selectedItem.originalSize / 1024).toFixed(1)} KB</strong>
                   </span>
-                  <ArrowRight className="h-3.5 w-3.5 text-rule" />
+                  <ArrowRight className="h-3.5 w-3.5 text-ink-soft" />
                   <span className="font-bold text-doc-bright">
                     {(selectedItem.optimizedSize / 1024).toFixed(1)} KB (-{selectedItem.savedPercentage}%)
                   </span>
                 </div>
               </div>
 
-              <div className="relative h-[320px] w-full select-none overflow-hidden rounded-xl border border-rule bg-ink-3 md:h-[400px]">
+              <div className="relative h-[320px] w-full select-none overflow-hidden rounded-xl border border-line bg-paper-3 md:h-[400px]">
                 <img src={selectedItem.optimizedDataUrl} alt="Optimized" className="absolute inset-0 h-full w-full object-contain" />
 
                 <div
-                  className="absolute inset-y-0 left-0 overflow-hidden border-r-2 border-gold shadow-2xl"
+                  className="absolute inset-y-0 left-0 overflow-hidden border-r-2 border-gold shadow-sm"
                   style={{ width: `${comparisonSliderPos}%` }}
                 >
                   <img
@@ -399,12 +399,12 @@ export function ImageOptTool() {
                     alt="Original"
                     className="absolute left-0 top-0 h-full w-full object-contain"
                   />
-                  <div className="absolute left-3 top-3 rounded-lg bg-black/70 px-2.5 py-1 font-mono text-[10px] font-bold uppercase backdrop-blur-md">
+                  <div className="absolute left-3 top-3 rounded-lg bg-black/70 px-2.5 py-1 font-mono text-[10px] font-bold uppercase text-white backdrop-blur-md">
                     Original ({selectedItem.originalWidth}x{selectedItem.originalHeight})
                   </div>
                 </div>
 
-                <div className="absolute right-3 top-3 rounded-lg bg-doc px-2.5 py-1 font-mono text-[10px] font-bold uppercase backdrop-blur-md">
+                <div className="absolute right-3 top-3 rounded-lg bg-doc px-2.5 py-1 font-mono text-[10px] font-bold uppercase text-white backdrop-blur-md">
                   Optimized ({selectedItem.optimizedWidth}x{selectedItem.optimizedHeight})
                 </div>
 
@@ -418,7 +418,7 @@ export function ImageOptTool() {
                 />
               </div>
 
-              <div className="flex items-center justify-between text-xs text-paper/60">
+              <div className="flex items-center justify-between text-xs text-ink-soft">
                 <span>Drag the slider to compare visual quality</span>
                 <span>Processing time: {selectedItem.processingTimeMs}ms</span>
               </div>
@@ -426,15 +426,15 @@ export function ImageOptTool() {
           )}
 
           {processedItems.length > 0 && (
-            <div className="space-y-4 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm dark:border-rule dark:bg-ink-2 dark:shadow-xl">
-              <div className="flex items-center justify-between border-b border-line pb-3 dark:border-rule">
+            <div className="space-y-4 rounded-2xl border border-line bg-paper-2 p-6 shadow-sm ">
+              <div className="flex items-center justify-between border-b border-line pb-3 ">
                 <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-doc dark:text-doc-bright" />
-                  <h4 className="font-display text-sm font-bold text-ink dark:text-paper">
+                  <Check className="h-4 w-4 text-doc " />
+                  <h4 className="font-display text-sm font-bold text-ink ">
                     Optimized assets ({processedItems.length})
                   </h4>
                 </div>
-                <div className="flex items-center gap-2 rounded-full border border-doc/30 px-3 py-1 text-xs font-semibold text-doc dark:text-doc-bright">
+                <div className="flex items-center gap-2 rounded-full border border-doc/30 px-3 py-1 text-xs font-semibold text-doc ">
                   <ScaleRuler segments={6} className="text-gold" />
                   Total saved: {totalSavedMb} MB
                 </div>
@@ -447,22 +447,22 @@ export function ImageOptTool() {
                     onClick={() => setSelectedItem(item)}
                     className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-3.5 transition-all ${
                       selectedItem?.id === item.id
-                        ? 'border-doc bg-doc/10 dark:bg-ink-3'
-                        : 'border-line bg-paper-3/50 hover:border-doc/50 dark:border-rule dark:bg-ink-3/50 dark:hover:border-doc/50'
+                        ? 'border-doc bg-doc/10 '
+                        : 'border-line bg-paper-3/50 hover:border-doc/50 '
                     }`}
                   >
                     <div className="flex items-center gap-3 overflow-hidden">
                       <img
                         src={item.optimizedDataUrl}
                         alt="thumbnail"
-                        className="h-12 w-12 flex-shrink-0 rounded-lg border border-line object-cover dark:border-rule"
+                        className="h-12 w-12 flex-shrink-0 rounded-lg border border-line object-cover "
                       />
                       <div className="truncate text-xs">
-                        <div className="truncate font-semibold text-ink dark:text-paper">{item.name}</div>
-                        <div className="mt-0.5 flex items-center gap-2 font-mono text-[11px] text-ink-soft dark:text-rule">
+                        <div className="truncate font-semibold text-ink ">{item.name}</div>
+                        <div className="mt-0.5 flex items-center gap-2 font-mono text-[11px] text-ink-soft ">
                           <span>{(item.originalSize / 1024).toFixed(1)} KB</span>
                           <span>→</span>
-                          <span className="font-bold text-doc dark:text-doc-bright">
+                          <span className="font-bold text-doc ">
                             {(item.optimizedSize / 1024).toFixed(1)} KB
                           </span>
                         </div>
@@ -470,7 +470,7 @@ export function ImageOptTool() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="rounded-lg border border-doc/30 bg-doc/10 px-2.5 py-1 font-mono text-xs font-bold text-doc dark:text-doc-bright">
+                      <span className="rounded-lg border border-doc/30 bg-doc/10 px-2.5 py-1 font-mono text-xs font-bold text-doc ">
                         -{item.savedPercentage}%
                       </span>
                       <button

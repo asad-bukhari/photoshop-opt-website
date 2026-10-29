@@ -75,7 +75,6 @@ components/
   ImageOptTool.tsx      Image optimizer UI (dropzone, controls, compare slider)
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
-  ThemeToggle.tsx       Light/dark switch (persisted in localStorage)
   CornerMarks.tsx       Decorative print marks + scale ruler
   AdBanner.tsx          Isolated iframe Adsterra banner unit
   ResponsiveAd.tsx      Picks desktop (728x90) or mobile (300x250) size

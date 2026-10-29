@@ -10,7 +10,7 @@ interface FooterProps {
 
 export function Footer({ onOpenSecurity }: FooterProps) {
   return (
-    <footer className="w-full border-t border-line bg-paper-2 text-ink-soft transition-colors dark:border-rule dark:bg-ink-2 dark:text-rule">
+    <footer className="w-full border-t border-line bg-paper-2 text-ink-soft transition-colors ">
       <div className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand & purpose */}
@@ -19,42 +19,42 @@ export function Footer({ onOpenSecurity }: FooterProps) {
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-doc font-display text-xs font-black text-white">
                 P
               </div>
-              <span className="font-display text-sm font-bold tracking-tight text-ink dark:text-paper">
+              <span className="font-display text-sm font-bold tracking-tight text-ink ">
                 ZAIBI TOOLS
               </span>
             </div>
             <p className="text-xs leading-relaxed">
-              Proprietary suite hosting <span className="font-mono text-doc dark:text-doc-bright">image optimation tool</span> and{' '}
-              <span className="font-mono text-doc dark:text-doc-bright">cnic-copy-print-opt</span>, developed by Asad
+              Proprietary suite hosting <span className="font-mono text-doc ">image optimation tool</span> and{' '}
+              <span className="font-mono text-doc ">cnic-copy-print-opt</span>, developed by Asad
               Bukhari.
             </p>
             <div className="flex items-center gap-2 pt-1 text-[11px]">
-              <Shield className="h-3.5 w-3.5 text-doc dark:text-doc-bright" />
+              <Shield className="h-3.5 w-3.5 text-doc " />
               <span>100% client-side processing</span>
             </div>
           </div>
 
           {/* Tools */}
           <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink dark:text-paper">
+            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">
               Enterprise Tools
             </h4>
             <ul className="space-y-1.5 text-xs">
               <li>
                 <Link
                   href="/image-opt"
-                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc dark:hover:text-doc-bright"
+                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc "
                 >
-                  <Code2 className="h-3.5 w-3.5 text-doc dark:text-doc-bright" />
+                  <Code2 className="h-3.5 w-3.5 text-doc " />
                   Batch Image Optimizer & WebP Converter
                 </Link>
               </li>
               <li>
                 <Link
                   href="/cnic-opt"
-                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc dark:hover:text-doc-bright"
+                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc "
                 >
-                  <Code2 className="h-3.5 w-3.5 text-doc dark:text-doc-bright" />
+                  <Code2 className="h-3.5 w-3.5 text-doc " />
                   CNIC Print Suite
                 </Link>
               </li>
@@ -63,14 +63,14 @@ export function Footer({ onOpenSecurity }: FooterProps) {
 
           {/* Security */}
           <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink dark:text-paper">Protection</h4>
+            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">Protection</h4>
             <ul className="space-y-1.5 text-xs">
               <li>
                 <button
                   onClick={onOpenSecurity}
-                  className="flex items-center gap-1 transition-colors hover:text-ink dark:hover:text-paper"
+                  className="flex items-center gap-1 transition-colors hover:text-ink "
                 >
-                  <Lock className="h-3 w-3 text-doc dark:text-doc-bright" />
+                  <Lock className="h-3 w-3 text-doc " />
                   Security & Data Protocols
                 </button>
               </li>
@@ -79,7 +79,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
 
           {/* Zero-server guarantee */}
           <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink dark:text-paper">
+            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">
               Zero-Server Security
             </h4>
             <p className="text-xs leading-relaxed">
@@ -90,19 +90,19 @@ export function Footer({ onOpenSecurity }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-line pt-4 text-[11px] dark:border-rule sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-line pt-4 text-[11px]  sm:flex-row">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-bold uppercase tracking-wide text-ink dark:text-paper">Portal Enterprise Suite</span>
-            <span className="h-3 w-px bg-line dark:bg-rule" />
-            <div className="flex items-center gap-1.5 font-medium text-doc dark:text-doc-bright">
-              <span className="h-1.5 w-1.5 rounded-full bg-doc dark:bg-doc-bright" />
+            <span className="font-bold uppercase tracking-wide text-ink ">Portal Enterprise Suite</span>
+            <span className="h-3 w-px bg-line " />
+            <div className="flex items-center gap-1.5 font-medium text-doc ">
+              <span className="h-1.5 w-1.5 rounded-full bg-doc " />
               <span>Proprietary License • Asad Bukhari</span>
             </div>
           </div>
           <div className="flex items-center gap-4 font-bold uppercase tracking-wider">
             <ScaleRuler segments={8} className="text-gold" />
             <span>Zero-Retention Privacy</span>
-            <div className="flex items-center gap-1 rounded border border-doc/30 px-2 py-0.5 text-doc dark:text-doc-bright">
+            <div className="flex items-center gap-1 rounded border border-doc/30 px-2 py-0.5 text-doc ">
               <Shield className="h-3 w-3" /> SSL Secure
             </div>
           </div>
