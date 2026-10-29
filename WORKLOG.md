@@ -4,6 +4,58 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — Mobile-first image tool (redesign step 3)
+
+Status: TESTED
+Branch: `feature/mobile-first-image-tool`
+
+Goal:
+- Make the image compressor usable on a 360 px phone: upload first, settings second, one clear action, results and download before any ad.
+- Remove the unprovable HEIC, AVIF-export, 80%, 25 MB, and strip-EXIF/lossless claims from the image UI.
+
+What changed:
+- `components/ImageOptTool.tsx`: rewritten layout. Mobile order is upload, settings + Compress, results + comparison, then one ad, then a 4-step how-to. Desktop uses a 12-column grid with the settings card spanning two rows.
+- Removed the dark "img-opt core engine" hero, version badge, rotated "EXIF Stripped" stamp, and the 80% claim.
+- Output formats are now JPG, WebP and PNG. AVIF input is accepted when the browser can decode it; AVIF export is not offered.
+- Removed the "Strip EXIF" and "Lossless quantization" controls. A short note now says EXIF/GPS is removed automatically by Canvas re-encoding.
+- Removed the HEIC and 25 MB claims. The UI states that there is no enforced file-size limit.
+- Replaced the fixed 320/400 px comparison with `aspect-[4/3]` mobile / `16/9` desktop and `max-h-[60vh]`; added a focus ring for the slider.
+- Added 44 px controls, fieldset/legend for the format group, label/input associations, `aria-pressed` format buttons, a live status region, a visible error message, and descriptive alt text for original, compressed and thumbnail images.
+- Results rows are keyboard-selectable buttons with a separate 44 px download button and label.
+- Moved the single ad below the results and removed the second ad unit.
+- Added a short "How to compress an image" section and a link to the CNIC tool.
+- `lib/types.ts`: removed the unused `stripExif` and `lossless` fields.
+- Updated `AGENTS.md`, `CLAUDE.md`, and `README.md` for the removed controls and AVIF output.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 15.5.25; `/image-opt` 115 kB first load.
+- Built HTML audit on `/image-opt` — PASS: exactly one H1; 0 "img-opt core engine", "EXIF Stripped", "Strip EXIF", "Lossless quantization", "HEIC", or "25MB"; format buttons are JPG, WebP, PNG only.
+- Metadata still contains "up to 80%" and AVIF until branch 5; that is outside this UI branch.
+- Source audit — PASS: no `stripExif`/`lossless` references remain.
+- `git diff --check` — PASS.
+- `npm run preview` — NOT RUN (no routing/config change; branch 5).
+- Manual image flow (drop/picker, demo, 20/50/100 KB, presets, slider, download, reset, error path) — NOT RUN. No browser.
+- Lighthouse — NOT RUN. No Chrome/Lighthouse.
+
+Not tested:
+- Real upload/Canvas processing, target-size accuracy, compare slider touch/keyboard behavior, download, and mobile layout.
+- Ad rendering and CLS after the image result.
+- AVIF input on a browser that supports it.
+
+Docs updated:
+- `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md`, `WORKLOG.md`.
+
+Commit/PR:
+- Commit message: `feat: make the image tool mobile-first`.
+- PR: pending (opened after push; link added in the follow-up docs commit).
+
+Follow-ups:
+- Branch 4: CNIC tool mobile order, responsive preview, settings details, accurate size/watermark copy.
+- Branch 5: replace the image page title/description (still "up to 80%", "without quality loss", AVIF export) and add the full long-tail content.
+
+---
+
 ## 2026-10-29 — Mobile-first layout (redesign step 2)
 
 Status: TESTED

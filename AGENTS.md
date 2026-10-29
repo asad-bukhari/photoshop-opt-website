@@ -68,7 +68,7 @@ Run this for tool, UI, ad, metadata, or config changes:
 - [ ] Light mode looks correct and the OS dark-mode setting does not change the site.
 - [ ] Mobile (about 375 px wide) and desktop both work.
 - [ ] Ads render in their isolated iframes, labeled, without breaking layout.
-- [ ] Image tool: drag/drop and file picker, demo sample, JPEG/WebP/PNG/AVIF, target size, preset, compare slider, download, reset.
+- [ ] Image tool: drag/drop and file picker, demo sample, JPG/PNG/WebP output, AVIF input when supported, target size, preset, compare slider, download, reset.
 - [ ] CNIC tool: sample cards, front/back upload, every layout, every filter, every paper size, scale, watermark, preview, print, PDF, PNG.
 - [ ] Browser DevTools Network shows **no upload of user files**.
 - [ ] No console errors or unhandled rejections.
@@ -110,7 +110,7 @@ After **every** task, in the same commit:
 - **DNS/IPv6 flags:** keep `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"` on `build`, `preview`, and `deploy`. The environment resolves IPv6 first without a route and hangs on font fetches.
 - **Adsterra iframes:** every banner renders in its own `srcDoc` iframe. This isolates the global `atOptions`. Do **not** add `sandbox`; Adsterra's `invoke.js` needs cookies/localStorage and silently fails when sandboxed.
 - **AVIF fallback:** `imageOptimizer.ts` maps `avif` to `image/webp`. Browser AVIF encoding is unreliable. Do not remove the fallback without a proven encoder.
-- **UI-only options:** `stripExif` and `lossless` are present in the UI but ignored by the engine. Canvas re-encoding already drops EXIF. Do not assume they work.
+- **EXIF:** Canvas re-encoding drops EXIF automatically. There is no separate strip-EXIF or lossless control.
 - **jsPDF:** loaded at runtime from cdnjs in `CnicOptTool.tsx`. PDF export needs network access. Do not bundle it without approval.
 - **GA tag:** GA4 `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`, not a Next.js analytics package.
 - **Output mode:** `next.config.ts` uses `output: "standalone"` because OpenNext needs it.

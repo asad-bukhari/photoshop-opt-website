@@ -29,7 +29,7 @@ There is no test suite. Use `typecheck`, `build`, `preview`, and the manual chec
 - **Output:** `next.config.ts` uses `output: "standalone"` for OpenNext. Do not remove it.
 - **Deploy auth:** Wrangler reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from a gitignored `.env`. Never print or commit them.
 - **AVIF fallback:** `lib/utils/imageOptimizer.ts` maps `avif` to `image/webp`; browser AVIF encoding is unreliable.
-- **UI-only options:** `stripExif` and `lossless` are ignored by the engine. Canvas re-encoding already drops EXIF.
+- **EXIF:** Canvas re-encoding drops EXIF automatically; there is no separate strip-EXIF control.
 - **jsPDF:** loaded at runtime from cdnjs in `components/CnicOptTool.tsx`; PDF export needs network access.
 - **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
 - **GA4:** `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`.

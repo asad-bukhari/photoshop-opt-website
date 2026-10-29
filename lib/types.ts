@@ -14,8 +14,6 @@ export interface ImageOptimizationOptions {
   maxWidth?: number;
   maxHeight?: number;
   preset: SocialPreset;
-  stripExif: boolean;
-  lossless: boolean;
 }
 
 export interface ProcessedImageItem {
