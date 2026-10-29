@@ -33,8 +33,8 @@ Docs updated:
 - `AGENTS.md`, `CLAUDE.md`, `WORKLOG.md`.
 
 Commit/PR:
-- Commit message: `docs: require a dev-server check before deploy`.
-- PR: pending (opened after push; link added in the follow-up docs commit).
+- Commit: `55d2709` — `docs: require a dev-server check before deploy`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/5. Do not merge without approval.
 
 Follow-ups:
 - Rebase the open image-tool PR after this rule merges if `AGENTS.md` conflicts.
