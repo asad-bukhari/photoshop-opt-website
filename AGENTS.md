@@ -20,11 +20,11 @@ Every task follows this order:
 1. **PLAN** — read the relevant code and write the plan in `WORKLOG.md`.
 2. **BRANCH** — create a branch from `main`. Never edit or commit on `main`.
 3. **BUILD** — make the smallest correct change.
-4. **TEST** — run the checks that apply. Record exact results.
+4. **TEST** — run the checks that apply, including `npm run dev` for changed routes, and record exact results.
 5. **UPDATE DOCS** — update `WORKLOG.md`, plus `IMPROVE.md`, `README.md`, or `CLAUDE.md` when affected.
 6. **COMMIT** — stage only the intended files and write a clear message.
 7. **PR/MERGE** — open a PR. Do not merge without the owner's approval.
-8. **VERIFY DEPLOY** — after merge, confirm the Workers Build succeeds and the live site is healthy. Record it in `WORKLOG.md`.
+8. **VERIFY DEPLOY** — after merge, confirm the Workers Build succeeds and the live site is healthy. Record it in `WORKLOG.md`. The owner runs the final production deploy; do not run `npm run deploy`.
 
 ### Plan rule
 
@@ -61,10 +61,22 @@ npm run deploy
 - `npm run deploy` is a manual fallback. Do not use it as the normal deploy path.
 - Docs-only changes do not need `typecheck`, `build`, or `preview`. Still run `git diff --check` and fact-check the docs.
 
+### Dev-server check (mandatory)
+
+Run `npm run dev` and check every changed route before committing:
+
+- `/`, `/image-opt`, `/cnic-opt`, `/api/health`, and the changed route return the expected status.
+- The changed UI or copy is present and the removed text is gone.
+- No `class="dark"` or theme toggle appears.
+- The dev log has no server errors.
+- If a browser is available, check the changed UI at 375 px and 1280 px.
+- HTTP checks do not replace a visual browser check. Record both results honestly.
+
 ### Manual checklist
 
 Run this for tool, UI, ad, metadata, or config changes:
 
+- [ ] `npm run dev` checked the changed routes; the exact result is in `WORKLOG.md`.
 - [ ] Light mode looks correct and the OS dark-mode setting does not change the site.
 - [ ] Mobile (about 375 px wide) and desktop both work.
 - [ ] Ads render in their isolated iframes, labeled, without breaking layout.
@@ -138,7 +150,7 @@ Stop and ask the owner before:
 - Changing any "Intentional decisions" item above.
 - Removing a feature, a route, or user-facing copy.
 - Choosing between competing product behaviors.
-- Running `npm run deploy`, merging to `main`, force-pushing, or rewriting history.
+- Running `npm run deploy` (the owner performs the final production deploy), merging to `main`, force-pushing, or rewriting history.
 - Continuing when tests are blocked, the tree has unrelated changes, or the scope is unclear.
 
 ## Start-of-session checklist
@@ -157,6 +169,7 @@ Stop and ask the owner before:
 - [ ] `npm run typecheck` passed, or the reason it was not run is recorded.
 - [ ] `npm run build` passed when required, or the reason is recorded.
 - [ ] `npm run preview` passed when required, or the reason is recorded.
+- [ ] `npm run dev` checked the changed routes, or the reason it was not run is recorded.
 - [ ] Manual checklist completed when required, or marked NOT RUN.
 - [ ] `WORKLOG.md` updated in the same commit.
 - [ ] `IMPROVE.md`, `README.md`, and `CLAUDE.md` updated if affected.
@@ -185,6 +198,7 @@ What changed:
 - Concrete changes.
 
 Tests run:
+- `npm run dev` — PASS / FAIL / NOT RUN (routes checked)
 - `npm run typecheck` — PASS / FAIL / NOT RUN (reason)
 - `npm run build` — PASS / FAIL / NOT RUN (reason)
 - `npm run preview` — PASS / FAIL / NOT RUN (reason)
