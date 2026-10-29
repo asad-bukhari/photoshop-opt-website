@@ -4,6 +4,43 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — Require a dev-server check and owner deploy
+
+Status: TESTED
+Branch: `docs/dev-server-first-rule`
+
+Goal:
+- Make local dev-server verification mandatory before commit, and make the owner's production deploy the final step.
+
+What changed:
+- `AGENTS.md`:
+  - Step 4 (TEST) now requires `npm run dev` for changed routes.
+  - Step 8 (VERIFY DEPLOY) now states that the owner runs the final production deploy and agents must not run `npm run deploy`.
+  - Added a mandatory "Dev-server check" subsection with the routes, copy checks, dark-class check, log check, 375/1280 browser check, and the honesty rule.
+  - Added the dev check to the manual checklist, end-of-session checklist, "When to stop and ask", and the WORKLOG template.
+- `CLAUDE.md`: added the dev-server check to the testing note and "Do not run `npm run deploy`; the owner performs the final production deploy."
+
+Tests run:
+- Docs-only. No `typecheck`, `build`, or `preview` was run; no application code or config changed.
+- `git diff --check` — PASS.
+- Fact-check — PASS: the commands and routes match the current scripts and pages.
+- The dev server was run on `feature/mobile-first-image-tool`; the result is recorded in that branch's entry. It was not rerun for this docs-only rule.
+
+Not tested:
+- Nothing in the runtime; this branch changes rules and docs only.
+
+Docs updated:
+- `AGENTS.md`, `CLAUDE.md`, `WORKLOG.md`.
+
+Commit/PR:
+- Commit: `55d2709` — `docs: require a dev-server check before deploy`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/5. Do not merge without approval.
+
+Follow-ups:
+- Rebase the open image-tool PR after this rule merges if `AGENTS.md` conflicts.
+
+---
+
 ## 2026-10-29 — Mobile-first layout (redesign step 2)
 
 Status: TESTED

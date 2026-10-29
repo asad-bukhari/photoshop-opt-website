@@ -20,7 +20,7 @@ npm run preview      # OpenNext build + wrangler dev
 npm run deploy       # manual fallback only
 ```
 
-There is no test suite. Use `typecheck`, `build`, `preview`, and the manual checklist in `AGENTS.md`. Never claim a check passed unless it was run.
+There is no test suite. Use `npm run dev` for changed routes, then `typecheck`, `build`, `preview`, and the manual checklist in `AGENTS.md`. Never claim a check passed unless it was run. The owner performs the final production deploy.
 
 ## Technical gotchas
 
@@ -49,3 +49,4 @@ Config: `wrangler.jsonc`, `open-next.config.ts`, `next.config.ts`.
 - Do not change DNS, domains, dashboard build settings, or Cloudflare account config.
 - Do not add a code comment unless asked.
 - Do not change `build` to `opennextjs-cloudflare build`.
+- Do not run `npm run deploy`; the owner performs the final production deploy.
