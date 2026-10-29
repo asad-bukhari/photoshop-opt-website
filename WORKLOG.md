@@ -39,8 +39,8 @@ Docs updated:
 - `AGENTS.md`, `WORKLOG.md`, `IMPROVE.md`, `CLAUDE.md`.
 
 Commit/PR:
-- Commit message: `docs: add AGENTS, IMPROVE, WORKLOG and refresh CLAUDE`.
-- PR to `main`: opened after this commit. Do not merge without approval.
+- Docs commit: `b07a513` — `docs: add AGENTS, IMPROVE, WORKLOG and refresh CLAUDE`.
+- PR to `main`: https://github.com/asad-bukhari/photoshop-opt-website/pull/1. Do not merge without approval.
 
 Follow-ups:
 - Confirm in the Cloudflare dashboard that a merge to `main` triggers a Workers Build, then record it in the deployment log.
