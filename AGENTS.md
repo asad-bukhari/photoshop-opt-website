@@ -6,7 +6,7 @@ This is the rules file for AI agents and humans working on Zaibi Tools. Read it 
 
 - **App:** `optipack-portal`, branded **Zaibi Tools**.
 - **Stack:** Next.js 15 App Router, React 19, Tailwind CSS v4, TypeScript strict.
-- **Tools:** two 100% client-side Canvas tools at `/image-opt` and `/cnic-opt`. Files are processed in the browser and must never be uploaded.
+- **Tools:** two 100% client-side Canvas tools at `/image-compressor` and `/cnic-photocopy`. Files are processed in the browser and must never be uploaded.
 - **Hosting:** Cloudflare Worker via OpenNext (`@opennextjs/cloudflare`) and Wrangler.
 - **Deploy:** production deploys through Cloudflare Workers Builds when changes merge to `main`. There are no GitHub Actions. The Cloudflare dashboard is the source of truth for build settings; verify and log the result.
 - **Live:** https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
@@ -65,7 +65,7 @@ npm run deploy
 
 Run `npm run dev` and check every changed route before committing:
 
-- `/`, `/image-opt`, `/cnic-opt`, `/api/health`, and the changed route return the expected status.
+- `/`, `/image-compressor`, `/cnic-photocopy`, `/privacy`, `/terms`, `/api/health`, and the changed route return the expected status.
 - The changed UI or copy is present and the removed text is gone.
 - No `class="dark"` or theme toggle appears.
 - The dev log has no server errors.

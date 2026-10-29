@@ -1,9 +1,9 @@
-# Zaibi Tools — Image & CNIC Optimization Suite
+# Zaibi Tools — Image Compressor & CNIC Print Tool
 
 A browser-only, zero-server web portal hosting two document utilities:
 
-- **Batch Image Optimizer** (`image-optimation-tool`) — compress and convert images to JPEG, WebP or PNG, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
-- **CNIC & ID Print Suite** (`cnic-copy-print-opt`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
+- **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
+- **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
 
@@ -61,8 +61,11 @@ Open http://localhost:3000.
 app/
   layout.tsx            Root layout: fonts, metadata, light theme, shell
   page.tsx              Landing page (HomeHub)
-  image-opt/page.tsx    Batch Image Optimizer page
-  cnic-opt/page.tsx     CNIC Print Suite page
+  image-compressor/page.tsx  Image compressor page
+  cnic-photocopy/page.tsx    CNIC photocopy page
+  privacy/page.tsx      Privacy policy
+  terms/page.tsx        Terms of use
+  sitemap.ts            Sitemap for the public routes
   api/health/route.ts   Health check endpoint (GET /api/health)
   error.tsx             Route error boundary
   not-found.tsx         404 page
@@ -119,7 +122,7 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 
 - `wrangler.jsonc` — Worker name, compatibility flags, assets binding.
 - `open-next.config.ts` — OpenNext Cloudflare adapter config (defaults).
-- `next.config.ts` — `output: "standalone"`, compression, security headers.
+- `next.config.ts` — `output: "standalone"`, compression, 301 redirects from `/image-opt` and `/cnic-opt`, security headers.
 
 ---
 
@@ -149,4 +152,4 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 
 ## License
 
-Proprietary. © Asad Bukhari. All rights reserved.
+Free to use. © Asad Bukhari. All rights reserved.

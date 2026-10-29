@@ -25,17 +25,18 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://zaibitools.com'),
   title: {
-    default: 'Zaibi Tools — Image & CNIC Optimization Suite',
+    default: 'Zaibi Tools — Image Compressor & CNIC Print Tool',
     template: '%s | Zaibi Tools'
   },
   description:
-    'Proprietary browser-only suite for batch image optimization and CNIC / ID document copy & print layout alignment. Files never leave your device.',
+    'Compress images to 20KB, 50KB or 100KB and print CNIC front and back on one A4 page. Free tools that run in your browser.',
   robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
-    title: 'Zaibi Tools — Image & CNIC Optimization Suite',
+    siteName: 'Zaibi Tools',
+    title: 'Zaibi Tools — Image Compressor & CNIC Print Tool',
     description:
-      'Proprietary browser-only suite for batch image optimization and CNIC document print layout alignment.'
+      'Compress images to 20KB, 50KB or 100KB and print CNIC front and back on one A4 page. Free tools that run in your browser.'
   }
 };
 

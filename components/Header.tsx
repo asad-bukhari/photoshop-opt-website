@@ -7,8 +7,8 @@ import { Menu, ShieldCheck, X } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  { href: '/image-opt', label: 'Image Compressor' },
-  { href: '/cnic-opt', label: 'CNIC Photocopy' }
+  { href: '/image-compressor', label: 'Image Compressor' },
+  { href: '/cnic-photocopy', label: 'CNIC Photocopy' }
 ] as const;
 
 interface HeaderProps {

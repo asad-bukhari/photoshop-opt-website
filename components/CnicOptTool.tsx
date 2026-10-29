@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import {
   Check,
@@ -727,40 +726,6 @@ export function CnicOptTool() {
       </div>
 
       <ResponsiveAd />
-
-      <section aria-labelledby="cnic-how-title" className="space-y-4 border-t border-line pt-8">
-        <h2 id="cnic-how-title" className="font-display text-2xl font-bold tracking-tight text-ink">
-          How to print CNIC front and back
-        </h2>
-        <ol className="grid gap-3 sm:grid-cols-2">
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">1. Add both sides.</strong> Upload a photo or scan of the front and back, or
-            load the sample.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">2. Choose the layout.</strong> Keep the centered stacked layout for a simple
-            front-and-back sheet, or pick another layout.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">3. Check the preview.</strong> Select A4, keep the scale at 100%, and add a
-            purpose watermark if you need one.
-          </li>
-          <li className="rounded-xl border border-line bg-paper-2 p-4 text-sm leading-relaxed text-ink-soft">
-            <strong className="text-ink">4. Print or save.</strong> Use Print at 100% scale, or download a PDF or PNG
-            and print from your device.
-          </li>
-        </ol>
-        <p className="text-sm leading-relaxed text-ink-soft">
-          Zaibi Tools is not affiliated with NADRA. Use a copy only with lawful authority.
-        </p>
-        <p className="text-sm leading-relaxed text-ink-soft">
-          Need to shrink a photo first?{' '}
-          <Link href="/image-opt" className="font-semibold text-doc underline underline-offset-2 hover:text-doc-bright">
-            Open the image compressor
-          </Link>
-          .
-        </p>
-      </section>
     </div>
   );
 }
