@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-Guidance for AI agents working in this repository.
+Read `AGENTS.md` first. It is the source of truth for workflow, branching, testing, docs, safety, and intentional decisions. Use this file only as a quick technical reference.
 
 ## Project
 
-`optipack-portal` (branded **Zaibi Tools**) — a Next.js 15 App Router site hosting two 100% client-side Canvas tools: a batch image optimizer and a CNIC/ID print-layout suite. Deployed as a Cloudflare Worker via OpenNext.
+`optipack-portal` (branded **Zaibi Tools**) is a Next.js 15 App Router site with two 100% client-side Canvas tools: `/image-opt` and `/cnic-opt`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
 
 Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
@@ -13,49 +13,39 @@ Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813
 ```bash
 npm install
 npm run dev          # Next dev server (localhost:3000)
-npm run build        # next build only
-npm run lint         # tsc --noEmit (same as typecheck)
 npm run typecheck    # tsc --noEmit
-npm run preview      # opennextjs-cloudflare build && wrangler dev
-npm run deploy       # opennextjs-cloudflare build && wrangler deploy
+npm run lint         # same as typecheck
+npm run build        # next build (with the required NODE_OPTIONS prefix)
+npm run preview      # OpenNext build + wrangler dev
+npm run deploy       # manual fallback only
 ```
 
-There is no test suite. Always run `npm run lint` after changes.
+There is no test suite. Use `typecheck`, `build`, `preview`, and the manual checklist in `AGENTS.md`. Never claim a check passed unless it was run.
 
-## Architecture
+## Technical gotchas
 
-- `app/` — App Router. `layout.tsx` wires fonts, metadata (`metadataBase` = zaibitools.com), the Google Analytics 4 tag (`G-3QKCPR8SR3`, literal `<script>` in the initial HTML), and `SiteShell`. Pages are thin wrappers around tool components. `api/health/route.ts` is the only server route.
-- `components/` — UI. `SiteShell` owns the security-modal state; `Header`/`Footer` receive `onOpenSecurity`. Tool components (`ImageOptTool`, `CnicOptTool`) are `'use client'`.
-- `components/AdBanner.tsx` / `ResponsiveAd.tsx` / `StickyMobileAd.tsx` — Adsterra banner units; sizes/keys live in `lib/data/ads.ts`.
-- `lib/utils/` — pure Canvas processing engines (`imageOptimizer.ts`, `cnicOptimizer.ts`). No React, no network.
-- `lib/data/initialData.ts` — all copy, presets, and tool metadata.
-- `lib/types.ts` — shared domain types.
-
-Path alias `@/*` → project root.
-
-## Conventions
-
-- Server Components by default; add `'use client'` only for interactivity (state, effects, refs, browser APIs).
-- Tailwind CSS v4. Design tokens are defined in `app/globals.css` under `@theme` (e.g. `ink`, `paper`, `doc`, `gold`, `stamp`). Dark mode is class-based (`.dark`) and toggled by `ThemeToggle` via `localStorage` key `optipack-theme`. Use token classes, not raw hex.
-- TypeScript is strict. Prefer the types in `lib/types.ts`.
-- Match existing style: no code comments, functional components, `lucide-react` icons.
-
-## Critical gotchas
-
-- **Build recursion:** `package.json` `"build"` MUST be `next build`. `opennextjs-cloudflare build` internally runs the package `build` script, so pointing `build` at itself causes infinite recursion.
-- **DNS/IPv6:** this environment resolves IPv6 first but has no IPv6 route, which hangs build-time font fetches. The `build`/`preview`/`deploy` scripts prefix `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"`. Do not remove it.
-- **Deploy auth:** Wrangler reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from a gitignored `.env`. Never commit them; never print the token.
-- **AVIF fallback:** `imageOptimizer.ts` maps `avif` → `image/webp` (browser AVIF encoding is unreliable).
-- **Unused options:** `stripExif` and `lossless` are UI-only; the engine ignores them (Canvas re-encoding already drops EXIF).
-- **jsPDF** is loaded at runtime from cdnjs in `CnicOptTool.tsx`; PDF export needs network access.
-- **Adsterra ads:** each banner must render in its own `srcDoc` iframe (this isolates Adsterra's global `atOptions` so multiple units can coexist). Do **not** add a `sandbox` attribute — Adsterra's `invoke.js` needs `document.cookie`/`localStorage` and will silently fail if sandboxed.
+- **Build recursion:** `package.json` `build` must run `next build` (currently prefixed with the DNS flags). `opennextjs-cloudflare build` calls the package `build` script, so pointing `build` at OpenNext recurses forever.
+- **DNS/IPv6:** keep `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"` on `build`, `preview`, and `deploy`. The environment prefers IPv6 but has no route, which hangs font fetches.
+- **Output:** `next.config.ts` uses `output: "standalone"` for OpenNext. Do not remove it.
+- **Deploy auth:** Wrangler reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from a gitignored `.env`. Never print or commit them.
+- **AVIF fallback:** `lib/utils/imageOptimizer.ts` maps `avif` to `image/webp`; browser AVIF encoding is unreliable.
+- **UI-only options:** `stripExif` and `lossless` are ignored by the engine. Canvas re-encoding already drops EXIF.
+- **jsPDF:** loaded at runtime from cdnjs in `components/CnicOptTool.tsx`; PDF export needs network access.
+- **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
+- **GA4:** `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`.
+- **Dark mode:** class-based and on by default (`<html className="dark">`). Use tokens from `app/globals.css`, not raw hex.
+- **Build output:** `.open-next/` is currently tracked; do not add more build output. See `IMPROVE.md` I-17.
 
 ## Deployment
 
-Manual only — no CI. Pushing to GitHub does not deploy. Run `npm run deploy`. Config lives in `wrangler.jsonc`, `open-next.config.ts`, and `next.config.ts`.
+Production deploys through Cloudflare Workers Builds when changes merge to `main`. There are no GitHub Actions. The Cloudflare dashboard is the source of truth for build settings; verify and record each deploy in `WORKLOG.md`. `npm run deploy` is a manual fallback only.
+
+Config: `wrangler.jsonc`, `open-next.config.ts`, `next.config.ts`.
 
 ## Do not
 
-- Do not commit `.env`, secrets, or `node_modules`/`.next`/`.open-next` build output.
-- Do not add a comment unless asked.
-- Do not change the `build` script back to `opennextjs-cloudflare build`.
+- Do not commit `.env`, secrets, or `node_modules`/`.next`/new `.open-next` output.
+- Do not add a dependency or third-party script without approval.
+- Do not change DNS, domains, dashboard build settings, or Cloudflare account config.
+- Do not add a code comment unless asked.
+- Do not change `build` to `opennextjs-cloudflare build`.
