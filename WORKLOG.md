@@ -6,7 +6,7 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ## 2026-10-29 — SEO routes and content (redesign step 5)
 
-Status: TESTED
+Status: MERGED (production deploy unverified)
 Branch: `feature/seo-pages-and-content` (stacked on `feature/mobile-first-cnic-tool`, PR #6)
 
 Goal:
@@ -72,7 +72,7 @@ Follow-ups:
 
 ## 2026-10-29 — Mobile-first CNIC tool (redesign step 4)
 
-Status: TESTED
+Status: MERGED (production deploy unverified)
 Branch: `feature/mobile-first-cnic-tool`
 
 Goal:
@@ -999,3 +999,5 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 | --- | --- | --- | --- | --- |
 | 2026-10-29 | `f83c496` | production | UNVERIFIED | PR #2 merged. Live HTML still had `<html class="dark">` about 15 minutes later. The Cloudflare dashboard could not be checked. |
 | 2026-10-29 | `7a9f8e2` | production | UNVERIFIED | PR #3 merged. Live HTML still had `<html class="dark">` at 10:09 UTC. Workers Builds auto-deploy is not confirmed. |
+| 2026-10-29 | `704a288` | production | UNVERIFIED | PR #6 merged. At 15:29 UTC the live site still served the old HTML; `/image-compressor` returned 404. No Workers Build was observed. The owner deploy is still pending. |
+| 2026-10-29 | `0dde39f` | production | UNVERIFIED | PR #7 merged. At 15:29 UTC `/image-opt` still returned 200, `/image-compressor` 404, the title was still the old one, and `/sitemap.xml` still used a per-request `lastmod`. No Workers Build was observed. Any deploy must also address I-30. |
