@@ -46,8 +46,8 @@ Docs updated:
 - `README.md`, `IMPROVE.md`, `WORKLOG.md`.
 
 Commit/PR:
-- Commit message: `feat: rebuild the shell and home for mobile`.
-- PR: pending (opened after push; link added in the follow-up docs commit).
+- Commit: `c37f26c` — `feat: rebuild the shell and home for mobile`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/3. Do not merge without approval.
 
 Follow-ups:
 - Branch 3: image tool mobile order, responsive compare, remove toggle/AVIF/HEIC/25 MB claims.

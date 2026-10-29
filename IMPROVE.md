@@ -51,6 +51,6 @@ Move completed items here with the date and commit.
 
 - [x] **I-00 (2026-10-29)** Confirmed the repository targets Cloudflare Workers via OpenNext, not Pages; no Pages configuration was found.
 - [x] **I-26 (2026-10-29)** Removed the dark mode and theme switch entirely; the site is light-only with `color-scheme: light`, so there is no stored-preference flash. Commit `8d6f439`, PR #2.
-- [x] **I-01 (2026-10-29)** Removed the malicious-scanner claim. The modal now says the tools read files with the Canvas API in the browser; no validator is implied. Branch `feature/mobile-first-layout`.
-- [x] **I-12 (2026-10-29)** Removed the hard-coded "All Systems Active" badge from the header. Branch `feature/mobile-first-layout`.
-- [x] **I-18 (2026-10-29)** The file-handling modal now uses `aria-labelledby`, a focus trap, Escape to close, focus restore, body scroll lock, and a 44 px close button. Branch `feature/mobile-first-layout`.
+- [x] **I-01 (2026-10-29)** Removed the malicious-scanner claim. The modal now says the tools read files with the Canvas API in the browser; no validator is implied. Commit `c37f26c`, PR #3.
+- [x] **I-12 (2026-10-29)** Removed the hard-coded "All Systems Active" badge from the header. Commit `c37f26c`, PR #3.
+- [x] **I-18 (2026-10-29)** The file-handling modal now uses `aria-labelledby`, a focus trap, Escape to close, focus restore, body scroll lock, and a 44 px close button. Commit `c37f26c`, PR #3.
