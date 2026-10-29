@@ -835,3 +835,5 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 
 | Date | Commit | Environment | Result | Notes |
 | --- | --- | --- | --- | --- |
+| 2026-10-29 | `f83c496` | production | UNVERIFIED | PR #2 merged. Live HTML still had `<html class="dark">` about 15 minutes later. The Cloudflare dashboard could not be checked. |
+| 2026-10-29 | `7a9f8e2` | production | UNVERIFIED | PR #3 merged. Live HTML still had `<html class="dark">` at 10:09 UTC. Workers Builds auto-deploy is not confirmed. |
