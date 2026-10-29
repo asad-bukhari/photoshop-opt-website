@@ -40,10 +40,10 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 Move completed items here with the date and commit.
 
-- [x] **I-05 (2026-10-29)** Removed "without quality loss", "up to 80%" and "batch multi-threaded" from the metadata and copy; the tool page and FAQ now describe the target-size process and sequential processing. The unused `REPO_INFO` block was removed. Commit pending, PR pending.
-- [x] **I-07 (2026-10-29)** Added `/privacy` with analytics, ads, hosting logs and jsPDF coverage, and linked it from the footer and tool content. Contact details are omitted until the owner confirms a mailbox (I-14). Commit pending, PR pending.
-- [x] **I-20 (2026-10-29)** Renamed the visible labels and internal names to "Image Compressor" and "CNIC Photocopy"; removed the "optimation" strings from the source. Commit pending, PR pending.
-- [x] **I-28 (2026-10-29)** Removed the unsupported "up to 80%" claim rather than backing it with a benchmark. Commit pending, PR pending.
+- [x] **I-05 (2026-10-29)** Removed "without quality loss", "up to 80%" and "batch multi-threaded" from the metadata and copy; the tool page and FAQ now describe the target-size process and sequential processing. The unused `REPO_INFO` block was removed. Commit `17fe0fd`, PR #7.
+- [x] **I-07 (2026-10-29)** Added `/privacy` with analytics, ads, hosting logs and jsPDF coverage, and linked it from the footer and tool content. Contact details are omitted until the owner confirms a mailbox (I-14). Commit `17fe0fd`, PR #7.
+- [x] **I-20 (2026-10-29)** Renamed the visible labels and internal names to "Image Compressor" and "CNIC Photocopy"; removed the "optimation" strings from the source. Commit `17fe0fd`, PR #7.
+- [x] **I-28 (2026-10-29)** Removed the unsupported "up to 80%" claim rather than backing it with a benchmark. Commit `17fe0fd`, PR #7.
 
 - [x] **I-00 (2026-10-29)** Confirmed the repository targets Cloudflare Workers via OpenNext, not Pages; no Pages configuration was found.
 - [x] **I-26 (2026-10-29)** Removed the dark mode and theme switch entirely; the site is light-only with `color-scheme: light`, so there is no stored-preference flash. Commit `8d6f439`, PR #2.

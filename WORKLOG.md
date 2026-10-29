@@ -58,7 +58,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit and PR pending. Do not merge without approval.
+- Commit: `17fe0fd` — `feat: add seo routes and long-tail content`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/7 (base `feature/mobile-first-cnic-tool`; retarget after PR #6 merges). Do not merge without approval.
 
 Follow-ups:
 - Branch 6: `robots.ts`, Open Graph images, JSON-LD, Twitter metadata, sitemap/robots verification.
