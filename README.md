@@ -2,7 +2,7 @@
 
 A browser-only, zero-server web portal hosting two document utilities:
 
-- **Batch Image Optimizer** (`image-optimation-tool`) — compress and convert images to JPEG/WebP/AVIF/PNG, strip EXIF/GPS metadata, and crop to social-media presets.
+- **Batch Image Optimizer** (`image-optimation-tool`) — compress and convert images to JPEG, WebP or PNG, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **CNIC & ID Print Suite** (`cnic-copy-print-opt`) — align CNIC/ID front and back onto a true-size A4 (or Letter/Legal/3R) print sheet with scan-enhancement filters and anti-fraud watermarks.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
@@ -142,9 +142,8 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 ## Notes & known limitations
 
 - **Fonts:** `next/font/google` downloads font files at build time. On networks with broken IPv6 DNS, the build hangs; the scripts set `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"` to work around this.
-- **AVIF:** the UI exposes an AVIF option, but the encoder currently falls back to WebP (`lib/utils/imageOptimizer.ts`). Browser AVIF encoding support is inconsistent.
+- **AVIF:** the UI does not offer AVIF output because the encoder falls back to WebP (`lib/utils/imageOptimizer.ts`). AVIF input is accepted when the browser can decode it.
 - **PDF export** requires internet access to load jsPDF from cdnjs at runtime.
-- `stripExif` and `lossless` options are surfaced in the UI but not currently applied by the processing engine.
 
 ---
 
