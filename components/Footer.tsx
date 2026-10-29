@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Shield, Lock, Code2 } from 'lucide-react';
-import { ScaleRuler } from './CornerMarks';
+import { Image, Printer, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onOpenSecurity: () => void;
@@ -10,102 +9,68 @@ interface FooterProps {
 
 export function Footer({ onOpenSecurity }: FooterProps) {
   return (
-    <footer className="w-full border-t border-line bg-paper-2 text-ink-soft transition-colors ">
-      <div className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Brand & purpose */}
-          <div className="space-y-3 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-doc font-display text-xs font-black text-white">
-                P
-              </div>
-              <span className="font-display text-sm font-bold tracking-tight text-ink ">
-                ZAIBI TOOLS
+    <footer className="border-t border-line bg-paper-2 pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          <div className="col-span-2 space-y-3 sm:col-span-1">
+            <Link href="/" className="flex min-h-11 items-center gap-2" aria-label="Zaibi Tools home">
+              <span
+                aria-hidden
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-doc font-display text-sm font-black text-white"
+              >
+                Z
               </span>
-            </div>
-            <p className="text-xs leading-relaxed">
-              Proprietary suite hosting <span className="font-mono text-doc ">image optimation tool</span> and{' '}
-              <span className="font-mono text-doc ">cnic-copy-print-opt</span>, developed by Asad
-              Bukhari.
+              <span className="font-display text-sm font-bold tracking-tight text-ink">Zaibi Tools</span>
+            </Link>
+            <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
+              Free browser tools to compress images and put the front and back of a CNIC on one A4 page.
             </p>
-            <div className="flex items-center gap-2 pt-1 text-[11px]">
-              <Shield className="h-3.5 w-3.5 text-doc " />
-              <span>100% client-side processing</span>
-            </div>
+            <p className="text-xs text-ink-soft">Not affiliated with NADRA.</p>
           </div>
 
-          {/* Tools */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">
-              Enterprise Tools
-            </h4>
-            <ul className="space-y-1.5 text-xs">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-ink">Tools</h2>
+            <ul className="mt-2">
               <li>
                 <Link
                   href="/image-opt"
-                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc "
+                  className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
                 >
-                  <Code2 className="h-3.5 w-3.5 text-doc " />
-                  Batch Image Optimizer & WebP Converter
+                  <Image className="h-4 w-4 text-doc" />
+                  Image Compressor
                 </Link>
               </li>
               <li>
                 <Link
                   href="/cnic-opt"
-                  className="flex items-center gap-1.5 font-medium transition-colors hover:text-doc "
+                  className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
                 >
-                  <Code2 className="h-3.5 w-3.5 text-doc " />
-                  CNIC Print Suite
+                  <Printer className="h-4 w-4 text-doc" />
+                  CNIC Photocopy
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Security */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">Protection</h4>
-            <ul className="space-y-1.5 text-xs">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-ink">Site</h2>
+            <ul className="mt-2">
               <li>
                 <button
                   onClick={onOpenSecurity}
-                  className="flex items-center gap-1 transition-colors hover:text-ink "
+                  className="flex min-h-11 items-center gap-2 text-left text-sm text-ink-soft transition-colors hover:text-doc"
                 >
-                  <Lock className="h-3 w-3 text-doc " />
-                  Security & Data Protocols
+                  <ShieldCheck className="h-4 w-4 text-doc" />
+                  How we handle files
                 </button>
               </li>
             </ul>
           </div>
-
-          {/* Zero-server guarantee */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-ink ">
-              Zero-Server Security
-            </h4>
-            <p className="text-xs leading-relaxed">
-              Your identity documents and personal images stay entirely inside your browser memory. No server uploads or
-              remote file storage.
-            </p>
-          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-line pt-4 text-[11px]  sm:flex-row">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-bold uppercase tracking-wide text-ink ">Portal Enterprise Suite</span>
-            <span className="h-3 w-px bg-line " />
-            <div className="flex items-center gap-1.5 font-medium text-doc ">
-              <span className="h-1.5 w-1.5 rounded-full bg-doc " />
-              <span>Proprietary License • Asad Bukhari</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 font-bold uppercase tracking-wider">
-            <ScaleRuler segments={8} className="text-gold" />
-            <span>Zero-Retention Privacy</span>
-            <div className="flex items-center gap-1 rounded border border-doc/30 px-2 py-0.5 text-doc ">
-              <Shield className="h-3 w-3" /> SSL Secure
-            </div>
-          </div>
+        <div className="mt-8 flex flex-col gap-2 border-t border-line pt-4 text-xs text-ink-soft sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 Zaibi Tools. Free to use.</p>
+          <p>Your selected files are processed in your browser.</p>
         </div>
       </div>
     </footer>

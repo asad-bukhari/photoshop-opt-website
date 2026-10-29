@@ -52,23 +52,27 @@ export const CNIC_WATERMARK_PRESETS = [
 
 export const FAQ_ITEMS = [
   {
-    question: "What is image-optimation-tool and how does it compress images?",
-    answer:
-      "image-optimation-tool is a proprietary batch image compression engine created by Asad Bukhari. It uses client-side HTML5 Canvas processing to re-encode JPEG, PNG, WebP, and AVIF files, reducing file size by up to 80% without visible quality degradation while stripping sensitive EXIF GPS data."
+    question: 'Are the tools free?',
+    answer: 'Yes. Both tools are free and do not require an account.'
   },
   {
-    question: "What is cnic-copy-print-opt used for?",
+    question: 'Do my files get uploaded?',
     answer:
-      "cnic-copy-print-opt is a proprietary tool for Pakistani National Identity Cards (CNIC) and government ID documents. It allows users to upload front and back images, automatically aligns them onto a single A4 printable page, enhances text contrast, and applies protective watermark overlays to prevent identity theft."
+      'No. The tools process files in your browser and do not upload them. The site loads Google Analytics and third-party ads; see the privacy policy.'
   },
   {
-    question: "Are my sensitive identity documents uploaded to an external server?",
+    question: 'Can I use the CNIC tool for any ID card?',
     answer:
-      "No. All image processing and CNIC alignment occurs directly inside your web browser using client-side JavaScript and the HTML Canvas API. Your files never leave your device."
+      'The layout is built around the ID-1 card size used by CNICs and many bank, licence and student cards. Check the printed size before submitting an official copy.'
   },
   {
-    question: "How are these tools licensed?",
+    question: 'What image sizes can I compress to?',
     answer:
-      "Both image-optimation-tool and cnic-copy-print-opt are proprietary tools developed by Asad Bukhari. Access is provided via this portal for authorized enterprise and individual use."
+      'You can enter a target from 1 to 10,240 KB. 20 KB, 50 KB and 100 KB are common limits on job, visa and exam forms.'
+  },
+  {
+    question: 'Does the CNIC tool print at the real card size?',
+    answer:
+      'The card frames are drawn at about 85 x 53 mm on A4 at 150 DPI. Print at 100% scale and check with a ruler; do not use "fit to page".'
   }
 ];

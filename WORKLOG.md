@@ -4,6 +4,59 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — Mobile-first layout (redesign step 2)
+
+Status: TESTED
+Branch: `feature/mobile-first-layout`
+
+Goal:
+- Replace the double mobile nav, sticky ad, desktop-first footer, and dark-panel home with a one-row mobile header, a menu panel, a 2-column footer, a mobile-first home, and ads that reserve their space.
+- Remove the hard-coded "All Systems Active" badge and the false malicious-scanner claim, and make the file-handling modal keyboard accessible.
+
+What changed:
+- `components/Header.tsx`: one-row header (56/64 px) with brand + 44 px menu button on mobile; menu panel with Home, Image Compressor, CNIC Photocopy, and "How we handle files"; 44 px desktop nav; removes the second nav row, status badge, theme toggle remnant, scale ruler, and "Proprietary" label. Escape closes the menu and returns focus to the trigger; the menu closes on route change.
+- `components/SiteShell.tsx`: skip link to `#main`, `max-w-6xl` container, `min-h-dvh`, and no sticky-ad padding/import.
+- `components/Footer.tsx`: light 2-column mobile footer (brand, Tools, Site), 44 px links, no Enterprise/SSL/zero-retention claims; "Not affiliated with NADRA."
+- `components/HomeHub.tsx`: mobile-first home with one H1, two honest tool cards, one responsive ad after the cards, a 3-step "How it works", a browser-processing note that names analytics/ads, and native `<details>` FAQ. Removed the "JOB SHEET", "Proprietary", 300 DPI, 80%, AVIF export, and anti-fraud claims from the home page.
+- `lib/data/initialData.ts`: replaced the home FAQ with five truthful items (free, no upload, ID-1 usage, target-size range, 150 DPI / about 85 x 53 mm).
+- `components/FaqList.tsx`: native `<details>`/`<summary>` accordion; no JS; 44 px summary; content stays in the DOM.
+- `components/SecurityModal.tsx`: rewritten as a light bottom sheet on mobile; `aria-labelledby`, focus trap, Escape, focus restore, body scroll lock, 44 px close; removed the scanner claim; copy now names Google Analytics and ads.
+- `components/AdBanner.tsx`: lazy by default, 12 px ad label, `scrolling="no"`, unchanged `srcDoc` iframe (no `sandbox`).
+- `components/ResponsiveAd.tsx`: reserves 286 px mobile / 126 px desktop so the 250/90 swap cannot shift layout.
+- `app/not-found.tsx` and `app/error.tsx`: one H1, 44 px links/buttons, plain copy, no jargon.
+- Deleted `components/StickyMobileAd.tsx`.
+- Updated `README.md` and `IMPROVE.md` (I-01, I-12, I-18).
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 15.5.25; `/` 107 kB, `/image-opt` 111 kB, `/cnic-opt` 113 kB first load.
+- Built HTML audit on `/` — PASS: exactly one H1; 0 "All Systems Active"; 0 "JOB SHEET"; 0 "Enterprise"; 0 theme toggle; 0 sticky-ad close button; skip link and menu button present.
+- Source audit — PASS: no `dark:`/`optipack-theme`/`ThemeToggle`/`StickyMobileAd` in `app`, `components`, or `lib`.
+- `git diff --check` — PASS.
+- `npm run preview` — NOT RUN. This branch does not change routing, headers, assets, or config; branch 5 will run it for redirects.
+- Manual checklist (320/375/768/1280, tap targets, keyboard, OS dark mode, ad rendering, tool flows) — NOT RUN. No browser is installed.
+- Lighthouse — NOT RUN. Chrome/Lighthouse are not installed.
+
+Not tested:
+- Real-device layout, horizontal overflow, tap-target spacing, menu focus order, modal focus trap in a browser.
+- Ad iframe rendering, reserved-space CLS, and the Adsterra network.
+- Tool pages still have their old hero ads and claims until branches 3 and 4.
+
+Docs updated:
+- `README.md`, `IMPROVE.md`, `WORKLOG.md`.
+
+Commit/PR:
+- Commit: `c37f26c` — `feat: rebuild the shell and home for mobile`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/3. Do not merge without approval.
+
+Follow-ups:
+- Branch 3: image tool mobile order, responsive compare, remove toggle/AVIF/HEIC/25 MB claims.
+- Branch 4: CNIC tool mobile order, responsive preview, settings details, accurate size/watermark copy.
+- Branch 5: `/privacy` and `/terms` links in the footer/header, new slugs, canonical, and the full long-tail content.
+- Root metadata still says "Proprietary" and omits analytics/ads; branch 5 fixes it.
+
+---
+
 ## 2026-10-29 — Light theme tokens (redesign step 1)
 
 Status: TESTED

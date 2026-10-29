@@ -29,13 +29,13 @@ export function AdBanner({
   height,
   adKey,
   className = '',
-  lazy = false,
+  lazy = true,
   showLabel = true
 }: AdBannerProps) {
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       {showLabel && (
-        <span className="mb-1 font-mono text-[9px] uppercase tracking-widest text-ink-soft/60 ">
+        <span className="mb-1 font-mono text-xs uppercase tracking-widest text-ink-soft">
           Advertisement
         </span>
       )}
@@ -48,6 +48,7 @@ export function AdBanner({
           width={width}
           height={height}
           loading={lazy ? 'lazy' : 'eager'}
+          scrolling="no"
           srcDoc={buildSnippet(width, height, adKey)}
           style={{ border: 0, display: 'block' }}
         />

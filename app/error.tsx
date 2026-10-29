@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -8,16 +9,26 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
-      <div className="font-mono text-[10px] uppercase tracking-widest text-stamp">Error</div>
-      <h2 className="font-display text-xl font-bold text-ink ">Something went wrong rendering this sheet.</h2>
-      <p className="max-w-md text-sm text-ink-soft ">Try again, or reload the page. Your files never left this device.</p>
-      <button
-        onClick={reset}
-        className="rounded-lg bg-doc px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-doc-bright"
-      >
-        Try again
-      </button>
+    <div className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-start justify-center gap-4 py-12">
+      <p className="font-mono text-xs uppercase tracking-widest text-stamp">Error</p>
+      <h1 className="font-display text-3xl font-black tracking-tight text-ink">Something went wrong</h1>
+      <p className="text-base leading-relaxed text-ink-soft">
+        Try again, or reload the page. The tool did not upload your selected files.
+      </p>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <button
+          onClick={reset}
+          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-doc px-5 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+        >
+          Try again
+        </button>
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
+        >
+          Go to home
+        </Link>
+      </div>
     </div>
   );
 }

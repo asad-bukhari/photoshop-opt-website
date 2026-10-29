@@ -1,175 +1,150 @@
 import Link from 'next/link';
-import { Zap, Printer, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { CornerMarks, ScaleRuler } from './CornerMarks';
-import { AdBanner } from './AdBanner';
+import { ArrowRight, CheckCircle2, Printer, Zap } from 'lucide-react';
 import { ResponsiveAd } from './ResponsiveAd';
-import { ADS } from '@/lib/data/ads';
-import { REPO_INFO, FAQ_ITEMS } from '@/lib/data/initialData';
+import { FaqList } from './FaqList';
+import { FAQ_ITEMS } from '@/lib/data/initialData';
+
+const TOOLS = [
+  {
+    href: '/image-opt',
+    label: 'Image compressor',
+    title: 'Compress images to 20KB, 50KB or 100KB',
+    description:
+      'Compress JPG, PNG and WebP images to a target size, convert to WebP, and remove EXIF metadata. The image is processed in your browser.',
+    features: ['JPG, PNG and WebP', 'Target size in KB', 'Runs in your browser'],
+    icon: Zap,
+    action: 'Open image compressor'
+  },
+  {
+    href: '/cnic-opt',
+    label: 'CNIC photocopy',
+    title: 'Print CNIC front and back on one A4 page',
+    description:
+      'Place the front and back of a CNIC or another ID-1 card on one A4 sheet. Choose a layout, filter and optional watermark, then print or save a PDF.',
+    features: ['Front and back on one page', 'A4, Letter, Legal and 3R', 'PDF, PNG or print'],
+    icon: Printer,
+    action: 'Open CNIC photocopy'
+  }
+] as const;
+
+const STEPS = [
+  'Choose the image compressor or the CNIC photocopy tool.',
+  'Add your files. The tool reads them in your browser.',
+  'Download the result, or print the CNIC sheet at 100% scale.'
+] as const;
 
 export function HomeHub() {
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Job sheet hero */}
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-paper-2 p-8 text-ink shadow-sm md:p-10">
-        <CornerMarks className="text-gold" />
-        <div className="absolute -right-6 top-1/2 hidden -translate-y-1/2 rotate-[-8deg] rounded border-2 border-stamp/50 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-stamp/80 md:block">
-          Proprietary
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-widest text-ink-soft">
-          <span>JOB SHEET — Zaibi Tools</span>
-          <span className="hidden sm:inline">Zero-server · 300 DPI calibration</span>
-        </div>
-
-        <h1 className="mt-6 max-w-2xl font-display text-3xl font-black leading-tight tracking-tight md:text-5xl">
-          Precision document tools,
-          <span className="text-doc-bright"> rendered entirely in your browser.</span>
+    <div className="space-y-10">
+      <section
+        aria-labelledby="home-title"
+        className="rounded-2xl border border-line bg-paper-2 p-5 sm:p-8 lg:p-10"
+      >
+        <p className="font-mono text-xs uppercase tracking-widest text-doc">Zaibi Tools</p>
+        <h1
+          id="home-title"
+          className="mt-3 max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl"
+        >
+          Compress images and print CNIC copies in your browser
         </h1>
-
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          Batch-compress images to WebP or AVIF with GPS metadata stripped, or align your CNIC front and back onto a
-          true-size A4 print sheet with anti-fraud watermarks. Files never leave this device.
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
+          Zaibi Tools has two free tools: an image compressor for JPG, PNG and WebP files, and a CNIC print tool that
+          puts the front and back of an ID card on one A4 page. Both run in your browser.
         </p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/image-opt"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-5 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+          >
+            Open image compressor
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/cnic-opt"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
+          >
+            Open CNIC photocopy
+          </Link>
+        </div>
+      </section>
 
-        <div className="mt-6 flex items-center gap-3 text-gold">
-          <ScaleRuler segments={14} className="text-gold" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-ink-soft">1:1 print calibration</span>
+      <section aria-labelledby="tools-title" className="space-y-4">
+        <h2 id="tools-title" className="font-display text-2xl font-bold tracking-tight text-ink">
+          Two tools, one page
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {TOOLS.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <article
+                key={tool.href}
+                className="flex flex-col rounded-2xl border border-line bg-paper-2 p-5 transition-colors hover:border-doc/40 sm:p-6"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-doc-soft text-doc">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-widest text-doc">{tool.label}</p>
+                    <h3 className="mt-1 font-display text-lg font-bold text-ink">{tool.title}</h3>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-ink-soft">{tool.description}</p>
+                <ul className="mt-4 space-y-2 text-sm text-ink-soft">
+                  {tool.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-doc" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={tool.href}
+                  className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-4 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+                >
+                  {tool.action}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <ResponsiveAd />
 
-      {/* Tool sheets */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* image-opt-g8 */}
-        <article className="group relative flex flex-col rounded-2xl border border-line bg-paper-2 p-6 shadow-sm transition-colors hover:border-gold/70 ">
-          <CornerMarks className="text-line opacity-70 transition-opacity group-hover:opacity-100 " />
-
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-doc text-white shadow-sm">
-                <Zap className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-doc ">
-                  imgage optimation
-                </div>
-                <h3 className="font-display text-base font-bold text-ink ">
-                  Batch Image Optimizer
-                </h3>
-              </div>
-            </div>
-            <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-widest text-ink-soft ">
-              {REPO_INFO.imageOpt.version}
-            </span>
-          </div>
-
-          <p className="mt-4 text-xs leading-relaxed text-ink-soft ">
-            {REPO_INFO.imageOpt.description}
-          </p>
-
-          <ul className="mt-4 space-y-1.5 text-xs text-ink-soft ">
-            {REPO_INFO.imageOpt.features.slice(0, 3).map((f) => (
-              <li key={f} className="flex items-start gap-2">
-                <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-doc " />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
-
-          <ScaleRuler segments={9} className="mt-5 text-gold" />
-
-          <div className="mt-5 flex items-center justify-between border-t border-line pt-4 ">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-soft ">
-              WebP · AVIF · JPEG · PNG
-            </span>
-            <Link
-              href="/image-opt"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-doc px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-doc-bright"
-            >
-              Open tool <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </article>
-
-        {/* cnic-copy-print-opt */}
-        <article className="group relative flex flex-col rounded-2xl border border-line bg-paper-2 p-6 shadow-sm transition-colors hover:border-gold/70 ">
-          <CornerMarks className="text-line opacity-70 transition-opacity group-hover:opacity-100 " />
-
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-doc text-white shadow-sm">
-                <Printer className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-doc ">
-                  cnic-print-opt
-                </div>
-                <h3 className="font-display text-base font-bold text-ink ">
-                  CNIC & ID Print Suite
-                </h3>
-              </div>
-            </div>
-            <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-widest text-ink-soft ">
-              {REPO_INFO.cnicOpt.version}
-            </span>
-          </div>
-
-          <p className="mt-4 text-xs leading-relaxed text-ink-soft ">
-            {REPO_INFO.cnicOpt.description}
-          </p>
-
-          <ul className="mt-4 space-y-1.5 text-xs text-ink-soft ">
-            {REPO_INFO.cnicOpt.features.slice(0, 3).map((f) => (
-              <li key={f} className="flex items-start gap-2">
-                <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-doc " />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
-
-          <ScaleRuler segments={9} className="mt-5 text-gold" />
-
-          <div className="mt-5 flex items-center justify-between border-t border-line pt-4 ">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-soft ">
-              A4 · Letter · Legal
-            </span>
-            <Link
-              href="/cnic-opt"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-doc px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-doc-bright"
-            >
-              Open tool <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </article>
-      </div>
-
-      <AdBanner width={ADS.mediumRectangle.width} height={ADS.mediumRectangle.height} adKey={ADS.mediumRectangle.key} />
-
-      {/* FAQ sheet */}
-      <section className="relative rounded-2xl border border-line bg-paper-2 p-6 text-ink shadow-sm sm:p-8">
-        <CornerMarks className="text-gold" />
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-soft">Reference — FAQ</div>
-            <h2 className="mt-1 font-display text-lg font-bold">Frequently asked questions</h2>
-          </div>
-          <span className="hidden rounded border border-line px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink-soft sm:block">
-            Proprietary tech
-          </span>
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-          {FAQ_ITEMS.map((faq) => (
-            <div key={faq.question} className="space-y-1.5 rounded-xl border border-line bg-paper-3 p-4">
-              <h4 className="text-xs font-bold text-doc-bright">{faq.question}</h4>
-              <p className="text-xs leading-relaxed text-ink-soft">{faq.answer}</p>
-            </div>
+      <section aria-labelledby="how-title" className="space-y-4">
+        <h2 id="how-title" className="font-display text-2xl font-bold tracking-tight text-ink">
+          How it works
+        </h2>
+        <ol className="grid gap-3 sm:grid-cols-3">
+          {STEPS.map((step, index) => (
+            <li key={step} className="rounded-xl border border-line bg-paper-2 p-4">
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-gold">
+                Step {index + 1}
+              </span>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">{step}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      <ResponsiveAd />
+      <section aria-labelledby="privacy-title" className="rounded-xl border border-doc/20 bg-doc-soft p-5 sm:p-6">
+        <h2 id="privacy-title" className="font-display text-xl font-bold text-ink">
+          Your files stay in your browser
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">
+          The tools read and process your files with the HTML5 Canvas API in this browser. They do not upload your
+          selected files to a server. The site loads Google Analytics and third-party ads.
+        </p>
+      </section>
+
+      <section aria-labelledby="faq-title" className="space-y-4">
+        <h2 id="faq-title" className="font-display text-2xl font-bold tracking-tight text-ink">
+          Frequently asked questions
+        </h2>
+        <FaqList items={FAQ_ITEMS} />
+      </section>
     </div>
   );
 }
