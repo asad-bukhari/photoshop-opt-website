@@ -50,7 +50,7 @@ Move completed items here with the date and commit.
 - [x] **I-01 (2026-10-29)** Removed the malicious-scanner claim. The modal now says the tools read files with the Canvas API in the browser; no validator is implied. Commit `c37f26c`, PR #3.
 - [x] **I-12 (2026-10-29)** Removed the hard-coded "All Systems Active" badge from the header. Commit `c37f26c`, PR #3.
 - [x] **I-18 (2026-10-29)** The file-handling modal now uses `aria-labelledby`, a focus trap, Escape to close, focus restore, body scroll lock, and a 44 px close button. Commit `c37f26c`, PR #3.
-- [x] **I-02 (2026-10-29)** Removed the HEIC support claim. The UI accepts JPG, PNG, WebP and AVIF input and does not claim HEIC decoding. Branch `feature/mobile-first-image-tool`.
-- [x] **I-04 (2026-10-29)** Removed AVIF from the export UI, so the tool no longer downloads WebP bytes with an `.avif` name. The engine fallback is unchanged and unreachable from the UI. Branch `feature/mobile-first-image-tool`.
-- [x] **I-11 (2026-10-29)** Removed the unused "Strip EXIF" and "Lossless quantization" controls. The UI now states that re-encoding removes EXIF automatically. Branch `feature/mobile-first-image-tool`.
-- [x] **I-19 (2026-10-29)** Removed the "max 25MB" claim; the UI states that there is no enforced file-size limit. Branch `feature/mobile-first-image-tool`.
+- [x] **I-02 (2026-10-29)** Removed the HEIC support claim. The UI accepts JPG, PNG, WebP and AVIF input and does not claim HEIC decoding. Commit `72feb3e`, PR #4.
+- [x] **I-04 (2026-10-29)** Removed AVIF from the export UI, so the tool no longer downloads WebP bytes with an `.avif` name. The engine fallback is unchanged and unreachable from the UI. Commit `72feb3e`, PR #4.
+- [x] **I-11 (2026-10-29)** Removed the unused "Strip EXIF" and "Lossless quantization" controls. The UI now states that re-encoding removes EXIF automatically. Commit `72feb3e`, PR #4.
+- [x] **I-19 (2026-10-29)** Removed the "max 25MB" claim; the UI states that there is no enforced file-size limit. Commit `72feb3e`, PR #4.

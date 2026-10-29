@@ -47,8 +47,8 @@ Docs updated:
 - `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md`, `WORKLOG.md`.
 
 Commit/PR:
-- Commit message: `feat: make the image tool mobile-first`.
-- PR: pending (opened after push; link added in the follow-up docs commit).
+- Commit: `72feb3e` — `feat: make the image tool mobile-first`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/4. Do not merge without approval.
 
 Follow-ups:
 - Branch 4: CNIC tool mobile order, responsive preview, settings details, accurate size/watermark copy.
