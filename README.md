@@ -3,7 +3,7 @@
 A browser-only, zero-server web portal hosting two document utilities:
 
 - **Batch Image Optimizer** (`image-optimation-tool`) — compress and convert images to JPEG, WebP or PNG, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
-- **CNIC & ID Print Suite** (`cnic-copy-print-opt`) — align CNIC/ID front and back onto a true-size A4 (or Letter/Legal/3R) print sheet with scan-enhancement filters and anti-fraud watermarks.
+- **CNIC & ID Print Suite** (`cnic-copy-print-opt`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
 

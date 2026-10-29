@@ -4,6 +4,59 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — Mobile-first CNIC tool (redesign step 4)
+
+Status: TESTED
+Branch: `feature/mobile-first-cnic-tool`
+
+Goal:
+- Make the CNIC tool usable on a 360 px phone: add the two card images, open settings only when needed, see a bounded preview, and reach Print/PDF/PNG before any ad.
+- Remove the 300 DPI, true-size, anti-fraud, and engine-badge claims from the CNIC UI.
+
+What changed:
+- `components/CnicOptTool.tsx`: rewritten mobile-first layout. Mobile order is add images, collapsible print settings, preview + actions, one ad, then a 4-step how-to. Desktop uses a 5/7 split.
+- Removed the dark "cnic-copy-print-opt engine" hero, version badge, "Official Use Only" stamp, and 1:1/true-size copy.
+- The preview is now a bounded `max-h-[60vh]` white sheet with `object-contain`; no fixed 520 px box or `overflow-auto`.
+- Settings are inside a native `<details>` panel with a compact summary, 44 px layout/filter buttons, 150 DPI paper sizes, card scale, and a purpose watermark.
+- Actions are 48 px; Print, Download PDF and Download PNG are disabled until a front or back image is added. Popup blocking and PDF errors now appear inline instead of failing silently or using `alert`.
+- Replaced `URL.createObjectURL` on every render with memoized front/back preview URLs and cleanup.
+- Replaced the sample card's real-looking name/ID with obvious "SAMPLE" text and a "NOT A REAL DOCUMENT" label.
+- Renamed "anti-fraud" to "purpose watermark" and removed the non-functional "CUSTOM TEXT" preset; the UI states that a watermark discourages casual reuse but does not prevent copying.
+- Removed "FOR OFFICIAL USE ONLY" from the watermark presets.
+- Moved the single ad below the preview/actions; removed the second ad unit.
+- Added a 4-step "How to print CNIC front and back" section, a 100%-scale warning, a NADRA disclaimer, and a link to the image compressor.
+- `lib/data/initialData.ts`: replaced the cnicOpt boundary-alignment/true-size/anti-fraud metadata with accurate copy.
+- Updated `README.md` and `IMPROVE.md` (I-03, I-06, I-16).
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 15.5.25; `/cnic-opt` 117 kB first load.
+- `npm run dev` — PASS. `/` 200, `/image-opt` 200, `/cnic-opt` 200, `/api/health` 200, unknown route 404. Dev log had no errors.
+- Dev HTML audit on `/cnic-opt` — PASS: exactly one H1; new "Add the card images", "Print settings", "Purpose watermark", "Download PDF" and how-to copy present; no "cnic-copy-print-opt engine", "Official Use Only", or "anti-fraud" in the UI.
+- The page metadata still contains the word "anti-fraud" until branch 5; that is not in the UI.
+- `git diff --check` — PASS.
+- `npm run preview` — NOT RUN (no routing/config change; branch 5).
+- Manual CNIC flow (sample, front/back upload, every layout/filter/paper/scale/watermark, Print, PDF, PNG, popup-blocked path) — NOT RUN. No browser.
+- Lighthouse — NOT RUN. No Chrome/Lighthouse.
+
+Not tested:
+- Real preview rendering, filter output, watermark placement, print/PDF/PNG, popup handling, and mobile layout.
+- Ad rendering and CLS after the preview.
+- The generated sheet footer still says `Prepared with cnic-copy-print-opt | Proprietary tool by Asad Bukhari` because `lib/utils/cnicOptimizer.ts` was not edited. This is visible in PNG/PDF output and needs a follow-up decision.
+
+Docs updated:
+- `README.md`, `IMPROVE.md`, `WORKLOG.md`.
+
+Commit/PR:
+- Commit: `c6d78cb` — `feat: make the CNIC tool mobile-first`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/6. Do not merge without approval.
+
+Follow-ups:
+- Branch 5: replace the CNIC page title/description (still "anti-fraud"), add the full long-tail content, and decide whether to change the engine footer string.
+- Consider debouncing the preview (I-10) and the remaining object URLs in the engine (I-09).
+
+---
+
 ## 2026-10-29 — Require a dev-server check and owner deploy
 
 Status: TESTED
