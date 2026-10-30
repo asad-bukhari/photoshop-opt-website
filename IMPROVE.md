@@ -13,8 +13,6 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 - [ ] **I-08 — Replace stale deployment docs and verify Workers Builds.** `README.md:118` still says deployment is manual; this branch corrects the old `CLAUDE.md` line. The project rule is Workers Builds auto-deploy on merge to `main` with no GitHub Actions. The repo has no proof of the dashboard setting. Confirm it in Cloudflare, record it in `WORKLOG.md`, and update `README.md`. No Pages references were found.
 
-- [ ] **I-30 — OpenNext rejects the installed Next.js version.** `npm run preview` and `npm run deploy` fail with "Next.js version 15.5.25 is not supported by the Next.js team." A manual build works only with `--dangerouslyUseUnsupportedNextVersion`. **DECISION:** upgrade Next.js or add the flag to the OpenNext scripts. Until then, Workers Builds and the normal deploy path may fail.
-
 ## P2 — correctness, performance, SEO, security
 
 - [ ] **I-09 — Revoke object URLs.** `lib/utils/imageOptimizer.ts:80` creates an object URL and stores it in the result; `lib/utils/cnicOptimizer.ts:219` creates one for every CNIC image load; `components/CnicOptTool.tsx:366,393` creates a new URL inside render on every pass. None are revoked. Revoke on reset/unmount or convert thumbnails to data URLs.
@@ -39,6 +37,8 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 ## Done
 
 Move completed items here with the date and commit.
+
+- [x] **I-30 (2026-10-29)** Upgraded Next.js from 15.5.25 to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 and Wrangler to 4.155.0. `npm run preview` now builds and serves without the escape flag. Commit `342c907`, PR #9.
 
 - [x] **I-05 (2026-10-29)** Removed "without quality loss", "up to 80%" and "batch multi-threaded" from the metadata and copy; the tool page and FAQ now describe the target-size process and sequential processing. The unused `REPO_INFO` block was removed. Commit `17fe0fd`, PR #7.
 - [x] **I-07 (2026-10-29)** Added `/privacy` with analytics, ads, hosting logs and jsPDF coverage, and linked it from the footer and tool content. Contact details are omitted until the owner confirms a mailbox (I-14). Commit `17fe0fd`, PR #7.
