@@ -4,6 +4,52 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-30 — Add the new-tools plan and record decisions
+
+Status: PLANNED
+Branch: `docs/add-tools-plan`
+
+Goal:
+- Commit `TOOLS_PLAN.md`, the phased plan for growing Zaibi Tools from two tools to a small suite, and record the owner's decisions before any code starts.
+
+Plan:
+- Add `TOOLS_PLAN.md` with the phases, shared foundation, SEO rules, dependencies and risks.
+- Correct the backlog references to `IMPROVE.md` (object-URL leak is I-09; test suite is I-29).
+- Record Asad's answers in section 19 and the dependency table.
+- Docs-only change: run `git diff --check`; no `typecheck`, `build`, `preview` or dev-server check.
+
+What changed:
+- Added `TOOLS_PLAN.md`.
+- Decisions recorded: build Phase 0 before Phase 1; `pdf-lib` for all PDF work; Vitest approved; no ZIP downloads; no `tool_used` GA event; redesign prerequisite confirmed merged.
+- Refactors of the existing Image and CNIC engines are still unapproved; each extraction needs its own approval before work starts.
+- `IMPROVE.md` I-29 now records that Vitest is approved and pending implementation in Phase 0.
+
+Tests run:
+- `npm run dev` — NOT RUN. Docs-only change.
+- `npm run typecheck` — NOT RUN. Docs-only change.
+- `npm run build` — NOT RUN. Docs-only change.
+- `npm run preview` — NOT RUN. Docs-only change.
+- Manual checklist — NOT RUN. No UI change.
+- `git diff --check` — PASS.
+
+Not tested:
+- Every new tool in the plan is unbuilt, so no tool checks exist yet.
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `TOOLS_PLAN.md`.
+
+Commit/PR:
+- Commit and PR created after this entry was written; see the branch `docs/add-tools-plan`.
+
+Follow-ups:
+- Phase 0 (`feature/tools-foundation`) needs its own WORKLOG plan entry before coding.
+- The three engine extractions need separate approval and behaviour-neutral PRs.
+- `pdf-lib` (D-2) and Vitest (D-1) are approved but not installed yet.
+- `pdfjs-dist` (D-5) is still unapproved.
+- I-08 (verify Workers Builds in the Cloudflare dashboard) remains open.
+
+---
+
 ## 2026-10-29 — Upgrade to Next.js 16 (deploy blocker I-30)
 
 Status: DEPLOYED
