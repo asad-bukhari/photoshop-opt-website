@@ -15,10 +15,10 @@ All processing happens **entirely in the browser** using the HTML5 Canvas API. F
 
 | Layer | Choice |
 | --- | --- |
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | UI | React 19, Tailwind CSS v4, `lucide-react` icons |
 | Language | TypeScript (strict) |
-| Hosting | Cloudflare Workers via `@opennextjs/cloudflare` + Wrangler |
+| Hosting | Cloudflare Workers via `@opennextjs/cloudflare` 1.20.14 + Wrangler 4.155 |
 | PDF export | `jsPDF`, loaded on demand from a CDN |
 
 No database, no backend API beyond a health check. There is no test framework.

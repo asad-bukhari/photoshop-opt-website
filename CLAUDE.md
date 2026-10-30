@@ -4,7 +4,7 @@ Read `AGENTS.md` first. It is the source of truth for workflow, branching, testi
 
 ## Project
 
-`optipack-portal` (branded **Zaibi Tools**) is a Next.js 15 App Router site with two 100% client-side Canvas tools: `/image-compressor` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
+`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with two 100% client-side Canvas tools: `/image-compressor` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
 
 Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 

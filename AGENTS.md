@@ -5,7 +5,7 @@ This is the rules file for AI agents and humans working on Zaibi Tools. Read it 
 ## Project summary
 
 - **App:** `optipack-portal`, branded **Zaibi Tools**.
-- **Stack:** Next.js 15 App Router, React 19, Tailwind CSS v4, TypeScript strict.
+- **Stack:** Next.js 16 App Router, React 19, Tailwind CSS v4, TypeScript strict.
 - **Tools:** two 100% client-side Canvas tools at `/image-compressor` and `/cnic-photocopy`. Files are processed in the browser and must never be uploaded.
 - **Hosting:** Cloudflare Worker via OpenNext (`@opennextjs/cloudflare`) and Wrangler.
 - **Deploy:** production deploys through Cloudflare Workers Builds when changes merge to `main`. There are no GitHub Actions. The Cloudflare dashboard is the source of truth for build settings; verify and log the result.

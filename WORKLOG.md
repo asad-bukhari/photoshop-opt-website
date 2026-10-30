@@ -4,6 +4,55 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-29 — Upgrade to Next.js 16 (deploy blocker I-30)
+
+Status: TESTED
+Branch: `chore/upgrade-nextjs-16`
+
+Goal:
+- Fix I-30: OpenNext rejects Next.js 15.5.25 because Next 15 left the two-year support window on 2026-10-21.
+- Restore the normal `npm run preview` and deploy path without the `--dangerouslyUseUnsupportedNextVersion` escape flag.
+
+Plan:
+- Upgrade `next` to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 (supports Next >=16.4.1), and `wrangler` to 4.148.0 (OpenNext peer requirement).
+- Run `npm install`, then `typecheck`, `build`, `dev` route checks, and `npm run preview`.
+- Fix any Next 16 breaking changes.
+- Update `README.md`, `CLAUDE.md`, `AGENTS.md` and `IMPROVE.md` with the new versions and close I-30.
+
+What changed:
+- `next` `^15.3.3` → `^16.4.3` (installed 16.4.3); React resolved to 19.2.8.
+- `@opennextjs/cloudflare` `^1.20.6` → `^1.20.14`, which supports Next `>=16.4.1`.
+- `wrangler` `^4.130.0` → `^4.148.0` (installed 4.155.0), required by the OpenNext peer range.
+- `tsconfig.json`: Next 16 set `jsx` to `react-jsx` and added `.next/dev/types/**/*.ts` to `include`; the rest of the file keeps its compact format.
+- `package-lock.json` regenerated. `node_modules` was reinstalled because npm could not rename the old `miniflare`/`workerd` directories in place on this filesystem.
+- Docs: Next.js 16 in `AGENTS.md`, `CLAUDE.md`, `README.md`; version table and I-30 updated.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); all 8 routes generated; TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/privacy` 200, `/terms` 200, `/api/health` 200, unknown route 404; `/image-opt` 301 to `/image-compressor`; no errors in the dev log.
+- `npm run preview` — PASS with no escape flag. OpenNext built the Worker and `wrangler dev` served `/`, both tools, `/privacy`, `/terms`, `/sitemap.xml` and `/api/health` with 200; `/image-opt` and `/cnic-opt` returned 301 and resolved to the new routes; trailing slash returned 308 then 301.
+- `git diff --check` — PASS.
+- Manual browser checks and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- Visual layout, tool flows, print/PDF/PNG, ads and keyboard checks in a real browser.
+- `npm audit` — the install reported 6 high-severity advisories, but `npm audit --omit=dev` failed with a registry/network error. Needs a follow-up audit and a decision before production.
+- npm printed allow-scripts warnings for `esbuild` and `workerd` postinstall scripts; the preview still ran with the bundled binaries.
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit and PR pending. Do not merge without approval.
+
+Follow-ups:
+- Production still served the old deployment at the last check; after merge, the owner needs to confirm the Workers Build and deploy.
+- Run `npm audit` when the registry is reachable and decide whether to update or accept the reported advisories.
+- The CNIC engine footer still says "Prepared with cnic-copy-print-opt | Proprietary tool by Asad Bukhari"; owner decision pending.
+
+---
+
 ## 2026-10-29 — SEO routes and content (redesign step 5)
 
 Status: MERGED (production deploy unverified)
@@ -945,13 +994,13 @@ Snapshot date: 2026-10-29 (branch base: `main` at `da3222a`).
 | --- | --- |
 | App package | `optipack-portal` v3.0.0 |
 | Tool labels | Image Compressor; CNIC Photocopy |
-| Next.js | `^15.3.3` (App Router) |
+| Next.js | `^16.4.3` (App Router) |
 | React | `^19.1.0` |
 | Tailwind CSS | `^4.1.14` |
 | TypeScript | `~5.8.3`, strict |
 | Icons | `lucide-react` `^0.546.0` |
-| Cloudflare adapter | `@opennextjs/cloudflare` `^1.20.6` |
-| Wrangler | `^4.130.0` |
+| Cloudflare adapter | `@opennextjs/cloudflare` `^1.20.14` |
+| Wrangler | `^4.148.0` (installed 4.155.0) |
 | Output mode | `standalone` in `next.config.ts` |
 
 ### Pages and routes on `main`
