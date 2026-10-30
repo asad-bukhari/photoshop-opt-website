@@ -44,7 +44,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit and PR pending. Do not merge without approval.
+- Commit: `342c907` — `chore: upgrade to next.js 16`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/9.
 
 Follow-ups:
 - Production still served the old deployment at the last check; after merge, the owner needs to confirm the Workers Build and deploy.

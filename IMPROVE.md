@@ -38,7 +38,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 Move completed items here with the date and commit.
 
-- [x] **I-30 (2026-10-29)** Upgraded Next.js from 15.5.25 to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 and Wrangler to 4.155.0. `npm run preview` now builds and serves without the escape flag. Commit pending, PR pending.
+- [x] **I-30 (2026-10-29)** Upgraded Next.js from 15.5.25 to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 and Wrangler to 4.155.0. `npm run preview` now builds and serves without the escape flag. Commit `342c907`, PR #9.
 
 - [x] **I-05 (2026-10-29)** Removed "without quality loss", "up to 80%" and "batch multi-threaded" from the metadata and copy; the tool page and FAQ now describe the target-size process and sequential processing. The unused `REPO_INFO` block was removed. Commit `17fe0fd`, PR #7.
 - [x] **I-07 (2026-10-29)** Added `/privacy` with analytics, ads, hosting logs and jsPDF coverage, and linked it from the footer and tool content. Contact details are omitted until the owner confirms a mailbox (I-14). Commit `17fe0fd`, PR #7.
