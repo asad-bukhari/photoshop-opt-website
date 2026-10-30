@@ -39,7 +39,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `TOOLS_PLAN.md`.
 
 Commit/PR:
-- Commit and PR created after this entry was written; see the branch `docs/add-tools-plan`.
+- Commit: `26c79cd` — `docs: add new tools plan and record decisions`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/12.
 
 Follow-ups:
 - Phase 0 (`feature/tools-foundation`) needs its own WORKLOG plan entry before coding.
