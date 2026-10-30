@@ -30,7 +30,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 - [ ] **I-24 — Stop hard-coding the health version.** `app/api/health/route.ts:8` returns `3.0.0`; read the package version or expose a build identifier.
 - [ ] **I-25 — Document the HSTS header.** `README.md:132` lists four security headers; `next.config.ts:19` also sets `Strict-Transport-Security`. Add it to the README.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
-- [ ] **I-29 — Add a minimal automated smoke suite.** There is no test framework. A small Playwright or Vitest smoke test could cover the two tool flows and `/api/health`. **DECISION:** approve a test dependency and runtime budget.
+- [ ] **I-29 — Add a minimal automated smoke suite.** There is no test framework. Vitest was approved on 2026-10-30 for pure functions only (crop math, range parsing, layout); Canvas flows stay manual. Pending implementation in `TOOLS_PLAN.md` Phase 0. Playwright and `/api/health` smoke coverage remain unapproved.
 
 ---
 
