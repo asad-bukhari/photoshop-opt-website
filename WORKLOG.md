@@ -6,7 +6,7 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ## 2026-10-30 — Tools foundation (registry, shared parts, object URLs)
 
-Status: TESTED
+Status: MERGED (production deploy pending)
 Branch: `feature/tools-foundation`
 
 Goal:
@@ -53,19 +53,20 @@ Not tested:
 - Visual layout, tap targets, ads and the two tool flows in a real browser.
 - Real memory behaviour after many large images.
 - Client bundle size: Next.js 16 did not print per-route sizes in this build.
-- Workers Builds / production deploy after merge (owner runs the final deploy).
+- Production after merge: the live site still served the pre-Phase-0 HTML at 2026-10-31 04:00 UTC (`Two tools, one page`, no related-tools section). `wrangler deployments list` showed the newest deployment created 2026-10-30T04:46:56Z, before this merge. Workers Builds did not publish a new version within about five minutes. The dashboard build was not inspected and `npm run deploy` was not run.
 
 Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
 - Commit: `f9dc503` — `feat: add tools foundation and fix object URLs`.
-- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/13.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/13 (merged, merge commit `c9ee4e0`).
 
 Follow-ups:
 - Approve and run the three behaviour-neutral engine extractions next.
 - Add Vitest (`chore/add-vitest`), then the photo/signature resizer.
 - I-31: if the client bundle grows, split nav metadata from the registry content.
+- I-08 remains open: confirm Workers Builds in the Cloudflare dashboard or have the owner run the production deploy, then re-check the live HTML and record it here.
 - `npm run preview` depends on fetching Google Fonts; a network failure can make the first attempt fail even though the build is valid.
 
 ---
