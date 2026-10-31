@@ -20,6 +20,8 @@ import {
 import { CnicFilterMode, CnicLayoutPreset, CnicPaperSize, CnicPrintOptions } from '@/lib/types';
 import { CNIC_WATERMARK_PRESETS } from '@/lib/data/initialData';
 import { generateCnicPrintCanvas } from '@/lib/utils/cnicOptimizer';
+import { PAPER_SIZE_MM, canvasToJpegDataUrl, loadJsPdfLibrary } from '@/lib/utils/pdfExport';
+import { printSheet } from '@/lib/utils/printSheet';
 import { ResponsiveAd } from './ResponsiveAd';
 
 const DEFAULT_OPTIONS: CnicPrintOptions = {
@@ -35,13 +37,6 @@ const DEFAULT_OPTIONS: CnicPrintOptions = {
   sharpness: 50,
   borderGrid: true,
   dateStamp: true
-};
-
-const PAPER_SIZE_MM: Record<CnicPaperSize, { w: number; h: number }> = {
-  a4: { w: 210, h: 297 },
-  letter: { w: 215.9, h: 279.4 },
-  legal: { w: 215.9, h: 355.6 },
-  '3r': { w: 88.9, h: 127 }
 };
 
 const PAPER_LABELS: Record<CnicPaperSize, string> = {
@@ -65,49 +60,6 @@ const FILTER_OPTIONS: { id: CnicFilterMode; label: string }[] = [
   { id: 'grayscale', label: 'Grayscale' },
   { id: 'enhanced', label: 'Color boost' }
 ];
-
-function loadJsPdfLibrary(): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const win = window as any;
-    if (win.jspdf?.jsPDF) {
-      resolve(win.jspdf.jsPDF);
-      return;
-    }
-
-    const existing = document.querySelector('script[src*="jspdf.umd.min.js"]') as HTMLScriptElement | null;
-    if (existing) {
-      existing.addEventListener('load', () => resolve(win.jspdf.jsPDF), { once: true });
-      existing.addEventListener('error', () => reject(new Error('Failed to load PDF library')), { once: true });
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    script.async = true;
-    script.onload = () => resolve(win.jspdf?.jsPDF);
-    script.onerror = () => reject(new Error('Failed to load PDF library'));
-    document.head.appendChild(script);
-  });
-}
-
-function canvasToJpegDataUrl(dataUrl: string, quality = 0.92): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        canvas.getContext('2d')!.drawImage(img, 0, 0);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      } catch (error) {
-        reject(error);
-      }
-    };
-    img.onerror = () => reject(new Error('Failed to read sheet image'));
-    img.src = dataUrl;
-  });
-}
 
 export function CnicOptTool() {
   const [frontFile, setFrontFile] = useState<File | string | null>(null);
@@ -232,74 +184,15 @@ export function CnicOptTool() {
   const handlePrintDocument = async () => {
     if (!previewDataUrl || !hasAnyImage) return;
 
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
+    const pageCount = options.layout === 'pakistani-style' ? 2 : 1;
+    const opened = printSheet(previewDataUrl, options.paperSize, pageCount);
+
+    if (!opened) {
       setActionMessage('Your browser blocked the print window. Allow pop-ups and try again.');
       return;
     }
 
     setActionMessage(null);
-    const { w, h } = PAPER_SIZE_MM[options.paperSize];
-
-    const pageCount = options.layout === 'pakistani-style' ? 2 : 1;
-    const pages = Array.from(
-      { length: pageCount },
-      () => `<div class="page"><img src="${previewDataUrl}" alt="CNIC print sheet" /></div>`
-    ).join('');
-
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>CNIC print sheet - Zaibi Tools</title>
-          <style>
-            html, body { margin: 0; padding: 0; background: #fff; }
-            .page {
-              width: ${w}mm;
-              height: ${h}mm;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              page-break-after: always;
-              break-after: page;
-              overflow: hidden;
-            }
-            .page:last-child { page-break-after: auto; break-after: auto; }
-            .page img { width: 100%; height: 100%; object-fit: contain; }
-            @page { size: ${w}mm ${h}mm; margin: 0; }
-          </style>
-        </head>
-        <body>
-          ${pages}
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-
-    const images = printWindow.document.images;
-    if (images.length === 0) {
-      printWindow.focus();
-      printWindow.print();
-      printWindow.close();
-      return;
-    }
-
-    let ready = 0;
-    Array.from(images).forEach((img) => {
-      const finish = () => {
-        ready++;
-        if (ready === images.length) {
-          printWindow.focus();
-          printWindow.print();
-          printWindow.close();
-        }
-      };
-      if (img.complete) finish();
-      else {
-        img.onload = finish;
-        img.onerror = finish;
-      }
-    });
   };
 
   const handleDownloadPdf = async () => {

@@ -4,6 +4,55 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Extract print and PDF helpers (refactor 3 of 3)
+
+Status: TESTED
+Branch: `refactor/extract-print-pdf`
+
+Goal:
+- Move `PAPER_SIZE_MM`, `loadJsPdfLibrary` and `canvasToJpegDataUrl` out of `CnicOptTool.tsx` into `lib/utils/pdfExport.ts`, and the print-window code into `lib/utils/printSheet.ts`, without changing print or PDF output.
+
+Plan:
+- Add `pdfExport.ts` with the paper sizes, the jsPDF CDN loader and the JPEG conversion.
+- Add `printSheet.ts` with the popup/write/image-wait/print/close sequence, returning `false` when the popup is blocked.
+- Import the helpers in `CnicOptTool.tsx` and delete the local copies; keep the same message, title, A4/Letter/Legal/3R dimensions and Pakistani-grid two-page behavior.
+- Run `typecheck`, `build`, the dev route check and a line-level comparison.
+
+Risks:
+- The jQuery-free print ready loop, page count and `@page` CSS must stay identical.
+- The jsPDF version, CDN URL, JPEG quality and `FAST` compression must not change.
+
+What changed:
+- Added `lib/utils/pdfExport.ts` with `PAPER_SIZE_MM`, `loadJsPdfLibrary` and `canvasToJpegDataUrl` copied from `CnicOptTool.tsx`.
+- Added `lib/utils/printSheet.ts` with the popup, HTML, image-ready wait, print and close sequence. It returns `false` when the popup is blocked and accepts an optional print title.
+- `CnicOptTool.tsx` imports the helpers and no longer defines the paper sizes, jsPDF loader, JPEG conversion or print-window code. The blocked-popup message is unchanged.
+- No UI copy, routing or dependency changes; the jsPDF CDN URL/version, JPEG quality and `FAST` compression are unchanged.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack), all 8 routes generated, TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/api/health` 200; no errors in the dev log.
+- `git diff --check` — PASS.
+- Print/PDF output comparison — code-level only. The moved blocks are identical; no browser or printer was available.
+- Manual print/PDF check and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- A real print window, PDF download and printed sheet size were not exercised.
+- `npm run preview` — NOT RUN. No routing, config, dependency or asset change.
+
+Docs updated:
+- `WORKLOG.md`.
+
+Commit/PR:
+- Commit: `e9b2358` — `refactor: extract print and PDF helpers`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/17.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Next: `chore/add-vitest`, then the photo/signature resizer.
+
+---
+
 ## 2026-10-31 — Extract image filters (refactor 2 of 3)
 
 Status: TESTED
