@@ -262,7 +262,7 @@ Rotate, crop, then filters: Original, Grayscale, B&W scan, brighten (reuse `imag
 | D-2 | `pdf-lib` | merge, split, images to PDF | MIT licensed, runs in browser | Approved as part of D-3; check bundle size in `next build` output. |
 | D-3 | `pdf-lib` for all PDF work | image to PDF, merge, split | one library is simpler; the jsPDF CDN has no integrity check (IMPROVE I-15) | **Resolved 2026-10-30: use `pdf-lib`.** |
 | D-4 | `fflate` (or similar) | ZIP download for batches/splits | only if ZIP is wanted | **Declined 2026-10-30.** No ZIP downloads. |
-| D-5 | `pdfjs-dist` | PDF to JPG, thumbnails | Apache-2.0 | Not yet approved. Phase 6 only. Needs worker file hosting. |
+| D-5 | `pdfjs-dist` | PDF to JPG, thumbnails | Apache-2.0 | **Approved 2026-10-31.** Worker served from our origin via `predev`/`prebuild`. |
 
 Before adding any package: check license, size, last release date, and that it works inside the Cloudflare Worker build.
 

@@ -328,7 +328,7 @@ export const TOOLS: ToolEntry[] = [
           'No. The file is read and split in your browser. The site loads analytics and ads, but your PDF is not sent to a server.'
       }
     ],
-    relatedIds: ['merge-pdf', 'jpg-to-pdf'],
+    relatedIds: ['merge-pdf', 'jpg-to-pdf', 'pdf-to-jpg'],
     keywords: ['split pdf', 'extract pdf pages', 'pdf splitter', 'split pdf every n pages'],
     features: ['Extract page ranges', 'Split every N pages', 'Runs in your browser'],
     actionLabel: 'Open split PDF',
@@ -448,6 +448,78 @@ export const TOOLS: ToolEntry[] = [
     actionLabel: 'Open CNIC photocopy',
     kind: 'tool',
     version: '3.0.0',
+    status: 'live'
+  },
+  {
+    id: 'pdf-to-jpg',
+    slug: 'pdf-to-jpg',
+    name: 'PDF to JPG',
+    shortName: 'PDF JPG',
+    category: 'pdf',
+    icon: 'file-image',
+    description: 'Render every PDF page as a JPG image with a chosen scale and JPEG quality.',
+    metaTitle: 'PDF to JPG — Convert PDF Pages to Images',
+    metaDescription:
+      'Convert PDF pages to JPG images in your browser. Choose the scale and JPEG quality, render every page and download the images without uploading.',
+    h1: 'Convert PDF pages to JPG images',
+    intro:
+      'Add a PDF, choose the image scale and quality, then render each page as a separate JPG. The PDF is processed in your browser and is not uploaded.',
+    howToSteps: [
+      {
+        title: 'Add the PDF',
+        body: 'Choose one PDF and check the page count. Password-protected PDFs are skipped.'
+      },
+      {
+        title: 'Choose scale and quality',
+        body: '2x is a good default for readable text. High quality keeps more detail; Small makes smaller files.'
+      },
+      {
+        title: 'Render the pages',
+        body: 'Select Convert and wait while each page is drawn in order. The progress text shows the current page.'
+      },
+      {
+        title: 'Download the JPGs',
+        body: 'Download each page image separately. This version does not create a ZIP.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I convert PDF pages to JPG?',
+        answer:
+          'Add the PDF, choose a scale and JPEG quality, select Convert, then download each page image from the result list. The rendering happens in your browser.'
+      },
+      {
+        question: 'What does the scale setting change?',
+        answer:
+          'Scale controls the output pixels. 1x is about 72 DPI, 1.5x is about 108 DPI and 2x is about 144 DPI. A larger scale gives a sharper image and a larger file.'
+      },
+      {
+        question: 'Can I download all pages at once?',
+        answer:
+          'No. This version downloads each JPG separately and does not create a ZIP. A PDF with many pages means many download buttons.'
+      },
+      {
+        question: 'Are protected PDFs supported?',
+        answer:
+          'No. Password-protected PDFs are skipped with a message. The tool does not remove or guess passwords.'
+      },
+      {
+        question: 'Will the images contain searchable text?',
+        answer:
+          'No. The PDF pages are rendered as images, so text is not searchable and no OCR is performed.'
+      },
+      {
+        question: 'Is my PDF uploaded?',
+        answer:
+          'No. The PDF is loaded and rendered in your browser. The site loads analytics and ads, but your file is not sent to a server.'
+      }
+    ],
+    relatedIds: ['jpg-to-pdf', 'split-pdf'],
+    keywords: ['pdf to jpg', 'pdf to image', 'convert pdf to jpg', 'pdf page image'],
+    features: ['Every page to JPG', 'Scale and quality', 'Runs in your browser'],
+    actionLabel: 'Open PDF to JPG',
+    kind: 'tool',
+    version: '1.0.0',
     status: 'live'
   },
   {

@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     template: '%s | Zaibi Tools'
   },
   description:
-    'Compress images, resize photos and signatures, scan document photos, convert or edit PDFs, and print CNIC or passport sheets. Free browser tools.',
+    'Compress images, resize photos and signatures, scan document photos, convert PDF pages to JPG, and print CNIC or passport sheets. Free browser tools.',
   robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
     siteName: 'Zaibi Tools',
     title: 'Zaibi Tools — Image, Photo, PDF & Print Tools',
     description:
-      'Compress images, resize photos and signatures, scan document photos, convert or edit PDFs, and print CNIC or passport sheets. Free browser tools.'
+      'Compress images, resize photos and signatures, scan document photos, convert PDF pages to JPG, and print CNIC or passport sheets. Free browser tools.'
   }
 };
 
