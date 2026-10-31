@@ -129,7 +129,7 @@ export const TOOLS: ToolEntry[] = [
     id: 'jpg-to-pdf',
     slug: 'jpg-to-pdf',
     name: 'Image to PDF',
-    shortName: 'PDF',
+    shortName: 'Image PDF',
     category: 'pdf',
     icon: 'file-text',
     description: 'Combine JPG, PNG and WebP images into one PDF with page size, orientation, margin and quality controls.',
@@ -256,10 +256,82 @@ export const TOOLS: ToolEntry[] = [
           'There is no fixed limit, but very large PDFs or many files can be slow and use a lot of memory on a phone. The tool processes one file at a time and shows progress.'
       }
     ],
-    relatedIds: ['jpg-to-pdf', 'image-compressor'],
+    relatedIds: ['jpg-to-pdf', 'split-pdf', 'image-compressor'],
     keywords: ['merge pdf', 'combine pdf', 'join pdf files', 'pdf merger'],
     features: ['Join PDFs in order', 'Page count per file', 'Runs in your browser'],
     actionLabel: 'Open merge PDF',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'split-pdf',
+    slug: 'split-pdf',
+    name: 'Split PDF',
+    shortName: 'Split',
+    category: 'pdf',
+    icon: 'scissors',
+    description: 'Extract selected pages or split a PDF every N pages into separate files.',
+    metaTitle: 'Split PDF Files Online in Your Browser',
+    metaDescription:
+      'Extract pages or split a PDF every N pages in your browser. Enter ranges like 1-3, 5, then download the new files without uploading.',
+    h1: 'Split a PDF in your browser',
+    intro:
+      'Add one PDF, select the pages you need or split every N pages, then download the new files. The PDF is read and split on your device.',
+    howToSteps: [
+      {
+        title: 'Add one PDF',
+        body: 'Choose a PDF and check its page count. Password-protected files are skipped.'
+      },
+      {
+        title: 'Pick a mode',
+        body: 'Extract pages into one PDF, or split the whole file every N pages into separate files.'
+      },
+      {
+        title: 'Enter pages or a chunk size',
+        body: 'For extraction, use ranges like 1-3, 5. For chunks, enter how many pages each new file should contain.'
+      },
+      {
+        title: 'Download the files',
+        body: 'Check each page count, then download the new PDFs one at a time.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I extract pages from a PDF?',
+        answer:
+          'Add the PDF, keep Extract pages selected, enter the pages or ranges, then select Extract selected pages. The selected pages are written to one new PDF.'
+      },
+      {
+        question: 'What page range syntax is supported?',
+        answer:
+          'Use single pages and ranges separated by commas, such as 1-3, 5, 8-10. Spaces are allowed. Reversed or out-of-range entries are rejected, and duplicates are removed.'
+      },
+      {
+        question: 'Can I split a PDF every N pages?',
+        answer:
+          'Yes. Choose Split every N pages and enter the chunk size. A 10-page PDF split every 3 pages produces files with 3, 3, 3 and 1 pages. Each file downloads separately.'
+      },
+      {
+        question: 'Does this create a ZIP file?',
+        answer:
+          'No. This version downloads each output PDF individually. There is no ZIP bundle.'
+      },
+      {
+        question: 'What happens to a protected PDF?',
+        answer:
+          'It is skipped with a message. The tool does not remove or guess PDF passwords. Create an unprotected copy first.'
+      },
+      {
+        question: 'Is my PDF uploaded?',
+        answer:
+          'No. The file is read and split in your browser. The site loads analytics and ads, but your PDF is not sent to a server.'
+      }
+    ],
+    relatedIds: ['merge-pdf', 'jpg-to-pdf'],
+    keywords: ['split pdf', 'extract pdf pages', 'pdf splitter', 'split pdf every n pages'],
+    features: ['Extract page ranges', 'Split every N pages', 'Runs in your browser'],
+    actionLabel: 'Open split PDF',
     kind: 'tool',
     version: '1.0.0',
     status: 'live'

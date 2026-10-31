@@ -4,6 +4,67 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Split PDF
+
+Status: TESTED
+Branch: `feature/split-pdf`
+
+Goal:
+- Add `/split-pdf` to extract selected pages into one PDF or split every N pages into separate files.
+- Add a tested `parsePageRanges` parser and reuse the PDF inspection helpers.
+
+Plan:
+- Add `PdfSplitResult` and pure `parsePageRanges`; test spaces, reversed ranges, out-of-range, duplicates and invalid input.
+- Extend `lib/utils/pdfTools.ts` with protected-file loading, page extraction and every-N splitting, all behind the dynamic `pdf-lib` import.
+- Add `components/SplitPdfTool.tsx`: one PDF, page count, extract ranges, every-N mode, result downloads (no ZIP).
+- Add `app/split-pdf/page.tsx` with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Register the tool, link merge <-> split <-> image-to-PDF, update home/nav/sitemap and shorten desktop nav labels for the six-tool list.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- Ambiguous or unsafe ranges must produce clear errors and no partial file.
+- Encrypted PDFs must be skipped, not cracked.
+- Many output files without ZIP need individual download buttons and an honest note.
+
+What changed:
+- `lib/types.ts`: added `PdfSplitResult`.
+- `lib/utils/pdfTools.ts`: added pure `parsePageRanges`, shared protected-file loading, `extractPdfPages` and `splitPdfEveryN`. All PDF work stays behind the dynamic `pdf-lib` import.
+- `lib/utils/pdfTools.test.ts`: added range parser tests (spaces, duplicates, reversed, out-of-range, malformed) and real extraction/splitting tests with generated PDFs, including page order. Suite is now 48 tests in 7 files.
+- `components/SplitPdfTool.tsx`: one-PDF input, page count, extract mode with live range validation, every-N mode with output count, per-file result downloads, no ZIP. Protected and broken files are skipped with a message.
+- `components/SplitPdfContent.tsx`: mode comparison, range syntax, protected files and explicit limits.
+- `app/split-pdf/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, related links merge <-> split <-> image-to-PDF, home PDF group and popular task, sitemap.
+- `components/Header.tsx`: desktop nav uses compact short names and the mobile menu uses full tool names so six tools fit without crowding.
+- Docs: this entry, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 7 files, 48 tests, including real pdf-lib extract/split output checked with `PDFDocument.load`.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 16 pages including `/split-pdf`.
+- `npm run dev` — PASS. All six tools, three landing pages, `/privacy`, `/terms`, `/sitemap.xml` and `/api/health` returned 200. `/split-pdf` had one H1, expected title, three JSON-LD types, limits and related tools. Desktop nav used short labels; mobile nav kept full names. Home shows all three PDF tools; the sitemap lists `/split-pdf`. No `class="dark"`, no dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served `/split-pdf` and all existing routes with 200; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (extract ranges, every-N split, multiple downloads, protected/broken PDFs, large PDF, phone/desktop viewers, no upload in DevTools) — NOT RUN. No browser or device is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real protected-PDF handling and multi-file download ergonomics were not exercised in a browser. Encrypted behavior is implemented but not automated-tested.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit: `59f320b` — `feat: add split pdf tool`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/23.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Page thumbnails for merge/split wait on the unapproved `pdfjs-dist` (D-5).
+- I-34 remains open for avoiding double JPEG encoding in image-to-PDF.
+
+---
+
 ## 2026-10-31 — Merge PDF
 
 Status: TESTED

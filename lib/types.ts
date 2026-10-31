@@ -4,6 +4,13 @@ export type PdfMargin = 'none' | 'small' | 'normal';
 export type PdfImageQuality = 'original' | 'high' | 'small';
 export type PdfRotation = 0 | 90 | 180 | 270;
 
+export interface PdfSplitResult {
+  blob: Blob;
+  pageCount: number;
+  bytes: number;
+  name: string;
+}
+
 export interface PdfFileInfo {
   pageCount: number;
   encrypted: boolean;

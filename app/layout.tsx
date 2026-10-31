@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     template: '%s | Zaibi Tools'
   },
   description:
-    'Compress images, resize photos and signatures to exact pixels and KB, convert or merge PDFs, and print CNIC copies. Free browser tools.',
+    'Compress images, resize photos and signatures to exact pixels and KB, convert, merge or split PDFs, and print CNIC copies. Free browser tools.',
   robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
     siteName: 'Zaibi Tools',
     title: 'Zaibi Tools — Images, Photo Resizer & PDF',
     description:
-      'Compress images, resize photos and signatures to exact pixels and KB, convert or merge PDFs, and print CNIC copies. Free browser tools.'
+      'Compress images, resize photos and signatures to exact pixels and KB, convert, merge or split PDFs, and print CNIC copies. Free browser tools.'
   }
 };
 

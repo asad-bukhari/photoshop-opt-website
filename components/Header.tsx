@@ -7,8 +7,8 @@ import { Menu, ShieldCheck, X } from 'lucide-react';
 import { getNavTools, toolHref } from '@/lib/data/tools';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Home' },
-  ...getNavTools().map((tool) => ({ href: toolHref(tool), label: tool.name }))
+  { href: '/', label: 'Home', fullLabel: 'Home' },
+  ...getNavTools().map((tool) => ({ href: toolHref(tool), label: tool.shortName, fullLabel: tool.name }))
 ];
 
 interface HeaderProps {
@@ -112,7 +112,7 @@ export function Header({ onOpenSecurity }: HeaderProps) {
                       active ? 'bg-doc-soft text-doc' : 'text-ink hover:bg-paper-3'
                     }`}
                   >
-                    {item.label}
+                    {item.fullLabel}
                   </Link>
                 </li>
               );

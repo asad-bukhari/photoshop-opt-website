@@ -6,7 +6,7 @@ This is the rules file for AI agents and humans working on Zaibi Tools. Read it 
 
 - **App:** `optipack-portal`, branded **Zaibi Tools**.
 - **Stack:** Next.js 16 App Router, React 19, Tailwind CSS v4, TypeScript strict.
-- **Tools:** five 100% client-side tools at `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf` and `/cnic-photocopy`. Files are processed in the browser and must never be uploaded.
+- **Tools:** six 100% client-side tools at `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf` and `/cnic-photocopy`. Files are processed in the browser and must never be uploaded.
 - **Hosting:** Cloudflare Worker via OpenNext (`@opennextjs/cloudflare`) and Wrangler.
 - **Deploy:** production deploys through Cloudflare Workers Builds when changes merge to `main`. There are no GitHub Actions. The Cloudflare dashboard is the source of truth for build settings; verify and log the result.
 - **Live:** https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
@@ -67,7 +67,7 @@ npm run deploy
 
 Run `npm run dev` and check every changed route before committing:
 
-- `/`, `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/cnic-photocopy`, `/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`, `/privacy`, `/terms`, `/api/health`, and the changed route return the expected status.
+- `/`, `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/cnic-photocopy`, `/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`, `/privacy`, `/terms`, `/api/health`, and the changed route return the expected status.
 - The changed UI or copy is present and the removed text is gone.
 - No `class="dark"` or theme toggle appears.
 - The dev log has no server errors.
@@ -86,6 +86,7 @@ Run this for tool, UI, ad, metadata, or config changes:
 - [ ] Resizer tool: presets and custom units/DPI, max/min KB, Fill/Fit/Stretch, drag/zoom crop, label strip, JPG/PNG/WebP download, reset.
 - [ ] PDF tool: multiple images, drag/up/down reorder, rotate, page size, orientation, margin, quality, progress, download, reset.
 - [ ] Merge PDF tool: multiple PDFs, page counts, up/down order, protected/broken files, progress, download, reset.
+- [ ] Split PDF tool: extract ranges, every-N split, invalid ranges, protected files, individual downloads, reset.
 - [ ] CNIC tool: sample cards, front/back upload, every layout, every filter, every paper size, scale, watermark, preview, print, PDF, PNG.
 - [ ] Browser DevTools Network shows **no upload of user files**.
 - [ ] No console errors or unhandled rejections.
