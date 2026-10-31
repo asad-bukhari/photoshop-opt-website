@@ -41,6 +41,33 @@ export interface PdfBuildResult {
   bytes: number;
 }
 
+export type ScanFilterMode = 'original' | 'grayscale' | 'bw' | 'brighten';
+export type ScanRotation = 0 | 90 | 180 | 270;
+
+export interface ScanCrop {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+export interface ScanPageSettings {
+  rotation: ScanRotation;
+  filter: ScanFilterMode;
+  crop: ScanCrop;
+}
+
+export interface ScanPageInput {
+  file: File;
+  settings: ScanPageSettings;
+}
+
+export interface ScanPdfResult {
+  blob: Blob;
+  pageCount: number;
+  bytes: number;
+}
+
 export type PassportPhotoPresetId = '35x45' | '2x2in' | 'custom';
 export type PassportPaperSize = '4x6' | 'a4' | 'letter' | '3r';
 

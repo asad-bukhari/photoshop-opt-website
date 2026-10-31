@@ -32,6 +32,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 - [ ] **I-33 — Optionally write JFIF DPI density for JPEG exports.** `lib/utils/photoResizer.ts` keeps the pixel size but Canvas does not write DPI metadata. Add a tested JFIF density write only if the output still opens correctly everywhere.
 - [ ] **I-34 — Avoid double JPEG encoding in image-to-PDF when safe.** `lib/utils/imagesToPdf.ts` always re-encodes through Canvas. Embedding the original JPEG/PNG when there is no rotation or downscale would preserve quality and reduce PDF size, but EXIF orientation must be handled first.
 - [ ] **I-35 — Add drag/touch positioning to the passport sheet.** The sheet centre-crops with a zoom slider; a drag crop like the photo resizer would let users correct head placement without editing the source. Add after the print-measurement check.
+- [ ] **I-36 — Optional edge detection for document scans.** `lib/utils/scanPdf.ts` relies on manual crop and rotate. Automatic edge/perspective detection was excluded from v1; revisit only with a proven on-device approach that keeps files local.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
 
 ---
