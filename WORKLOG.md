@@ -28,7 +28,7 @@ Not tested:
 - Production: the live site still served the pre-Phase-0 build at the last check. The owner runs the final deploy.
 
 Commit/PR:
-- PR `PENDING`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/29.
 
 Follow-ups:
 - Owner: run the production deploy (or confirm Workers Builds), then verify the live routes and mark this entry DEPLOYED.
