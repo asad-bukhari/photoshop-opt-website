@@ -58,8 +58,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add photo and signature resizer`.
-- PR `PENDING`.
+- Commit: `044d223` — `feat: add photo and signature resizer`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/19.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
