@@ -4,6 +4,63 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Crop and rotate image
+
+Status: TESTED
+Branch: `feature/crop-rotate`
+
+Goal:
+- Add `/crop-rotate-image` to crop one image with percentage sliders, rotate it in 90-degree steps and download JPG, PNG or WebP.
+- Reuse the crop math from the scan tool and the converter quality helpers.
+
+Plan:
+- Extract `computeCropRect` and `rotatedDimensions` into `lib/utils/cropRect.ts`; keep the scan exports working.
+- Add `lib/utils/cropRotate.ts`: cropped/rotated Canvas rendering with an optional preview cap and JPG/PNG/WebP encoding.
+- Add the tool UI with live preview, rotate, crop reset, format/quality and download.
+- Add the page, registry, home/nav/sitemap links and cross-links with the converter and resizer.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- Large photos can use memory; the preview is capped but export keeps the crop at source resolution.
+- JPG flattens transparency to white.
+- Rotation must swap dimensions for 90/270.
+
+What changed:
+- Extracted `computeCropRect` and `rotatedDimensions` into `lib/utils/cropRect.ts`; `scanPdf.ts` re-exports them so existing tests and imports still work.
+- `lib/types.ts`: added `ImageRotation` and `CropPercent` aliases while keeping `ScanRotation`/`ScanCrop` compatible.
+- Added `lib/utils/cropRotate.ts`: crop and rotation Canvas rendering with a preview cap, JPG white flattening, and PNG/WebP/JPG export.
+- Added `components/CropRotateTool.tsx`: one image, four crop sliders, Rotate 90°, live preview, format/quality, output size and download.
+- Added `components/CropRotateContent.tsx`: slider crop, rotation, formats and explicit limits.
+- `app/crop-rotate-image/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, converter related link, home Photos group/popular task, nav/footer and sitemap.
+- Docs: this entry, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 11 files, 69 tests (crop/rotation helpers remain covered by the scan tests).
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 21 pages including `/crop-rotate-image`; prebuild copied the pdf.js worker.
+- `npm run dev` — PASS. All routes including `/crop-rotate-image` returned 200; one H1, expected title, related tools and limits; nav/home/sitemap updated; no dark class; no dev-log errors.
+- `npm run preview` — PASS. New and existing routes 200; pdf.js worker 200 `text/javascript`; no build/server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (crop sliders, rotation, JPG/PNG/WebP, transparency, large photo, download, 1280 px header fit) — NOT RUN. No browser is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real cropped/rotated output, transparency and large-image memory were not inspected in a browser.
+- The desktop header with eleven tool links was not visually checked at 1024/1280 px.
+- Search Console indexing and production deployment (deferred).
+
+Commit/PR:
+- Commit: `31e2db4` — `feat: add crop and rotate tool`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/28.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- I-37: free-angle straightening is not implemented.
+- I-38: audit the desktop header now that it has eleven tool links.
+
+---
+
 ## 2026-10-31 — Image converter
 
 Status: TESTED

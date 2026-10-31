@@ -44,14 +44,17 @@ export interface PdfBuildResult {
 export type ImageConvertFormat = 'jpeg' | 'png' | 'webp';
 
 export type ScanFilterMode = 'original' | 'grayscale' | 'bw' | 'brighten';
-export type ScanRotation = 0 | 90 | 180 | 270;
+export type ImageRotation = 0 | 90 | 180 | 270;
+export type ScanRotation = ImageRotation;
 
-export interface ScanCrop {
+export interface CropPercent {
   left: number;
   right: number;
   top: number;
   bottom: number;
 }
+
+export type ScanCrop = CropPercent;
 
 export interface ScanPageSettings {
   rotation: ScanRotation;

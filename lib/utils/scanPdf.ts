@@ -7,6 +7,7 @@ import type {
   ScanRotation
 } from '../types';
 import { applyImageFilters, clamp255 } from './imageFilters';
+import { computeCropRect, rotatedDimensions } from './cropRect';
 
 export const SCAN_DPI = 150;
 export const SCAN_PAGE_WIDTH_MM = 210;
@@ -20,31 +21,7 @@ export const DEFAULT_SCAN_SETTINGS: ScanPageSettings = {
   crop: { left: 0, right: 0, top: 0, bottom: 0 }
 };
 
-export function computeCropRect(
-  width: number,
-  height: number,
-  crop: ScanCrop
-): { sx: number; sy: number; sw: number; sh: number } {
-  const left = Math.max(0, Math.min(45, crop.left));
-  const right = Math.max(0, Math.min(45, crop.right));
-  const top = Math.max(0, Math.min(45, crop.top));
-  const bottom = Math.max(0, Math.min(45, crop.bottom));
-
-  const sx = (width * left) / 100;
-  const sy = (height * top) / 100;
-  const sw = Math.max(1, (width * (100 - left - right)) / 100);
-  const sh = Math.max(1, (height * (100 - top - bottom)) / 100);
-
-  return { sx, sy, sw, sh };
-}
-
-export function rotatedDimensions(
-  width: number,
-  height: number,
-  rotation: ScanRotation
-): { width: number; height: number } {
-  return rotation === 90 || rotation === 270 ? { width: height, height: width } : { width, height };
-}
+export { computeCropRect, rotatedDimensions } from './cropRect';
 
 export function applyScanFilter(imageData: ImageData, filter: ScanFilterMode): void {
   if (filter === 'original') return;
