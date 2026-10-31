@@ -1,8 +1,9 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting nine document utilities plus focused KB-target pages:
+A browser-only, zero-server web portal hosting ten document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
+- **Image Converter** (`/image-converter`) — convert one image between JPG, PNG and WebP with a quality control and live preview.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **20/50/100 KB pages** (`/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`) — open the image compressor with the target already set, each with its own copy and FAQ.
 - **Image to PDF** (`/jpg-to-pdf`) — combine JPG, PNG and WebP images into one PDF with page size, orientation, margin and quality controls.
@@ -74,6 +75,7 @@ app/
   layout.tsx            Root layout: fonts, metadata, light theme, shell
   page.tsx              Landing page (HomeHub)
   image-compressor/page.tsx  Image compressor page
+  image-converter/page.tsx   Image format converter page
   photo-signature-resizer/page.tsx  Photo and signature resizer page
   compress-image-to-20kb/page.tsx  KB-target landing page (same for 50kb and 100kb)
   jpg-to-pdf/page.tsx   Image-to-PDF page
@@ -99,6 +101,8 @@ components/
                         HowToSteps, ToolFaq, RelatedTools, ResultActions, ToolIcon
   ImageOptTool.tsx      Image optimizer UI (dropzone, controls, compare slider)
   PhotoResizeTool.tsx   Resizer UI (crop preview, presets, KB targets, label strip)
+  ImageConvertTool.tsx  JPG/PNG/WebP converter UI
+  ImageConvertContent.tsx Converter content and limits
   PhotoResizeContent.tsx Resizer long-form content and limits
   SizeLandingPageView.tsx Shared KB landing page
   SizeLandingContent.tsx  Per-size sections
@@ -128,9 +132,11 @@ lib/
   data/sizeLandingPages.ts  Unique 20/50/100 KB page sections
   data/passportSheet.ts     Passport papers, photo presets and defaults
   data/ads.ts           Adsterra ad keys and dimensions
-  hooks/useObjectUrl.ts Object URL lifecycle for file previews
+  hooks/useObjectUrl.ts Object URL lifecycle for File/Blob previews
   utils/objectUrls.ts   Create/revoke object URL helpers
   utils/loadImage.ts    File/URL image decoding with a friendly error
+  utils/imageConvert.ts JPG/PNG/WebP conversion and test
+  utils/imageConvert.test.ts
   utils/download.ts     Blob/Data URL download helpers
   utils/format.ts       Byte and filename formatting
   utils/photoResizer.ts    Resizer math, crop, label strip and encoding

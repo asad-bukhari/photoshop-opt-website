@@ -4,6 +4,62 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Image converter
+
+Status: TESTED
+Branch: `feature/image-converter`
+
+Goal:
+- Add `/image-converter` to convert one image between JPG, PNG and WebP in the browser.
+- Reuse the image loading, object URL and download helpers.
+
+Plan:
+- Add `ImageConvertFormat`, a small Canvas converter and tests for MIME/extension/quality helpers.
+- Generalise `useObjectUrl` to accept a Blob so the output preview URL is released.
+- Add the tool UI with output format, quality, live result size and download.
+- Add the page, registry, home/nav/sitemap links and cross-links.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- JPG has no transparency; fill white and state it.
+- PNG ignores quality; show that clearly.
+- Re-encoding drops EXIF; say so.
+
+What changed:
+- `lib/types.ts`: added `ImageConvertFormat`.
+- `lib/utils/imageConvert.ts`: MIME/extension mapping, quality clamp, Canvas conversion with a white background for JPG and preserved transparency for PNG/WebP.
+- `lib/utils/imageConvert.test.ts`: 2 tests; suite is now 69 tests in 11 files.
+- `lib/hooks/useObjectUrl.ts`: now accepts any `Blob`, not only `File`, so converted-blob previews are released correctly. File callers are unchanged.
+- `components/ImageConvertTool.tsx`: one-image input, JPG/PNG/WebP output, quality slider, debounced conversion, live preview, size comparison and download.
+- `components/ImageConvertContent.tsx`: formats, transparency/quality and limits.
+- `app/image-converter/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, home Photos group/popular task, nav/footer and sitemap.
+- Docs: this entry, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 11 files, 69 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 20 pages including `/image-converter`; prebuild copied the pdf.js worker.
+- `npm run dev` — PASS. All routes including `/image-converter` returned 200; one H1, expected title, related tools and limits; nav/home/sitemap updated; no dark class; no dev-log errors.
+- `npm run preview` — PASS. `/image-converter` and existing routes returned 200; the pdf.js worker still returned 200 as `text/javascript`; no build/server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (JPG/PNG/WebP conversions, transparency, quality, size, downloads, no upload) — NOT RUN. No browser is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real converted files and transparency were not inspected in a browser.
+- Search Console indexing and production deployment (deferred).
+
+Commit/PR:
+- Commit `PENDING` — `feat: add image converter`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Crop/rotate is the next branch.
+
+---
+
 ## 2026-10-31 — PDF to JPG
 
 Status: TESTED
