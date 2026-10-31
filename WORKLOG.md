@@ -52,8 +52,8 @@ Docs updated:
 - `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add size landing pages`.
-- PR `PENDING`.
+- Commit: `8653c10` — `feat: add size landing pages`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/20.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
