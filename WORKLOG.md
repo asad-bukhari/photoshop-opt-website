@@ -6,7 +6,7 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ## 2026-10-31 — All planned tools built; final verification
 
-Status: MERGED (production deploy pending)
+Status: DEPLOYED
 Branch: `docs/final-tools-verification`
 
 Goal:
@@ -25,13 +25,14 @@ Tests run:
 
 Not tested:
 - Browser tool flows, the real mobile/desktop header with eleven tools, print measurements, Lighthouse and DevTools upload checks. No browser or printer is installed.
-- Production: the live site still served the pre-Phase-0 build at the last check. The owner runs the final deploy.
+- Production deploy: `npm run deploy` succeeded after explicit owner authorization. Version `769b3ab9-7e9a-4ae5-bef5-6ab5d2233a21` was uploaded at 2026-10-31T15:33:10Z.
 
 Commit/PR:
 - PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/29.
 
 Follow-ups:
-- Owner: run the production deploy (or confirm Workers Builds), then verify the live routes and mark this entry DEPLOYED.
+- Production verified at 2026-10-31 15:35 UTC: both `zaibitools.com` and the `workers.dev` fallback returned 200 for all eleven tools, the three KB landing pages, `/privacy`, `/terms`, `/api/health`, `/sitemap.xml` and `/pdf.worker.min.mjs` (1,264,342 bytes, `text/javascript`). The sitemap has 17 URLs; the home page shows all eleven tools and no dark class. Health is healthy.
+- Workers Builds auto-deploy still did not publish a new version; this deploy used the manual fallback (I-08 remains open).
 - I-08, I-32, I-34, I-35, I-37 and I-38 remain open.
 - Verify each tool manually on a real phone and desktop before promoting the suite.
 

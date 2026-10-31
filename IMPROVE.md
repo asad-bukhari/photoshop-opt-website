@@ -11,7 +11,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 ## P1 — fix before promoting claims
 
-- [ ] **I-08 — Replace stale deployment docs and verify Workers Builds.** `README.md:118` still says deployment is manual; this branch corrects the old `CLAUDE.md` line. The project rule is Workers Builds auto-deploy on merge to `main` with no GitHub Actions. The repo has no proof of the dashboard setting. Confirm it in Cloudflare, record it in `WORKLOG.md`, and update `README.md`. No Pages references were found.
+- [ ] **I-08 — Replace stale deployment docs and verify Workers Builds.** `README.md:118` still says deployment is manual; this branch corrects the old `CLAUDE.md` line. The project rule is Workers Builds auto-deploy on merge to `main` with no GitHub Actions. The repo has no proof of the dashboard setting. Manual `npm run deploy` succeeded on 2026-10-31 and the live routes were verified, but Workers Builds still did not publish the merges. Confirm the setting in Cloudflare, record it in `WORKLOG.md`, and update `README.md`. No Pages references were found.
 
 ## P2 — correctness, performance, SEO, security
 
