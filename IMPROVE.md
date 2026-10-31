@@ -30,6 +30,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 - [ ] **I-24 — Stop hard-coding the health version.** `app/api/health/route.ts:8` returns `3.0.0`; read the package version or expose a build identifier.
 - [ ] **I-25 — Document the HSTS header.** `README.md:132` lists four security headers; `next.config.ts:19` also sets `Strict-Transport-Security`. Add it to the README.
 - [ ] **I-33 — Optionally write JFIF DPI density for JPEG exports.** `lib/utils/photoResizer.ts` keeps the pixel size but Canvas does not write DPI metadata. Add a tested JFIF density write only if the output still opens correctly everywhere.
+- [ ] **I-34 — Avoid double JPEG encoding in image-to-PDF when safe.** `lib/utils/imagesToPdf.ts` always re-encodes through Canvas. Embedding the original JPEG/PNG when there is no rotation or downscale would preserve quality and reduce PDF size, but EXIF orientation must be handled first.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
 
 ---

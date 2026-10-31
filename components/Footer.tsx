@@ -25,7 +25,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
               <span className="font-display text-sm font-bold tracking-tight text-ink">Zaibi Tools</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-              Free browser tools for images, photos and CNIC copies. Your files stay on your device.
+              Free browser tools for images, photos, PDFs and CNIC copies. Your files stay on your device.
             </p>
             <p className="text-xs text-ink-soft">Not affiliated with NADRA.</p>
           </div>

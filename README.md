@@ -1,10 +1,11 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting three document utilities plus focused KB-target pages:
+A browser-only, zero-server web portal hosting four document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **20/50/100 KB pages** (`/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`) — open the image compressor with the target already set, each with its own copy and FAQ.
+- **Image to PDF** (`/jpg-to-pdf`) — combine JPG, PNG and WebP images into one PDF with page size, orientation, margin and quality controls.
 - **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
@@ -21,7 +22,8 @@ All processing happens **entirely in the browser** using the HTML5 Canvas API. F
 | UI | React 19, Tailwind CSS v4, `lucide-react` icons |
 | Language | TypeScript (strict) |
 | Hosting | Cloudflare Workers via `@opennextjs/cloudflare` 1.20.14 + Wrangler 4.155 |
-| PDF export | `jsPDF`, loaded on demand from a CDN |
+| PDF export (CNIC) | `jsPDF`, loaded on demand from a CDN |
+| PDF build (new tools) | `pdf-lib` 1.17.1 (MIT), dynamic import on `/jpg-to-pdf` |
 | Tests | Vitest (pure functions only) |
 
 No database, no backend API beyond a health check. Vitest covers pure functions; Canvas and print flows are checked by hand.
@@ -68,6 +70,7 @@ app/
   image-compressor/page.tsx  Image compressor page
   photo-signature-resizer/page.tsx  Photo and signature resizer page
   compress-image-to-20kb/page.tsx  KB-target landing page (same for 50kb and 100kb)
+  jpg-to-pdf/page.tsx   Image-to-PDF page
   cnic-photocopy/page.tsx    CNIC photocopy page
   privacy/page.tsx      Privacy policy
   terms/page.tsx        Terms of use
@@ -89,6 +92,8 @@ components/
   SizeLandingPageView.tsx Shared KB landing page
   SizeLandingContent.tsx  Per-size sections
   SizeLandingLinks.tsx    Cross-links between KB targets
+  ImagesToPdfTool.tsx   Image-to-PDF UI (list, reorder, page setup)
+  ImagesToPdfContent.tsx Image-to-PDF content and limits
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
   CornerMarks.tsx       Decorative print marks + scale ruler
@@ -111,6 +116,8 @@ lib/
   utils/imageFilters.ts    Shared CNIC/image filter functions
   utils/pdfExport.ts       Shared jsPDF loader, paper sizes and JPEG conversion
   utils/printSheet.ts      Shared print-window helper
+  utils/imagesToPdf.ts     Page math, image preparation and pdf-lib assembly
+  utils/imagesToPdf.test.ts PDF layout tests
   utils/toolSchema.ts      Shared JSON-LD builder
   utils/toolMetadata.ts    Shared metadata builder
   utils/imageOptimizer.ts  Image processing engine (Canvas)
@@ -179,7 +186,8 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 
 - **Fonts:** `next/font/google` downloads font files at build time. On networks with broken IPv6 DNS, the build hangs; the scripts set `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"` to work around this.
 - **AVIF:** the UI does not offer AVIF output because the encoder falls back to WebP (`lib/utils/imageOptimizer.ts`). AVIF input is accepted when the browser can decode it.
-- **PDF export** requires internet access to load jsPDF from cdnjs at runtime.
+- **PDF export (CNIC)** requires internet access to load jsPDF from cdnjs at runtime.
+- **PDF build (image-to-PDF)** uses bundled `pdf-lib` behind a dynamic import. Images are re-encoded as JPEG and long sides above 4000 px are downscaled.
 
 ---
 
