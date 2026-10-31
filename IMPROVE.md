@@ -39,7 +39,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 Move completed items here with the date and commit.
 
-- [x] **I-09 (2026-10-30)** Object URLs are now created and revoked through `lib/utils/objectUrls.ts`. `ImageOptTool` tracks the original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses the new `useObjectUrl` hook. Commit `PENDING`, PR `PENDING`.
+- [x] **I-09 (2026-10-30)** Object URLs are now created and revoked through `lib/utils/objectUrls.ts`. `ImageOptTool` tracks the original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses the new `useObjectUrl` hook. Commit `f9dc503`, PR #13.
 
 - [x] **I-30 (2026-10-29)** Upgraded Next.js from 15.5.25 to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 and Wrangler to 4.155.0. `npm run preview` now builds and serves without the escape flag. Commit `342c907`, PR #9.
 

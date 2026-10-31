@@ -59,8 +59,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add tools foundation and fix object URLs`.
-- PR `PENDING`.
+- Commit: `f9dc503` — `feat: add tools foundation and fix object URLs`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/13.
 
 Follow-ups:
 - Approve and run the three behaviour-neutral engine extractions next.
