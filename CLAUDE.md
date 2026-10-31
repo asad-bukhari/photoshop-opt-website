@@ -4,7 +4,7 @@ Read `AGENTS.md` first. It is the source of truth for workflow, branching, testi
 
 ## Project
 
-`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with four 100% client-side Canvas/PDF tools: `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
+`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with five 100% client-side tools: `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
 
 Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
@@ -37,6 +37,7 @@ Vitest covers pure functions (`npm run test`, config in `vitest.config.mts`). Us
 - **Tool registry:** `lib/data/tools.ts` drives the header, footer, home hub, sitemap, related tools and JSON-LD. Add a tool as one registry entry plus one page; do not hard-code nav links. `kind: 'landing'` keeps KB-target pages out of the navigation while leaving them in the sitemap; use `getNavTools()` for nav.
 - **Object URLs:** create and revoke them through `lib/utils/objectUrls.ts`. Use `lib/hooks/useObjectUrl.ts` for previews; `ImageOptTool` owns the original comparison URLs and revokes them on reset/unmount.
 - **Shared tool parts:** `components/tool/` holds `ToolPage`, `ToolHero`, `FileDropzone`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `ResultActions` and `ToolIcon` for new tools.
+- **Merge PDF:** `lib/utils/pdfTools.ts` inspects and merges PDFs with `pdf-lib` behind a dynamic import. Encrypted PDFs are skipped, not cracked; there are no thumbnails yet.
 - **Image to PDF:** `lib/utils/imagesToPdf.ts` imports `pdf-lib` dynamically inside `buildImagesPdf`; never move it into the shared layout. Images are re-encoded as JPEG, capped at 4000 px and processed one at a time.
 - **Photo resizer:** `lib/utils/photoResizer.ts` keeps unit/crop/target math pure; `PhotoResizeTool.tsx` debounces the final encode and draws a 720 px preview. Output is capped at 6000 px. Canvas writes pixels, not DPI metadata.
 - **Light-only theme:** no `dark:` variants, no theme switch, no stored preference. Use tokens from `app/globals.css`, not raw hex.

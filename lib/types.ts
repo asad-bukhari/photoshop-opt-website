@@ -4,6 +4,17 @@ export type PdfMargin = 'none' | 'small' | 'normal';
 export type PdfImageQuality = 'original' | 'high' | 'small';
 export type PdfRotation = 0 | 90 | 180 | 270;
 
+export interface PdfFileInfo {
+  pageCount: number;
+  encrypted: boolean;
+}
+
+export interface PdfMergeResult {
+  blob: Blob;
+  pageCount: number;
+  bytes: number;
+}
+
 export interface PdfBuildOptions {
   pageSize: PdfPageSize;
   orientation: PdfOrientation;

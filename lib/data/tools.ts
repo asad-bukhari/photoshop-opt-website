@@ -189,10 +189,77 @@ export const TOOLS: ToolEntry[] = [
           'No. This tool places images on PDF pages. It does not run OCR, so text inside a photo or scan is not searchable or selectable.'
       }
     ],
-    relatedIds: ['image-compressor', 'photo-signature-resizer'],
+    relatedIds: ['image-compressor', 'photo-signature-resizer', 'merge-pdf'],
     keywords: ['jpg to pdf', 'png to pdf', 'images to pdf', 'convert image to pdf'],
     features: ['JPG, PNG and WebP', 'A4, Letter, Legal or fit', 'Reorder and rotate'],
     actionLabel: 'Open image to PDF',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'merge-pdf',
+    slug: 'merge-pdf',
+    name: 'Merge PDF',
+    shortName: 'Merge',
+    category: 'pdf',
+    icon: 'layers',
+    description: 'Join several PDFs into one file in the order you choose, with page counts shown for each file.',
+    metaTitle: 'Merge PDF Files Online in Your Browser',
+    metaDescription:
+      'Combine several PDFs into one file in your browser. Reorder the files, see page counts, and download the merged PDF without uploading.',
+    h1: 'Merge PDF files in your browser',
+    intro:
+      'Add two or more PDFs, put them in the order you want, and download one combined file. The PDFs are read and merged on your device.',
+    howToSteps: [
+      {
+        title: 'Add the PDFs',
+        body: 'Choose two or more PDF files. Each file shows its page count and size before merging.'
+      },
+      {
+        title: 'Set the order',
+        body: 'Use the up and down buttons to arrange the files. Pages are appended in this list order.'
+      },
+      {
+        title: 'Merge the files',
+        body: 'Select Merge and watch the progress. Protected PDFs are skipped with a message.'
+      },
+      {
+        title: 'Download the result',
+        body: 'Check the merged page count and download the PDF. Open it in a viewer before sending it on.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I merge PDF files?',
+        answer:
+          'Add the PDFs, reorder them with the up and down buttons, select Merge, then download the result. The files stay in your browser during the merge.'
+      },
+      {
+        question: 'Can I change the page order?',
+        answer:
+          'You can change the order of the files, and their pages are added in that order. This version does not reorder pages inside a single PDF; merge and split tools would be needed for that.'
+      },
+      {
+        question: 'What happens to password-protected PDFs?',
+        answer:
+          'They are skipped with a message. The tool does not try to guess or remove passwords. Use an unprotected copy or remove the password in the app that created it.'
+      },
+      {
+        question: 'Are my PDFs uploaded?',
+        answer:
+          'No. The PDFs are read and merged in your browser with a bundled PDF library. The site loads analytics and ads, but your files are not sent to a server.'
+      },
+      {
+        question: 'Is there a page or file size limit?',
+        answer:
+          'There is no fixed limit, but very large PDFs or many files can be slow and use a lot of memory on a phone. The tool processes one file at a time and shows progress.'
+      }
+    ],
+    relatedIds: ['jpg-to-pdf', 'image-compressor'],
+    keywords: ['merge pdf', 'combine pdf', 'join pdf files', 'pdf merger'],
+    features: ['Join PDFs in order', 'Page count per file', 'Runs in your browser'],
+    actionLabel: 'Open merge PDF',
     kind: 'tool',
     version: '1.0.0',
     status: 'live'

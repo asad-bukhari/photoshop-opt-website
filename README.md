@@ -1,11 +1,12 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting four document utilities plus focused KB-target pages:
+A browser-only, zero-server web portal hosting five document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **20/50/100 KB pages** (`/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`) — open the image compressor with the target already set, each with its own copy and FAQ.
 - **Image to PDF** (`/jpg-to-pdf`) — combine JPG, PNG and WebP images into one PDF with page size, orientation, margin and quality controls.
+- **Merge PDF** (`/merge-pdf`) — join several PDFs in the chosen file order, with page counts and protected-file handling.
 - **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
@@ -23,7 +24,7 @@ All processing happens **entirely in the browser** using the HTML5 Canvas API. F
 | Language | TypeScript (strict) |
 | Hosting | Cloudflare Workers via `@opennextjs/cloudflare` 1.20.14 + Wrangler 4.155 |
 | PDF export (CNIC) | `jsPDF`, loaded on demand from a CDN |
-| PDF build (new tools) | `pdf-lib` 1.17.1 (MIT), dynamic import on `/jpg-to-pdf` |
+| PDF build (new tools) | `pdf-lib` 1.17.1 (MIT), dynamic import on `/jpg-to-pdf` and `/merge-pdf` |
 | Tests | Vitest (pure functions only) |
 
 No database, no backend API beyond a health check. Vitest covers pure functions; Canvas and print flows are checked by hand.
@@ -71,6 +72,7 @@ app/
   photo-signature-resizer/page.tsx  Photo and signature resizer page
   compress-image-to-20kb/page.tsx  KB-target landing page (same for 50kb and 100kb)
   jpg-to-pdf/page.tsx   Image-to-PDF page
+  merge-pdf/page.tsx    Merge PDF page
   cnic-photocopy/page.tsx    CNIC photocopy page
   privacy/page.tsx      Privacy policy
   terms/page.tsx        Terms of use
@@ -94,6 +96,8 @@ components/
   SizeLandingLinks.tsx    Cross-links between KB targets
   ImagesToPdfTool.tsx   Image-to-PDF UI (list, reorder, page setup)
   ImagesToPdfContent.tsx Image-to-PDF content and limits
+  MergePdfTool.tsx      Merge PDF UI (list, order, progress)
+  MergePdfContent.tsx   Merge PDF content and limits
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
   CornerMarks.tsx       Decorative print marks + scale ruler
@@ -118,6 +122,8 @@ lib/
   utils/printSheet.ts      Shared print-window helper
   utils/imagesToPdf.ts     Page math, image preparation and pdf-lib assembly
   utils/imagesToPdf.test.ts PDF layout tests
+  utils/pdfTools.ts        PDF inspection and merge helpers
+  utils/pdfTools.test.ts   Merge integration tests
   utils/toolSchema.ts      Shared JSON-LD builder
   utils/toolMetadata.ts    Shared metadata builder
   utils/imageOptimizer.ts  Image processing engine (Canvas)
