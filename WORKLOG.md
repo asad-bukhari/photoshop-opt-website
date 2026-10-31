@@ -57,8 +57,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add passport photo sheet maker`.
-- PR `PENDING`.
+- Commit: `d737f87` — `feat: add passport photo sheet maker`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/24.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
