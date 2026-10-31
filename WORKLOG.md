@@ -44,8 +44,8 @@ Docs updated:
 - `WORKLOG.md`.
 
 Commit/PR:
-- Commit `PENDING` — `refactor: extract image filter helpers`.
-- PR `PENDING`.
+- Commit: `ed692e8` — `refactor: extract image filter helpers`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/16.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
