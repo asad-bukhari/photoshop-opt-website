@@ -48,8 +48,8 @@ Not tested:
 - Search Console indexing and production deployment (deferred).
 
 Commit/PR:
-- Commit `PENDING` — `feat: add pdf to jpg tool`.
-- PR `PENDING`.
+- Commit: `7a06964` — `feat: add pdf to jpg tool`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/26.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
