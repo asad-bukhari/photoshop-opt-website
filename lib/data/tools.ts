@@ -44,7 +44,7 @@ export const TOOLS: ToolEntry[] = [
       }
     ],
     faq: IMAGE_FAQ_ITEMS,
-    relatedIds: ['photo-signature-resizer', 'cnic-photocopy'],
+    relatedIds: ['photo-signature-resizer', 'jpg-to-pdf', 'cnic-photocopy'],
     keywords: ['compress image', 'compress jpg', '20kb', '50kb', '100kb', 'png to webp'],
     features: ['JPG, PNG and WebP', 'Target size in KB', 'Runs in your browser'],
     actionLabel: 'Open image compressor',
@@ -117,10 +117,82 @@ export const TOOLS: ToolEntry[] = [
           'No. The image is read, cropped and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
       }
     ],
-    relatedIds: ['image-compressor', 'cnic-photocopy'],
+    relatedIds: ['image-compressor', 'jpg-to-pdf', 'cnic-photocopy'],
     keywords: ['photo resizer', 'signature resizer', 'resize photo to 20kb', '300x400 photo', 'passport photo size'],
     features: ['Exact pixels or mm', 'Maximum and minimum KB', 'Fill, fit or stretch'],
     actionLabel: 'Open photo resizer',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'jpg-to-pdf',
+    slug: 'jpg-to-pdf',
+    name: 'Image to PDF',
+    shortName: 'PDF',
+    category: 'pdf',
+    icon: 'file-text',
+    description: 'Combine JPG, PNG and WebP images into one PDF with page size, orientation, margin and quality controls.',
+    metaTitle: 'JPG to PDF — Convert Images to PDF in Your Browser',
+    metaDescription:
+      'Combine JPG, PNG and WebP images into one PDF in your browser. Reorder, rotate, choose page size and margins, then download without uploading.',
+    h1: 'Convert images to PDF in your browser',
+    intro:
+      'Add JPG, PNG or WebP images, set the page size and quality, then download one PDF. The images are read and combined in your browser and are not uploaded.',
+    howToSteps: [
+      {
+        title: 'Add the images',
+        body: 'Choose several JPG, PNG, WebP or AVIF images. Each one becomes a page in the PDF.'
+      },
+      {
+        title: 'Order and rotate',
+        body: 'Drag rows on a computer or use the up and down buttons on a phone. Rotate any image that is sideways.'
+      },
+      {
+        title: 'Choose the page setup',
+        body: 'Pick A4, Letter, Legal or fit to image, then set auto/portrait/landscape orientation and the margin.'
+      },
+      {
+        title: 'Create and download',
+        body: 'Select High quality or Small, create the PDF, check the page count and download the file.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I convert JPG to PDF?',
+        answer:
+          'Add one or more images, choose the page size and quality, select Create PDF, then download the file. The images stay in your browser during the conversion.'
+      },
+      {
+        question: 'Can I combine several images into one PDF?',
+        answer:
+          'Yes. Add the images, reorder them with drag or the up/down buttons, and create the PDF. Each image becomes one page in the order shown.'
+      },
+      {
+        question: 'What page sizes are supported?',
+        answer:
+          'A4, Letter, Legal and fit to image. You can force portrait or landscape, or let each page follow its image orientation. Margins can be none, small or normal.'
+      },
+      {
+        question: 'Are my images uploaded to a server?',
+        answer:
+          'No. The PDF is assembled in your browser with a bundled PDF library. The site loads analytics and ads, but your images are not sent to a server.'
+      },
+      {
+        question: 'Can I convert a HEIC photo to PDF?',
+        answer:
+          'Not reliably. Most browsers cannot decode HEIC. Convert the photo to JPG or PNG first, then add it here.'
+      },
+      {
+        question: 'Will the PDF have searchable text?',
+        answer:
+          'No. This tool places images on PDF pages. It does not run OCR, so text inside a photo or scan is not searchable or selectable.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'photo-signature-resizer'],
+    keywords: ['jpg to pdf', 'png to pdf', 'images to pdf', 'convert image to pdf'],
+    features: ['JPG, PNG and WebP', 'A4, Letter, Legal or fit', 'Reorder and rotate'],
+    actionLabel: 'Open image to PDF',
     kind: 'tool',
     version: '1.0.0',
     status: 'live'

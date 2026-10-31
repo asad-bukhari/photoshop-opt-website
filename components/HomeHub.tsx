@@ -10,6 +10,7 @@ const POPULAR_TASKS = [
   { href: '/compress-image-to-20kb', label: 'Compress an image to 20KB' },
   { href: '/compress-image-to-50kb', label: 'Compress an image to 50KB' },
   { href: '/compress-image-to-100kb', label: 'Compress an image to 100KB' },
+  { href: '/jpg-to-pdf', label: 'Convert JPG to PDF' },
   { href: '/photo-signature-resizer', label: 'Resize a photo to 300x400' },
   { href: '/photo-signature-resizer', label: 'Resize a signature to 200x230' },
   { href: '/cnic-photocopy#how-to-print-cnic', label: 'Print CNIC front and back on A4' },
@@ -39,11 +40,11 @@ export function HomeHub() {
           id="home-title"
           className="mt-3 max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl"
         >
-          Compress images, resize photos and print CNIC copies in your browser
+          Compress images, resize photos and make PDFs in your browser
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
-          Zaibi Tools has free browser tools for image compression, exact-size photo and signature resizing, and
-          CNIC print sheets. Your files stay on your device.
+          Zaibi Tools has free browser tools for image compression, exact-size photo and signature resizing,
+          image-to-PDF conversion and CNIC print sheets. Your files stay on your device.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           {primaryTool && (

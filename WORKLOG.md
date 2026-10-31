@@ -4,6 +4,70 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Image to PDF
+
+Status: TESTED
+Branch: `feature/image-to-pdf`
+
+Goal:
+- Add `/jpg-to-pdf`, a browser-only tool that combines JPG, PNG and WebP images into one PDF with page, margin and quality controls.
+- Use the approved `pdf-lib` dependency (D-2/D-3), loaded only on this page.
+
+Plan:
+- Install `pdf-lib`; keep it behind a dynamic `import()` in the engine.
+- Add types, pure page/placement math and unit tests.
+- Add `lib/utils/imagesToPdf.ts`: image preparation, 4000 px downscale, rotation, page layout and PDF assembly.
+- Add `components/ImagesToPdfTool.tsx`: multi-image list, drag/up/down reorder, rotate, remove, page size/orientation/margin/quality, progress, download.
+- Add `app/jpg-to-pdf/page.tsx` with metadata, canonical, JSON-LD and shared `ToolPage`; write honest limits.
+- Register the tool, add home/nav/sitemap links and cross-links with the image compressor and resizer.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`; check bundle size and dynamic import.
+
+Risks:
+- Large photos can exhaust memory; process one at a time and cap the long side at 4000 px.
+- `pdf-lib` must not enter the shared layout bundle.
+- Phone photo orientation and transparency need clear handling; rotate only when the user asks.
+- A PDF built from images is not searchable; say so.
+
+What changed:
+- `package.json` / `package-lock.json`: added `pdf-lib@1.17.1` (MIT, approved D-2/D-3).
+- `lib/types.ts`: added PDF page size, orientation, margin, quality, rotation, input and result types.
+- `lib/utils/imagesToPdf.ts`: pure page-size, orientation, placement, rotation, downscale and quality helpers; image preparation through Canvas; sequential PDF assembly. `pdf-lib` is loaded with `await import('pdf-lib')` inside `buildImagesPdf`, so it is not in the shared layout. Images are re-encoded as JPEG at 0.95/0.85/0.6, capped at 4000 px, and rotated through the Canvas before embedding.
+- `lib/utils/imagesToPdf.test.ts`: 9 tests for page sizes, orientation, placement, margins, downscale, rotation and quality mapping. Suite is now 33 tests in 6 files.
+- `components/ImagesToPdfTool.tsx`: multi-image list with desktop drag reorder plus up/down buttons, rotate, remove, clear all, page size (A4/Letter/Legal/fit), auto/portrait/landscape, none/small/normal margins, Original/High/Small quality, per-image progress, result page count and size, download. Object URLs are created through `objectUrls.ts` and revoked on remove, clear and unmount.
+- `components/ImagesToPdfContent.tsx`: format, page setup, quality/file size and explicit limits (no OCR/searchable text, no passwords, no HEIC, no PDF compression, white transparency).
+- `app/jpg-to-pdf/page.tsx`: Server Component with metadata, canonical and `WebApplication` + `FAQPage` + `BreadcrumbList` JSON-LD using the shared `ToolPage`.
+- Registry entry, related links from the image compressor and resizer, home PDF category/card, home popular task, nav/footer and sitemap.
+- Docs: this entry, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 6 files, 33 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 14 pages including `/jpg-to-pdf`.
+- Bundle check — PASS. `pdf-lib` is split into a 420 KB on-demand chunk referenced only from the `/jpg-to-pdf` page and its 21 KB loader chunk; it is not in the root main files or the home page. The library is fetched only when `Create PDF` runs.
+- `npm run dev` — PASS. `/`, `/image-compressor`, `/photo-signature-resizer`, `/cnic-photocopy`, `/jpg-to-pdf`, `/compress-image-to-20kb`, `/sitemap.xml` and `/api/health` returned 200; `/image-opt` 301. `/jpg-to-pdf` had one H1, the expected title/canonical, all three JSON-LD types, the limits section and related tools. Nothing showed `class="dark"`. No dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served the new page and all existing routes with 200; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (adding several images, drag/up/down reorder, rotate, page sizes, margins, quality, generated PDF in phone/desktop viewers, 20 photos, 12 MP photo, transparent PNG, HEIC error, no upload in DevTools) — NOT RUN. No browser or device is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real PDF output, file size, viewer compatibility, memory with 20 photos and rotation/transparency were not exercised in a browser.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit `PENDING` — `feat: add image to pdf tool`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- I-34: optionally embed original JPEG/PNG bytes when no rotation/downscale is needed, after handling EXIF orientation.
+- Next: Phase 3 merge PDF, then split PDF.
+
+---
+
 ## 2026-10-31 — Compress-to-20/50/100KB landing pages
 
 Status: TESTED

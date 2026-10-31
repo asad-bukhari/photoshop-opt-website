@@ -1,3 +1,28 @@
+export type PdfPageSize = 'a4' | 'letter' | 'legal' | 'fit';
+export type PdfOrientation = 'auto' | 'portrait' | 'landscape';
+export type PdfMargin = 'none' | 'small' | 'normal';
+export type PdfImageQuality = 'original' | 'high' | 'small';
+export type PdfRotation = 0 | 90 | 180 | 270;
+
+export interface PdfBuildOptions {
+  pageSize: PdfPageSize;
+  orientation: PdfOrientation;
+  margin: PdfMargin;
+  quality: PdfImageQuality;
+}
+
+export interface PdfImageInput {
+  file: File;
+  rotation: PdfRotation;
+}
+
+export interface PdfBuildResult {
+  blob: Blob;
+  pageCount: number;
+  downscaledCount: number;
+  bytes: number;
+}
+
 export type PhotoResizePresetId =
   | 'custom'
   | 'passport-35x45'
