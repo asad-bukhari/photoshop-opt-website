@@ -4,6 +4,63 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Compress-to-20/50/100KB landing pages
+
+Status: TESTED
+Branch: `feature/size-landing-pages`
+
+Goal:
+- Add three focused pages for the biggest size-related searches, using the existing image engine with a preset target.
+- Keep `/image-compressor` unchanged and give each landing page unique copy and FAQ.
+
+Plan:
+- Add a registry `kind` field (`tool` or `landing`) so the three pages appear in the sitemap and internal links but do not crowd the header/footer/home tool cards.
+- Let `ImageOptTool` accept `initialTargetKB`; reset uses the page target.
+- Add `/compress-image-to-20kb`, `/compress-image-to-50kb` and `/compress-image-to-100kb` with unique sections and FAQ, using the shared `ToolPage` and a shared JSON-LD helper.
+- Link the three pages from the image compressor, the resizer and the home popular tasks.
+- Checks: `test`, `typecheck`, `build`, `dev` routes, `preview` (three new routes), `git diff --check`.
+
+Risks:
+- Thin duplicate pages: each page needs genuinely different copy, not just a changed number.
+- Registry landing entries could leak into the header/home; filter by `kind`.
+- Starting the shared image tool at a page target must not change `/image-compressor`.
+
+What changed:
+- `lib/types.ts` / `lib/data/tools.ts`: registry entries now have `kind: 'tool' | 'landing'`. `getNavTools()` keeps landing pages out of the header, footer and home cards; `getLiveTools()` still feeds the sitemap.
+- Added three live landing entries with unique titles, descriptions, intros, how-to steps and four FAQs each.
+- `components/ImageOptTool.tsx`: added `initialTargetKB` and `embedded`. The landing pages start at 20/50/100 KB; `embedded` hides the tool's own H1 and ad so `ToolPage` supplies the single H1 and one ad. `/image-compressor` is unchanged.
+- Added `/compress-image-to-20kb`, `/compress-image-to-50kb` and `/compress-image-to-100kb` as explicit Server Component pages using `SizeLandingPageView`, `ToolPage`, `ImageOptTool` and `SizeLandingContent`.
+- `lib/data/sizeLandingPages.ts`: unique sections for each size (when to use it, keeping quality, troubleshooting, checking the result), not duplicated copy with a changed number.
+- `components/SizeLandingLinks.tsx`: cross-links all three targets; added to the image compressor and the photo resizer. Home popular tasks now point to the landing pages.
+- Extracted `buildToolSchema` and `buildToolMetadata`; the resizer page uses them too.
+- Docs: this entry, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 5 files, 24 tests, including registry tests that keep landing pages out of the nav and in the sitemap set.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); all three landing routes generated as static pages (13 pages total).
+- `npm run dev` — PASS. `/`, `/image-compressor`, `/photo-signature-resizer`, `/cnic-photocopy`, `/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`, `/sitemap.xml` all 200; unknown size 404. Each landing page had one H1, the expected title and target input value, and the three JSON-LD types. Header and footer contained only the three real tools. The sitemap lists all three landing pages; the home, image compressor and resizer link to them; no `class="dark"`. No dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served all pages and the three landing routes with 200; unknown size 404; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (landing tool flow, downloads, ads, 375 px/1280 px) and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- The landing pages reuse the already-built image engine; real compression output was not exercised in a browser.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit `PENDING` — `feat: add size landing pages`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Next: Phase 2 image-to-PDF with `pdf-lib` (approved D-2/D-3).
+
+---
+
 ## 2026-10-31 — Photo and signature resizer
 
 Status: TESTED

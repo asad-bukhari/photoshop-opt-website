@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ShieldCheck } from 'lucide-react';
 import { ToolIcon } from './tool/ToolIcon';
-import { getLiveTools, toolHref } from '@/lib/data/tools';
+import { getNavTools, toolHref } from '@/lib/data/tools';
 
 interface FooterProps {
   onOpenSecurity: () => void;
@@ -33,7 +33,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-ink">Tools</h2>
             <ul className="mt-2">
-              {getLiveTools().map((tool) => (
+              {getNavTools().map((tool) => (
                 <li key={tool.id}>
                   <Link
                     href={toolHref(tool)}

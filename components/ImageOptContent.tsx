@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ContentSheet } from './ContentSheet';
 import { FaqList } from './FaqList';
 import { IMAGE_FAQ_ITEMS } from '@/lib/data/initialData';
+import { SizeLandingLinks } from './SizeLandingLinks';
 
 export function ImageOptContent() {
   return (
@@ -180,6 +181,7 @@ export function ImageOptContent() {
         <h2 id="image-faq-title">Frequently asked questions</h2>
         <FaqList items={IMAGE_FAQ_ITEMS} />
       </section>
+      <SizeLandingLinks currentSlug="image-compressor" />
     </ContentSheet>
   );
 }
