@@ -4,6 +4,54 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Extract canvas encoding (refactor 1 of 3)
+
+Status: TESTED
+Branch: `refactor/extract-canvas-encode`
+
+Goal:
+- Move `estimateDataUrlSize` and `tuneToTarget` out of `imageOptimizer.ts` into `lib/utils/canvasEncode.ts` without changing image output.
+
+Plan:
+- Add `lib/utils/canvasEncode.ts` with the existing functions copied verbatim and an exported `TuneResult` type.
+- Import the functions in `imageOptimizer.ts` and delete the private copies.
+- Compare the extracted code line by line, then run `typecheck`, `build` and the dev route check.
+- Docs: this entry; note that the Image and CNIC tools are unchanged.
+
+Risks:
+- A changed rounding or loop bound could change the encoded quality or target-size result.
+- The `overTarget` fallback at quality 0.05 must stay exactly the same.
+
+What changed:
+- Added `lib/utils/canvasEncode.ts` with the exact `estimateDataUrlSize` and `tuneToTarget` bodies from `imageOptimizer.ts`, plus the exported `TuneResult` type.
+- `imageOptimizer.ts` imports both helpers and no longer defines private copies. No loop bound, rounding, quality floor or fallback changed.
+- No UI, copy, routing or dependency changes.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack), all 8 routes generated, TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/api/health` 200; no errors in the dev log.
+- `git diff --check` — PASS.
+- Output comparison with the pre-refactor code — code-level only. The moved function bodies are identical; no browser or Canvas run was available.
+- Manual browser checks and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- Real encoded sizes and visual output were not compared in a browser.
+- `npm run preview` — NOT RUN. No routing, config, dependency or asset change.
+
+Docs updated:
+- `WORKLOG.md`.
+
+Commit/PR:
+- Commit `PENDING` — `refactor: extract canvas encoding helpers`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy is intentionally deferred until all new tools are built (owner decision on 2026-10-31).
+- Next refactor: `refactor/extract-image-filters`.
+
+---
+
 ## 2026-10-30 — Tools foundation (registry, shared parts, object URLs)
 
 Status: TESTED
