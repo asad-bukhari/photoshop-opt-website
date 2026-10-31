@@ -1,7 +1,8 @@
-# Zaibi Tools — Image Compressor & CNIC Print Tool
+# Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting two document utilities:
+A browser-only, zero-server web portal hosting three document utilities:
 
+- **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
@@ -64,6 +65,7 @@ app/
   layout.tsx            Root layout: fonts, metadata, light theme, shell
   page.tsx              Landing page (HomeHub)
   image-compressor/page.tsx  Image compressor page
+  photo-signature-resizer/page.tsx  Photo and signature resizer page
   cnic-photocopy/page.tsx    CNIC photocopy page
   privacy/page.tsx      Privacy policy
   terms/page.tsx        Terms of use
@@ -80,6 +82,8 @@ components/
   tool/                 Shared tool parts: ToolPage, ToolHero, FileDropzone,
                         HowToSteps, ToolFaq, RelatedTools, ResultActions, ToolIcon
   ImageOptTool.tsx      Image optimizer UI (dropzone, controls, compare slider)
+  PhotoResizeTool.tsx   Resizer UI (crop preview, presets, KB targets, label strip)
+  PhotoResizeContent.tsx Resizer long-form content and limits
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
   CornerMarks.tsx       Decorative print marks + scale ruler
@@ -89,12 +93,18 @@ lib/
   types.ts              Shared domain types
   data/tools.ts         Tool registry: nav, footer, home, sitemap, related tools
   data/initialData.ts   Presets and FAQ content
+  data/photoResizer.ts  Resizer presets, defaults and unit labels
   data/ads.ts           Adsterra ad keys and dimensions
   hooks/useObjectUrl.ts Object URL lifecycle for file previews
   utils/objectUrls.ts   Create/revoke object URL helpers
   utils/loadImage.ts    File/URL image decoding with a friendly error
   utils/download.ts     Blob/Data URL download helpers
   utils/format.ts       Byte and filename formatting
+  utils/photoResizer.ts    Resizer math, crop, label strip and encoding
+  utils/canvasEncode.ts    Shared target-size canvas encoder
+  utils/imageFilters.ts    Shared CNIC/image filter functions
+  utils/pdfExport.ts       Shared jsPDF loader, paper sizes and JPEG conversion
+  utils/printSheet.ts      Shared print-window helper
   utils/imageOptimizer.ts  Image processing engine (Canvas)
   utils/cnicOptimizer.ts   CNIC sheet rendering + filters (Canvas)
   utils/*.test.ts       Vitest tests for pure helpers

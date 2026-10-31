@@ -22,12 +22,14 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 - [ ] **I-17 — Untrack `.open-next` build output.** `main` tracks 89 files under `.open-next/`, so every build dirties the tree. Remove them from the index, add `.open-next/` to `.gitignore`, and confirm Workers Builds still produces its own output. **DECISION:** coordinate with the deploy setup before removing.
 - [ ] **I-21 — Remove the `color-boost` type mismatch.** `lib/types.ts:48` includes `color-boost`, but the UI uses `enhanced` (`components/CnicOptTool.tsx:454`) and the engine handles `enhanced` (`lib/utils/cnicOptimizer.ts:295`). Remove `color-boost` or alias it.
 - [ ] **I-22 — Expose or remove hidden CNIC controls.** `lib/types.ts:58-62` includes brightness, contrast, sharpness, `borderGrid`, and `dateStamp`; the UI exposes none of them. Either add controls or remove the unused surface.
+- [ ] **I-32 — Add keyboard panning to the photo resizer crop.** The canvas crop preview responds to pointer drag and the zoom slider is keyboard accessible, but there is no keyboard way to move the crop. Add arrow-key panning or equivalent buttons.
 - [ ] **I-23 — Align the `customScale` range.** `lib/types.ts:57` says 0.5–1.5; the slider allows 0.7–1.3 (`components/CnicOptTool.tsx:495-497`). Pick one range and update the comment and UI.
 
 ## P3 — polish and maintainability
 
 - [ ] **I-24 — Stop hard-coding the health version.** `app/api/health/route.ts:8` returns `3.0.0`; read the package version or expose a build identifier.
 - [ ] **I-25 — Document the HSTS header.** `README.md:132` lists four security headers; `next.config.ts:19` also sets `Strict-Transport-Security`. Add it to the README.
+- [ ] **I-33 — Optionally write JFIF DPI density for JPEG exports.** `lib/utils/photoResizer.ts` keeps the pixel size but Canvas does not write DPI metadata. Add a tested JFIF density write only if the output still opens correctly everywhere.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
 
 ---

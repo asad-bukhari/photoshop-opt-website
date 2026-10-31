@@ -4,6 +4,71 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Photo and signature resizer
+
+Status: TESTED
+Branch: `feature/photo-signature-resizer`
+
+Goal:
+- Add `/photo-signature-resizer`, a browser-only tool that outputs an image at exact pixels (or mm/cm/inch at a chosen DPI) and a target KB range.
+- Reuse the extracted canvas encoder and the shared tool layout, helpers and registry.
+
+Plan:
+- Add `PhotoResizeSettings`, presets and result types; presets live in `lib/data/photoResizer.ts` with "common size, check your portal" wording and no portal-specific claims.
+- Add `lib/utils/photoResizer.ts`: unit conversion, output size, crop math, label strip, canvas drawing and target-size encoding. Pure functions first, Canvas separate.
+- Add unit tests for conversion, crop math, target states and label-strip sizing.
+- Add `components/PhotoResizeTool.tsx` (`'use client'`) with drag/zoom crop, presets/custom units, min/max KB, JPEG/PNG/WebP, Fill/Fit/Stretch, name/date strip and download.
+- Add `app/photo-signature-resizer/page.tsx` using `ToolPage`, metadata, canonical, JSON-LD and the registry FAQ/how-to.
+- Add the registry entry; update the home copy that currently says "two tools", plus related links from the existing tools.
+- Checks: `npm run test`, `typecheck`, `build`, `dev` routes, `preview` (new route), `git diff --check`; browser checks if available.
+
+Risks:
+- Large phone photos can exceed canvas limits; cap output at 6000 px and show a clear message.
+- Encoding on every drag would stutter; draw a scaled preview immediately and debounce the final encode.
+- Canvas does not write DPI metadata; the page must say pixels are what uploads check.
+- EXIF orientation is handled by browser image decoding; test with a rotated photo when possible.
+
+What changed:
+- `lib/types.ts`: added `PhotoResizeSettings`, `PhotoResizeResult`, preset/unit/fit/format types.
+- `lib/data/photoResizer.ts`: five generic presets (35 x 45 mm, 2 x 2 inch, 300 x 400 px, signature 200 x 230 px, CNIC-style 30 x 40 mm) labelled as common sizes, plus defaults and unit labels. No portal-specific claims.
+- `lib/utils/photoResizer.ts`: pure unit conversion, output size, crop math, label-strip math, target evaluation and output validation; Canvas drawing and the JPEG/WebP binary-search encoder. The encoder keeps the requested pixel size, reports an impossible KB target, never pads, and caps output at 6000 px.
+- `lib/utils/photoResizer.test.ts`: 13 pure tests; total suite is now 21 tests in 4 files.
+- `components/PhotoResizeTool.tsx`: single `'use client'` tool. Drag/zoom crop preview, presets and custom mm/cm/inch/px at 72–600 DPI, max/min KB, JPG/PNG/WebP, Fill/Fit/Stretch, optional name/date strip with height and text-size controls, debounced encode, result status and download. Uses `FileDropzone` and `ResultActions`. The decoded preview URL is released by `loadImageFile`.
+- `components/PhotoResizeContent.tsx`: pixel-size table prose, KB behaviour, signature tips and an explicit "what this tool cannot do" list.
+- `app/photo-signature-resizer/page.tsx`: Server Component with title, description, canonical, Open Graph, `WebApplication` + `FAQPage` + `BreadcrumbList` JSON-LD and the shared `ToolPage` layout.
+- `lib/data/tools.ts`: live registry entry plus related ids from the Image and CNIC tools back to the resizer.
+- Home metadata and copy now say three tools; home popular tasks link to the resizer; footer reads images, photos and CNIC copies.
+- Docs: this entry, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 4 files, 21 tests (conversion, crop math, label strip, target states, validation, plus the earlier helpers).
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 10 pages generated including `/photo-signature-resizer`.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/photo-signature-resizer` 200, `/privacy` 200, `/terms` 200, `/api/health` 200, `/sitemap.xml` 200, unknown route 404; old slugs 301. The new page had one `<h1>`, the expected title/canonical, `WebApplication`, `FAQPage` and `BreadcrumbList` JSON-LD, the limits section, registry-driven related tools, and no `class="dark"`. Home shows three tool cards; sitemap lists the new route. No dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served `/`, `/photo-signature-resizer`, `/image-compressor`, `/cnic-photocopy`, `/sitemap.xml` and `/api/health` with 200; old slugs 301 and resolved to 200; unknown route 404; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (375 px and 1280 px, drag crop, presets, units, min/max KB, formats, label strip, download, touch, rotated EXIF photo, 4000 px phone photo) — NOT RUN. No browser is installed.
+- DevTools network upload check, console check, Lighthouse and a real-device memory test — NOT RUN. No browser or device is available.
+
+Not tested:
+- Real encoded bytes, visual crop accuracy, label text fit, touch drag, EXIF-rotated photos and large-image memory use were not exercised in a browser.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit `PENDING` — `feat: add photo and signature resizer`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- I-32: add keyboard panning for the crop preview.
+- I-33: optionally write JFIF DPI density for JPEG after testing.
+- Next: Phase 1b (20/50/100 KB landing pages), then image-to-PDF.
+
+---
+
 ## 2026-10-31 — Add Vitest for pure functions
 
 Status: TESTED

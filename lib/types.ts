@@ -1,3 +1,43 @@
+export type PhotoResizePresetId =
+  | 'custom'
+  | 'passport-35x45'
+  | 'photo-2x2in'
+  | 'photo-300x400'
+  | 'signature-200x230'
+  | 'cnic-photo';
+export type PhotoResizeUnit = 'px' | 'mm' | 'cm' | 'in';
+export type PhotoResizeFit = 'fill' | 'fit' | 'stretch';
+export type PhotoResizeFormat = 'jpeg' | 'png' | 'webp';
+
+export interface PhotoResizeSettings {
+  presetId: PhotoResizePresetId;
+  width: number;
+  height: number;
+  unit: PhotoResizeUnit;
+  dpi: number;
+  targetKB: number;
+  minKB: number;
+  format: PhotoResizeFormat;
+  fit: PhotoResizeFit;
+  zoom: number;
+  offsetX: number;
+  offsetY: number;
+  addLabel: boolean;
+  labelName: string;
+  labelDate: string;
+  labelStripPercent: number;
+  labelFontPercent: number;
+}
+
+export interface PhotoResizeResult {
+  dataUrl: string;
+  width: number;
+  height: number;
+  bytes: number;
+  overTarget: boolean;
+  belowMinimum: boolean;
+}
+
 export type ToolCategory = 'photos' | 'pdf' | 'print';
 export type ToolStatus = 'live' | 'planned';
 export type ToolIconName =
