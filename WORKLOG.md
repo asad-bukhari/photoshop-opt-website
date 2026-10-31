@@ -4,6 +4,39 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — All planned tools built; final verification
+
+Status: MERGED (production deploy pending)
+Branch: `docs/final-tools-verification`
+
+Goal:
+- Record the final state after all `TOOLS_PLAN.md` phases were built and merged.
+
+What changed:
+- No code. Final verification of `main` after PR #28.
+- Tool count is eleven, plus three KB-target landing pages.
+
+Tests run:
+- `npm run test` — PASS. 11 files, 69 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 21 pages.
+- `npm run preview` — PASS. All eleven tools, three landing pages, `/privacy`, `/terms`, `/api/health`, `/sitemap.xml` and `/pdf.worker.min.mjs` returned 200. The worker was served as `text/javascript` at 1,264,342 bytes. The sitemap had 17 URLs. The home page had no `class="dark"`.
+- `git diff --check` — PASS.
+
+Not tested:
+- Browser tool flows, the real mobile/desktop header with eleven tools, print measurements, Lighthouse and DevTools upload checks. No browser or printer is installed.
+- Production: the live site still served the pre-Phase-0 build at the last check. The owner runs the final deploy.
+
+Commit/PR:
+- PR `PENDING`.
+
+Follow-ups:
+- Owner: run the production deploy (or confirm Workers Builds), then verify the live routes and mark this entry DEPLOYED.
+- I-08, I-32, I-34, I-35, I-37 and I-38 remain open.
+- Verify each tool manually on a real phone and desktop before promoting the suite.
+
+---
+
 ## 2026-10-31 — Crop and rotate image
 
 Status: TESTED

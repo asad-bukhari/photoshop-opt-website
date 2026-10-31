@@ -1,6 +1,6 @@
 # TOOLS_PLAN.md — Plan to add new tools to ZaibiTools
 
-Status: PLAN (not started). Written 2026-10-30. Decisions recorded 2026-10-30.
+Status: IMPLEMENTED (2026-10-31). All phases 0–6 are built and merged. Production deploy and manual browser/print checks remain.
 Follow `AGENTS.md` for every step: plan -> branch -> build -> test -> update docs -> commit -> PR -> verify.
 Copy the phase you are working on into `WORKLOG.md` as a `PLANNED` entry before you code.
 
