@@ -29,7 +29,6 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 - [ ] **I-24 — Stop hard-coding the health version.** `app/api/health/route.ts:8` returns `3.0.0`; read the package version or expose a build identifier.
 - [ ] **I-25 — Document the HSTS header.** `README.md:132` lists four security headers; `next.config.ts:19` also sets `Strict-Transport-Security`. Add it to the README.
 - [ ] **I-27 — Lazy-load below-fold ads.** `components/AdBanner.tsx:50` defaults to `loading="eager"` and `ResponsiveAd` is usually rendered without `lazy`. Pass `lazy` for lower units and measure CLS.
-- [ ] **I-29 — Add a minimal automated smoke suite.** There is no test framework. Vitest was approved on 2026-10-30 for pure functions only (crop math, range parsing, layout); Canvas flows stay manual. Pending implementation in `TOOLS_PLAN.md` Phase 0. Playwright and `/api/health` smoke coverage remain unapproved.
 
 ---
 
@@ -38,6 +37,8 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 ## Done
 
 Move completed items here with the date and commit.
+
+- [x] **I-29 (2026-10-31)** Added Vitest 5.0.5 as a dev dependency, `vitest.config.mts`, the `npm run test` script and 8 pure-function tests for `format`, `estimateDataUrlSize`, `clamp255` and `computeOtsuThreshold`. Canvas/browser flows stay manual; Playwright remains unapproved. Commit `f2543b0`, PR #18.
 
 - [x] **I-09 (2026-10-30)** Object URLs are now created and revoked through `lib/utils/objectUrls.ts`. `ImageOptTool` tracks the original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses the new `useObjectUrl` hook. Commit `f9dc503`, PR #13.
 

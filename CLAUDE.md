@@ -15,12 +15,13 @@ npm install
 npm run dev          # Next dev server (localhost:3000)
 npm run typecheck    # tsc --noEmit
 npm run lint         # same as typecheck
+npm run test         # vitest run (pure functions only)
 npm run build        # next build (with the required NODE_OPTIONS prefix)
 npm run preview      # OpenNext build + wrangler dev
 npm run deploy       # manual fallback only
 ```
 
-There is no test suite. Use `npm run dev` for changed routes, then `typecheck`, `build`, `preview`, and the manual checklist in `AGENTS.md`. Never claim a check passed unless it was run. The owner performs the final production deploy.
+Vitest covers pure functions (`npm run test`, config in `vitest.config.mts`). Use `npm run dev` for changed routes, then `typecheck`, `test`, `build`, `preview`, and the manual checklist in `AGENTS.md`. Never claim a check passed unless it was run. The owner performs the final production deploy.
 
 ## Technical gotchas
 

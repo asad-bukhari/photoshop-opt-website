@@ -11,7 +11,7 @@ This is the rules file for AI agents and humans working on Zaibi Tools. Read it 
 - **Deploy:** production deploys through Cloudflare Workers Builds when changes merge to `main`. There are no GitHub Actions. The Cloudflare dashboard is the source of truth for build settings; verify and log the result.
 - **Live:** https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 - **Server surface:** only `/api/health`. There is no database and no other backend API.
-- **Tests:** no test framework. Verification is `typecheck`, `build`, `preview`, and manual browser checks.
+- **Tests:** Vitest covers pure functions (`npm run test`). Canvas, browser, print and PDF checks stay manual.
 
 ## Mandatory workflow
 
@@ -49,6 +49,7 @@ npm install
 npm run dev
 npm run typecheck
 npm run lint
+npm run test
 npm run build
 npm run preview
 npm run deploy
@@ -56,10 +57,11 @@ npm run deploy
 
 - `npm run typecheck` and `npm run lint` both run `tsc --noEmit`.
 - Run `npm run typecheck` after every code change.
+- Run `npm run test` for changes to pure functions and their tests. Canvas code is checked by hand.
 - Run `npm run build` for code, config, metadata, or dependency changes. It must pass before merge.
 - Run `npm run preview` when config, routing, headers, assets, or dependencies change. It exercises the OpenNext + Wrangler output.
 - `npm run deploy` is a manual fallback. Do not use it as the normal deploy path.
-- Docs-only changes do not need `typecheck`, `build`, or `preview`. Still run `git diff --check` and fact-check the docs.
+- Docs-only changes do not need `typecheck`, `test`, `build`, or `preview`. Still run `git diff --check` and fact-check the docs.
 
 ### Dev-server check (mandatory)
 
@@ -185,6 +187,7 @@ Stop and ask the owner before:
 
 - [ ] The change matches the approved plan.
 - [ ] `npm run typecheck` passed, or the reason it was not run is recorded.
+- [ ] `npm run test` passed, or the reason it was not run is recorded.
 - [ ] `npm run build` passed when required, or the reason is recorded.
 - [ ] `npm run preview` passed when required, or the reason is recorded.
 - [ ] `npm run dev` checked the changed routes, or the reason it was not run is recorded.
@@ -218,6 +221,7 @@ What changed:
 Tests run:
 - `npm run dev` — PASS / FAIL / NOT RUN (routes checked)
 - `npm run typecheck` — PASS / FAIL / NOT RUN (reason)
+- `npm run test` — PASS / FAIL / NOT RUN (reason)
 - `npm run build` — PASS / FAIL / NOT RUN (reason)
 - `npm run preview` — PASS / FAIL / NOT RUN (reason)
 - Manual checklist — PASS / FAIL / NOT RUN (details)

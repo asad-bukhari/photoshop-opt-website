@@ -20,8 +20,9 @@ All processing happens **entirely in the browser** using the HTML5 Canvas API. F
 | Language | TypeScript (strict) |
 | Hosting | Cloudflare Workers via `@opennextjs/cloudflare` 1.20.14 + Wrangler 4.155 |
 | PDF export | `jsPDF`, loaded on demand from a CDN |
+| Tests | Vitest (pure functions only) |
 
-No database, no backend API beyond a health check. There is no test framework.
+No database, no backend API beyond a health check. Vitest covers pure functions; Canvas and print flows are checked by hand.
 
 ---
 
@@ -51,6 +52,7 @@ Open http://localhost:3000.
 | `npm run build` | Production build (`next build`) |
 | `npm run preview` | Build the Cloudflare worker and run it locally with `wrangler dev` |
 | `npm run deploy` | Build with OpenNext and deploy to Cloudflare Workers |
+| `npm run test` | Run the Vitest pure-function tests |
 | `npm run lint` / `npm run typecheck` | Type-check only (`tsc --noEmit`) |
 
 ---
@@ -95,6 +97,8 @@ lib/
   utils/format.ts       Byte and filename formatting
   utils/imageOptimizer.ts  Image processing engine (Canvas)
   utils/cnicOptimizer.ts   CNIC sheet rendering + filters (Canvas)
+  utils/*.test.ts       Vitest tests for pure helpers
+vitest.config.mts       Vitest config and `@` alias
 ```
 
 Add a new tool by adding one entry to `lib/data/tools.ts` and one page; header, footer, home hub, sitemap and related-tool links read from the registry.
