@@ -43,8 +43,8 @@ Docs updated:
 - `WORKLOG.md`.
 
 Commit/PR:
-- Commit `PENDING` — `refactor: extract canvas encoding helpers`.
-- PR `PENDING`.
+- Commit: `8c05c97` — `refactor: extract canvas encoding helpers`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/15.
 
 Follow-ups:
 - Production deploy is intentionally deferred until all new tools are built (owner decision on 2026-10-31).
