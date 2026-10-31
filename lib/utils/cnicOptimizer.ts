@@ -1,4 +1,5 @@
 import { CnicPrintOptions } from '../types';
+import { createObjectUrl, revokeObjectUrl } from './objectUrls';
 
 export async function generateCnicPrintCanvas(
   frontFile: File | string | null,
@@ -211,15 +212,17 @@ export async function generateCnicPrintCanvas(
 function loadImage(src: File | string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    const ownedUrl = src instanceof File ? createObjectUrl(src) : null;
     img.crossOrigin = 'anonymous';
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Failed to load CNIC image source'));
-
-    if (src instanceof File) {
-      img.src = URL.createObjectURL(src);
-    } else {
-      img.src = src;
-    }
+    img.onload = () => {
+      if (ownedUrl) revokeObjectUrl(ownedUrl);
+      resolve(img);
+    };
+    img.onerror = () => {
+      if (ownedUrl) revokeObjectUrl(ownedUrl);
+      reject(new Error('Failed to load CNIC image source'));
+    };
+    img.src = typeof src === 'string' ? src : ownedUrl ?? '';
   });
 }
 

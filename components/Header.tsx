@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, ShieldCheck, X } from 'lucide-react';
+import { getLiveTools, toolHref } from '@/lib/data/tools';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  { href: '/image-compressor', label: 'Image Compressor' },
-  { href: '/cnic-photocopy', label: 'CNIC Photocopy' }
-] as const;
+  ...getLiveTools().map((tool) => ({ href: toolHref(tool), label: tool.name }))
+];
 
 interface HeaderProps {
   onOpenSecurity: () => void;

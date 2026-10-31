@@ -72,9 +72,11 @@ app/
   globals.css           Tailwind v4 theme tokens + global styles
 components/
   SiteShell.tsx         Skip link, header, main, footer, file-handling modal
-  Header.tsx            Nav, brand, mobile menu, file-handling trigger
-  Footer.tsx            Links and privacy blurb
-  HomeHub.tsx           Landing page sections (tools + FAQ)
+  Header.tsx            Registry-driven nav, brand, mobile menu, file-handling trigger
+  Footer.tsx            Registry-driven tool links and privacy blurb
+  HomeHub.tsx           Landing page sections (category-grouped tools + FAQ)
+  tool/                 Shared tool parts: ToolPage, ToolHero, FileDropzone,
+                        HowToSteps, ToolFaq, RelatedTools, ResultActions, ToolIcon
   ImageOptTool.tsx      Image optimizer UI (dropzone, controls, compare slider)
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
@@ -83,11 +85,19 @@ components/
   ResponsiveAd.tsx      Picks desktop (728x90) or mobile (300x250) size
 lib/
   types.ts              Shared domain types
-  data/initialData.ts   Tool metadata, presets, FAQ content
+  data/tools.ts         Tool registry: nav, footer, home, sitemap, related tools
+  data/initialData.ts   Presets and FAQ content
   data/ads.ts           Adsterra ad keys and dimensions
+  hooks/useObjectUrl.ts Object URL lifecycle for file previews
+  utils/objectUrls.ts   Create/revoke object URL helpers
+  utils/loadImage.ts    File/URL image decoding with a friendly error
+  utils/download.ts     Blob/Data URL download helpers
+  utils/format.ts       Byte and filename formatting
   utils/imageOptimizer.ts  Image processing engine (Canvas)
   utils/cnicOptimizer.ts   CNIC sheet rendering + filters (Canvas)
 ```
+
+Add a new tool by adding one entry to `lib/data/tools.ts` and one page; header, footer, home hub, sitemap and related-tool links read from the registry.
 
 Path alias: `@/*` maps to the project root.
 
@@ -130,6 +140,7 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 
 - **Zero-server:** all image and document processing runs client-side; nothing is uploaded.
 - **Metadata stripping:** re-encoding through Canvas drops EXIF/GPS data.
+- **Preview URLs:** file previews use object URLs that are revoked on reset, source change and unmount.
 - **Security headers** (set in `next.config.ts`): `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`.
 
 ---

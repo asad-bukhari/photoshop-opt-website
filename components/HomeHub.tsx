@@ -1,31 +1,10 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, Printer, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { ResponsiveAd } from './ResponsiveAd';
 import { FaqList } from './FaqList';
+import { ToolIcon } from './tool/ToolIcon';
 import { FAQ_ITEMS } from '@/lib/data/initialData';
-
-const TOOLS = [
-  {
-    href: '/image-compressor',
-    label: 'Image compressor',
-    title: 'Compress images to 20KB, 50KB or 100KB',
-    description:
-      'Compress JPG, PNG and WebP images to a target size, convert to WebP, and remove EXIF metadata. The image is processed in your browser.',
-    features: ['JPG, PNG and WebP', 'Target size in KB', 'Runs in your browser'],
-    icon: Zap,
-    action: 'Open image compressor'
-  },
-  {
-    href: '/cnic-photocopy',
-    label: 'CNIC photocopy',
-    title: 'Print CNIC front and back on one A4 page',
-    description:
-      'Place the front and back of a CNIC or another ID-1 card on one A4 sheet. Choose a layout, filter and optional watermark, then print or save a PDF.',
-    features: ['Front and back on one page', 'A4, Letter, Legal and 3R', 'PDF, PNG or print'],
-    icon: Printer,
-    action: 'Open CNIC photocopy'
-  }
-] as const;
+import { getLiveToolCategories, getLiveTools, toolHref } from '@/lib/data/tools';
 
 const POPULAR_TASKS = [
   { href: '/image-compressor#compress-jpg', label: 'Compress an image to 20KB' },
@@ -43,6 +22,10 @@ const STEPS = [
 ] as const;
 
 export function HomeHub() {
+  const liveTools = getLiveTools();
+  const primaryTool = liveTools[0];
+  const secondaryTool = liveTools[1];
+
   return (
     <div className="space-y-10">
       <section
@@ -61,63 +44,69 @@ export function HomeHub() {
           puts the front and back of an ID card on one A4 page. Both run in your browser.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Link
-            href="/image-compressor"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-5 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
-          >
-            Open image compressor
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="/cnic-photocopy"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
-          >
-            Open CNIC photocopy
-          </Link>
+          {primaryTool && (
+            <Link
+              href={toolHref(primaryTool)}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-5 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+            >
+              {primaryTool.actionLabel}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          )}
+          {secondaryTool && (
+            <Link
+              href={toolHref(secondaryTool)}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-paper-2 px-5 text-base font-semibold text-ink transition-colors hover:bg-paper-3"
+            >
+              {secondaryTool.actionLabel}
+            </Link>
+          )}
         </div>
       </section>
 
-      <section aria-labelledby="tools-title" className="space-y-4">
+      <section aria-labelledby="tools-title" className="space-y-6">
         <h2 id="tools-title" className="font-display text-2xl font-bold tracking-tight text-ink">
-          Two tools, one page
+          Tools
         </h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {TOOLS.map((tool) => {
-            const Icon = tool.icon;
-            return (
-              <article
-                key={tool.href}
-                className="flex flex-col rounded-2xl border border-line bg-paper-2 p-5 transition-colors hover:border-doc/40 sm:p-6"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-doc-soft text-doc">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="font-mono text-xs uppercase tracking-widest text-doc">{tool.label}</p>
-                    <h3 className="mt-1 font-display text-lg font-bold text-ink">{tool.title}</h3>
-                  </div>
-                </div>
-                <p className="mt-4 text-sm leading-relaxed text-ink-soft">{tool.description}</p>
-                <ul className="mt-4 space-y-2 text-sm text-ink-soft">
-                  {tool.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-doc" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={tool.href}
-                  className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-4 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+        {getLiveToolCategories().map((group) => (
+          <div key={group.category} className="space-y-3">
+            <h3 className="font-mono text-xs font-bold uppercase tracking-widest text-gold">{group.label}</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {group.tools.map((tool) => (
+                <article
+                  key={tool.id}
+                  className="flex flex-col rounded-2xl border border-line bg-paper-2 p-5 transition-colors hover:border-doc/40 sm:p-6"
                 >
-                  {tool.action}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </article>
-            );
-          })}
-        </div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-doc-soft text-doc">
+                      <ToolIcon name={tool.icon} className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="font-mono text-xs uppercase tracking-widest text-doc">{tool.name}</p>
+                      <h4 className="mt-1 font-display text-lg font-bold text-ink">{tool.h1}</h4>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-ink-soft">{tool.description}</p>
+                  <ul className="mt-4 space-y-2 text-sm text-ink-soft">
+                    {tool.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-doc" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={toolHref(tool)}
+                    className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-doc px-4 text-base font-semibold text-white transition-colors hover:bg-doc-bright"
+                  >
+                    {tool.actionLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
 
       <section aria-labelledby="tasks-title" className="space-y-4">

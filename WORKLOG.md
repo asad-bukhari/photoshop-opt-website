@@ -4,9 +4,75 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-30 — Tools foundation (registry, shared parts, object URLs)
+
+Status: TESTED
+Branch: `feature/tools-foundation`
+
+Goal:
+- Build the shared foundation in `TOOLS_PLAN.md` Phase 0 so the new tools reuse one registry, one set of UI parts and one set of helpers.
+- Fix the object-URL leak (`IMPROVE.md` I-09) before new tools copy it.
+- Keep the Image and CNIC tools visually and behaviourally unchanged.
+
+Plan:
+- Add `lib/data/tools.ts` with the two live tools and helpers; add tool types to `lib/types.ts`.
+- Add shared helpers: `objectUrls.ts`, `loadImage.ts`, `download.ts`, `format.ts`.
+- Add shared components in `components/tool/`: `ToolHero`, `FileDropzone`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `ResultActions`, `ToolPage`, `ToolIcon`.
+- Render header, footer, home hub and sitemap from the registry.
+- Use `RelatedTools` on both existing tool pages; leave the tool components untouched.
+- Revoke the original preview object URLs created by `imageOptimizer.ts` and `cnicOptimizer.ts`; track them in `ImageOptTool`.
+- Checks: `typecheck`, `build`, `dev` route checks, `preview` (navigation and rendering changed), manual browser checks if available.
+
+Risks:
+- Registry-driven nav could change active-link behaviour; keep the existing active logic.
+- Shared `RelatedTools` adds content to both pages; keep it below the existing content so the tool flow is unchanged.
+- The preview object URL is used by the comparison slider; revoke only on reset/unmount, never while an item is displayed.
+
+What changed:
+- `lib/types.ts`: added the tool registry types (`ToolEntry`, `ToolCategory`, `ToolStatus`, `ToolIconName`, how-to and FAQ item types).
+- `lib/data/tools.ts`: new registry for the two live tools with metadata, intro, how-to steps, FAQ references, related ids, keywords, features, action label, version and status. Helpers: `toolHref`, `getToolById`, `getToolBySlug`, `getLiveTools`, `getLiveToolCategories`, `getRelatedTools`.
+- `components/tool/`: new `ToolIcon`, `ToolHero`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `FileDropzone`, `ResultActions` and `ToolPage`. `FileDropzone` supports click, drag/drop and paste with type/size validation and error text; `ToolPage` uses one responsive ad unit to keep the one-ad-per-page rule.
+- `Header.tsx`, `Footer.tsx`, `HomeHub.tsx` and `app/sitemap.ts` now read the live tools from the registry. The home hub groups cards under "Photos" and "Print sheets".
+- Both existing tool pages render `RelatedTools` below their content.
+- `lib/utils/objectUrls.ts`: create/revoke helpers. `lib/hooks/useObjectUrl.ts`: preview URL lifecycle hook.
+- I-09 fix: `imageOptimizer.ts` revokes its URL on decode/processing failure; `ImageOptTool` tracks successful original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses `useObjectUrl` instead of creating URLs in `useMemo`.
+- New helpers `loadImage.ts`, `download.ts` and `format.ts` are ready for the new tools; nothing imports them yet.
+- Docs: this entry, `IMPROVE.md` (I-09 moved to Done, new I-31), `README.md` structure, `CLAUDE.md` notes and the new `AGENTS.md` tool checklist.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack), all 8 routes generated, TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/privacy` 200, `/terms` 200, `/api/health` 200, `/sitemap.xml` 200, `/missing-route` 404; `/image-opt` and `/cnic-opt` returned 301. No server errors in the dev log. Each of `/`, `/image-compressor` and `/cnic-photocopy` had exactly one `<h1>`; no `class="dark"` appeared; the home page contained "Photos" and "Print sheets"; both tool pages contained "Related tools" and the other tool link.
+- `npm run preview` — PASS on retry. The first attempt failed while Next fetched Google Fonts ("Failed to fetch Space Grotesk from Google Fonts"); a second run built and served normally. Final run: `/`, `/image-compressor`, `/cnic-photocopy`, `/privacy`, `/terms`, `/api/health` and `/sitemap.xml` 200; `/image-opt` and `/cnic-opt` 301 and resolved to 200 when followed; unknown route 404. The sitemap contains the two registry tools and the legal pages.
+- `git diff --check` — PASS after restoring the generated tracked `.open-next` changes from the preview build. The `.open-next/` and `.wrangler/` output remains untracked and is not part of this change.
+- Manual browser checks (375 px, 1280 px, tool flows, compare slider, print/PDF/PNG, ads, keyboard) — NOT RUN. No browser is installed.
+- Object URL runtime check in DevTools — NOT RUN. The fix was verified by code inspection only.
+- Lighthouse — NOT RUN. Chrome/Lighthouse are not installed.
+
+Not tested:
+- Visual layout, tap targets, ads and the two tool flows in a real browser.
+- Real memory behaviour after many large images.
+- Client bundle size: Next.js 16 did not print per-route sizes in this build.
+- Workers Builds / production deploy after merge (owner runs the final deploy).
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit: `f9dc503` — `feat: add tools foundation and fix object URLs`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/13.
+
+Follow-ups:
+- Approve and run the three behaviour-neutral engine extractions next.
+- Add Vitest (`chore/add-vitest`), then the photo/signature resizer.
+- I-31: if the client bundle grows, split nav metadata from the registry content.
+- `npm run preview` depends on fetching Google Fonts; a network failure can make the first attempt fail even though the build is valid.
+
+---
+
 ## 2026-10-30 — Add the new-tools plan and record decisions
 
-Status: PLANNED
+Status: MERGED
 Branch: `docs/add-tools-plan`
 
 Goal:
@@ -40,10 +106,12 @@ Docs updated:
 
 Commit/PR:
 - Commit: `26c79cd` — `docs: add new tools plan and record decisions`.
-- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/12.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/12 (merged).
+- Merge commit: `6240eca`.
+- Production: docs-only change. `zaibitools.com` `/`, `/api/health` and `/sitemap.xml` returned 200 on 2026-10-31 03:54 UTC. The Cloudflare Workers Build itself was not inspected.
 
 Follow-ups:
-- Phase 0 (`feature/tools-foundation`) needs its own WORKLOG plan entry before coding.
+- Phase 0 is in progress in `feature/tools-foundation` (PR #13).
 - The three engine extractions need separate approval and behaviour-neutral PRs.
 - `pdf-lib` (D-2) and Vitest (D-1) are approved but not installed yet.
 - `pdfjs-dist` (D-5) is still unapproved.

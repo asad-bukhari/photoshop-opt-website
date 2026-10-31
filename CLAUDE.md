@@ -33,6 +33,9 @@ There is no test suite. Use `npm run dev` for changed routes, then `typecheck`, 
 - **jsPDF:** loaded at runtime from cdnjs in `components/CnicOptTool.tsx`; PDF export needs network access.
 - **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
 - **GA4:** `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`.
+- **Tool registry:** `lib/data/tools.ts` drives the header, footer, home hub, sitemap, related tools and future JSON-LD. Add a tool as one registry entry plus one page; do not hard-code nav links.
+- **Object URLs:** create and revoke them through `lib/utils/objectUrls.ts`. Use `lib/hooks/useObjectUrl.ts` for previews; `ImageOptTool` owns the original comparison URLs and revokes them on reset/unmount.
+- **Shared tool parts:** `components/tool/` holds `ToolPage`, `ToolHero`, `FileDropzone`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `ResultActions` and `ToolIcon` for new tools.
 - **Light-only theme:** no `dark:` variants, no theme switch, no stored preference. Use tokens from `app/globals.css`, not raw hex.
 - **Build output:** `.open-next/` is currently tracked; do not add more build output. See `IMPROVE.md` I-17.
 

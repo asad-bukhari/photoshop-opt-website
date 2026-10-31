@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ImageOptTool } from '@/components/ImageOptTool';
 import { ImageOptContent } from '@/components/ImageOptContent';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 
 export const metadata: Metadata = {
   title: 'Image Compressor to 20KB, 50KB or 100KB',
@@ -20,6 +21,7 @@ export default function ImageCompressorPage() {
     <div className="space-y-12">
       <ImageOptTool />
       <ImageOptContent />
+      <RelatedTools toolId="image-compressor" />
     </div>
   );
 }

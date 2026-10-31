@@ -1,3 +1,50 @@
+export type ToolCategory = 'photos' | 'pdf' | 'print';
+export type ToolStatus = 'live' | 'planned';
+export type ToolIconName =
+  | 'image'
+  | 'printer'
+  | 'file-text'
+  | 'file-image'
+  | 'scissors'
+  | 'layers'
+  | 'crop'
+  | 'scan'
+  | 'signature'
+  | 'passport'
+  | 'files';
+
+export interface ToolHowToStep {
+  title: string;
+  body: string;
+}
+
+export interface ToolFaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface ToolEntry {
+  id: string;
+  slug: string;
+  name: string;
+  shortName: string;
+  category: ToolCategory;
+  icon: ToolIconName;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  intro: string;
+  howToSteps: ToolHowToStep[];
+  faq: ToolFaqItem[];
+  relatedIds: string[];
+  keywords: string[];
+  features: string[];
+  actionLabel: string;
+  version: string;
+  status: ToolStatus;
+}
+
 export type ImageFormat = 'webp' | 'jpeg' | 'png' | 'avif';
 
 export type SocialPreset =

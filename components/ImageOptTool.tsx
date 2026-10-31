@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   Check,
@@ -17,6 +17,7 @@ import {
 import { ImageFormat, ImageOptimizationOptions, ProcessedImageItem, SocialPreset } from '@/lib/types';
 import { SOCIAL_PRESETS } from '@/lib/data/initialData';
 import { processImageFile } from '@/lib/utils/imageOptimizer';
+import { revokeObjectUrls } from '@/lib/utils/objectUrls';
 import { ResponsiveAd } from './ResponsiveAd';
 
 const FORMAT_LABELS: Record<ImageFormat, string> = {
@@ -44,6 +45,15 @@ export function ImageOptTool() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [options, setOptions] = useState<ImageOptimizationOptions>(DEFAULT_OPTIONS);
+  const ownedUrlsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const ownedUrls = ownedUrlsRef.current;
+    return () => {
+      revokeObjectUrls(ownedUrls);
+      ownedUrls.clear();
+    };
+  }, []);
 
   const addFiles = (incoming: File[]) => {
     const validFiles = incoming.filter((file) => ACCEPTED_TYPES.includes(file.type));
@@ -77,6 +87,8 @@ export function ImageOptTool() {
   };
 
   const handleReset = () => {
+    revokeObjectUrls(ownedUrlsRef.current);
+    ownedUrlsRef.current.clear();
     setOptions({ ...DEFAULT_OPTIONS });
     setFiles([]);
     setProcessedItems([]);
@@ -97,6 +109,7 @@ export function ImageOptTool() {
       const file = files[index];
       try {
         const result = await processImageFile(file, options);
+        ownedUrlsRef.current.add(result.originalDataUrl);
         newResults.push(result);
       } catch (error) {
         console.error('Error optimizing image:', error);

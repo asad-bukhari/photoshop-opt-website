@@ -1,4 +1,5 @@
 import { ImageOptimizationOptions, ProcessedImageItem, SocialPreset } from '../types';
+import { revokeObjectUrl } from './objectUrls';
 
 const EXTENSION_MAP: Record<string, string> = {
   jpeg: 'jpg',
@@ -185,11 +186,13 @@ export async function processImageFile(
           progress: 100
         });
       } catch (err) {
+        revokeObjectUrl(originalUrl);
         reject(err);
       }
     };
 
     img.onerror = () => {
+      revokeObjectUrl(originalUrl);
       reject(new Error('Failed to load image file. Please upload a valid image (JPEG, PNG, WebP).'));
     };
 

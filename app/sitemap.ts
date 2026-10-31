@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
+import { getLiveTools, toolHref } from '@/lib/data/tools';
 
 const BASE_URL = 'https://zaibitools.com';
-const LAST_MODIFIED = new Date('2026-10-29');
+const LAST_MODIFIED = new Date('2026-10-30');
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -11,18 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1
     },
-    {
-      url: `${BASE_URL}/image-compressor`,
+    ...getLiveTools().map((tool) => ({
+      url: `${BASE_URL}${toolHref(tool)}`,
       lastModified: LAST_MODIFIED,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.9
-    },
-    {
-      url: `${BASE_URL}/cnic-photocopy`,
-      lastModified: LAST_MODIFIED,
-      changeFrequency: 'monthly',
-      priority: 0.9
-    },
+    })),
     {
       url: `${BASE_URL}/privacy`,
       lastModified: LAST_MODIFIED,

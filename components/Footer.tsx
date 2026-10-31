@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Image, Printer, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { ToolIcon } from './tool/ToolIcon';
+import { getLiveTools, toolHref } from '@/lib/data/tools';
 
 interface FooterProps {
   onOpenSecurity: () => void;
@@ -23,7 +25,7 @@ export function Footer({ onOpenSecurity }: FooterProps) {
               <span className="font-display text-sm font-bold tracking-tight text-ink">Zaibi Tools</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-              Free browser tools to compress images and put the front and back of a CNIC on one A4 page.
+              Free browser tools for images and CNIC copies. Your files stay on your device.
             </p>
             <p className="text-xs text-ink-soft">Not affiliated with NADRA.</p>
           </div>
@@ -31,24 +33,17 @@ export function Footer({ onOpenSecurity }: FooterProps) {
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-ink">Tools</h2>
             <ul className="mt-2">
-              <li>
-                <Link
-                  href="/image-compressor"
-                  className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
-                >
-                  <Image className="h-4 w-4 text-doc" />
-                  Image Compressor
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cnic-photocopy"
-                  className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
-                >
-                  <Printer className="h-4 w-4 text-doc" />
-                  CNIC Photocopy
-                </Link>
-              </li>
+              {getLiveTools().map((tool) => (
+                <li key={tool.id}>
+                  <Link
+                    href={toolHref(tool)}
+                    className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-doc"
+                  >
+                    <ToolIcon name={tool.icon} className="h-4 w-4 text-doc" />
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

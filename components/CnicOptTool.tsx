@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useObjectUrl } from '@/lib/hooks/useObjectUrl';
 import {
   Check,
   ChevronDown,
@@ -121,24 +122,8 @@ export function CnicOptTool() {
   const activeLayout = LAYOUT_OPTIONS.find((item) => item.id === options.layout)?.label ?? 'Layout';
   const activeFilter = FILTER_OPTIONS.find((item) => item.id === options.filter)?.label ?? 'Original';
 
-  const frontPreviewUrl = useMemo(
-    () => (frontFile instanceof File ? URL.createObjectURL(frontFile) : frontFile),
-    [frontFile]
-  );
-  const backPreviewUrl = useMemo(
-    () => (backFile instanceof File ? URL.createObjectURL(backFile) : backFile),
-    [backFile]
-  );
-
-  useEffect(() => {
-    if (!(frontFile instanceof File) || !frontPreviewUrl) return;
-    return () => URL.revokeObjectURL(frontPreviewUrl);
-  }, [frontFile, frontPreviewUrl]);
-
-  useEffect(() => {
-    if (!(backFile instanceof File) || !backPreviewUrl) return;
-    return () => URL.revokeObjectURL(backPreviewUrl);
-  }, [backFile, backPreviewUrl]);
+  const frontPreviewUrl = useObjectUrl(frontFile);
+  const backPreviewUrl = useObjectUrl(backFile);
 
   useEffect(() => {
     let isMounted = true;
