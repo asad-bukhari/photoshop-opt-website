@@ -4,6 +4,55 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Extract image filters (refactor 2 of 3)
+
+Status: TESTED
+Branch: `refactor/extract-image-filters`
+
+Goal:
+- Move `applyImageFilters`, `computeOtsuThreshold`, `applyUnsharpMask` and `clamp255` out of `cnicOptimizer.ts` into `lib/utils/imageFilters.ts` without changing filter output.
+
+Plan:
+- Add `lib/utils/imageFilters.ts` with the existing function bodies copied verbatim.
+- Use a narrow `ImageFilterOptions` type (`filter`, `brightness`, `contrast`, `sharpness`) so the module is reusable; `CnicPrintOptions` stays structurally compatible.
+- Import `applyImageFilters` in `cnicOptimizer.ts` and delete the private copies.
+- Run `typecheck`, `build`, the dev route check and a line-level comparison.
+
+Risks:
+- The Otsu threshold, sigmoid softness, grayscale stretch and unsharp-mask kernel must not change.
+- The `original` early return and the `sharpness > 0` guard must stay.
+
+What changed:
+- Added `lib/utils/imageFilters.ts` with the exact `clamp255`, `computeOtsuThreshold`, `applyImageFilters` and `applyUnsharpMask` bodies from `cnicOptimizer.ts`.
+- Added an `ImageFilterOptions` type (`filter`, `brightness`, `contrast`, `sharpness`); `CnicPrintOptions` remains structurally compatible, so the CNIC call site is unchanged.
+- `cnicOptimizer.ts` imports `applyImageFilters` and no longer defines the four private helpers.
+- No UI, copy, routing or dependency changes.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack), all 8 routes generated, TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/api/health` 200; no errors in the dev log.
+- `git diff --check` — PASS.
+- Filter-output comparison — code-level only. The moved function bodies are identical; no browser or Canvas run was available.
+- Manual browser checks and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- Real filter output and print/PDF results were not compared in a browser.
+- `npm run preview` — NOT RUN. No routing, config, dependency or asset change.
+
+Docs updated:
+- `WORKLOG.md`.
+
+Commit/PR:
+- Commit `PENDING` — `refactor: extract image filter helpers`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Next refactor: `refactor/extract-print-pdf`.
+
+---
+
 ## 2026-10-31 — Extract canvas encoding (refactor 1 of 3)
 
 Status: TESTED
