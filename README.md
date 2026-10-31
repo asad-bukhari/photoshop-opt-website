@@ -1,8 +1,9 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting ten document utilities plus focused KB-target pages:
+A browser-only, zero-server web portal hosting eleven document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
+- **Crop & Rotate Image** (`/crop-rotate-image`) — trim edges with sliders, rotate in 90-degree steps and download JPG, PNG or WebP.
 - **Image Converter** (`/image-converter`) — convert one image between JPG, PNG and WebP with a quality control and live preview.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
 - **20/50/100 KB pages** (`/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`) — open the image compressor with the target already set, each with its own copy and FAQ.
@@ -76,6 +77,7 @@ app/
   page.tsx              Landing page (HomeHub)
   image-compressor/page.tsx  Image compressor page
   image-converter/page.tsx   Image format converter page
+  crop-rotate-image/page.tsx Crop and rotate page
   photo-signature-resizer/page.tsx  Photo and signature resizer page
   compress-image-to-20kb/page.tsx  KB-target landing page (same for 50kb and 100kb)
   jpg-to-pdf/page.tsx   Image-to-PDF page
@@ -103,6 +105,8 @@ components/
   PhotoResizeTool.tsx   Resizer UI (crop preview, presets, KB targets, label strip)
   ImageConvertTool.tsx  JPG/PNG/WebP converter UI
   ImageConvertContent.tsx Converter content and limits
+  CropRotateTool.tsx    Crop/rotate UI (sliders, rotation, exports)
+  CropRotateContent.tsx Crop/rotate content and limits
   PhotoResizeContent.tsx Resizer long-form content and limits
   SizeLandingPageView.tsx Shared KB landing page
   SizeLandingContent.tsx  Per-size sections
@@ -137,6 +141,8 @@ lib/
   utils/loadImage.ts    File/URL image decoding with a friendly error
   utils/imageConvert.ts JPG/PNG/WebP conversion and test
   utils/imageConvert.test.ts
+  utils/cropRect.ts        Shared percentage crop and rotation math
+  utils/cropRotate.ts      Crop/rotate rendering and encoding
   utils/download.ts     Blob/Data URL download helpers
   utils/format.ts       Byte and filename formatting
   utils/photoResizer.ts    Resizer math, crop, label strip and encoding

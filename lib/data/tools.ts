@@ -53,6 +53,73 @@ export const TOOLS: ToolEntry[] = [
     status: 'live'
   },
   {
+    id: 'crop-rotate-image',
+    slug: 'crop-rotate-image',
+    name: 'Crop & Rotate Image',
+    shortName: 'Crop',
+    category: 'photos',
+    icon: 'crop',
+    description: 'Crop an image with sliders, rotate it in 90-degree steps and download JPG, PNG or WebP.',
+    metaTitle: 'Crop and Rotate an Image Online in Your Browser',
+    metaDescription:
+      'Crop an image with simple sliders, rotate it in 90-degree steps, and download JPG, PNG or WebP. Everything runs in your browser.',
+    h1: 'Crop and rotate an image',
+    intro:
+      'Trim the edges with four crop sliders, turn the image in 90-degree steps, and download the result. The image is read and encoded in your browser.',
+    howToSteps: [
+      {
+        title: 'Add an image',
+        body: 'Choose a JPG, PNG, WebP or AVIF image. HEIC is not supported by most browsers.'
+      },
+      {
+        title: 'Crop the edges',
+        body: 'Use the left, right, top and bottom sliders to remove unwanted edges. Reset crop starts again.'
+      },
+      {
+        title: 'Rotate if needed',
+        body: 'Use Rotate 90° to turn the image. The preview and output dimensions update.'
+      },
+      {
+        title: 'Choose the format and download',
+        body: 'Pick JPG, PNG or WebP, set the quality for JPG/WebP, then download the new file.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I crop an image without dragging?',
+        answer:
+          'Use the four crop sliders. Each one removes a percentage from that edge, and the preview updates before you download.'
+      },
+      {
+        question: 'Can I rotate the image by any angle?',
+        answer:
+          'This version rotates in 90-degree steps: 90, 180 and 270 degrees. It does not offer free-angle straightening.'
+      },
+      {
+        question: 'Does cropping keep the original file?',
+        answer:
+          'Yes. The downloaded file is a new image; the original on your device is not changed. Keep the original if you may need the full frame later.'
+      },
+      {
+        question: 'Which output formats are supported?',
+        answer:
+          'JPG, PNG and WebP. JPG turns transparent areas white. PNG and WebP can keep transparency. PNG ignores the quality slider.'
+      },
+      {
+        question: 'Is my image uploaded?',
+        answer:
+          'No. The image is read, cropped, rotated and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
+      }
+    ],
+    relatedIds: ['image-converter', 'photo-signature-resizer'],
+    keywords: ['crop image', 'rotate image', 'crop and rotate', 'trim image'],
+    features: ['Crop with sliders', '90° rotation', 'JPG, PNG or WebP'],
+    actionLabel: 'Open crop and rotate',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
     id: 'photo-signature-resizer',
     slug: 'photo-signature-resizer',
     name: 'Photo & Signature Resizer',
@@ -184,7 +251,7 @@ export const TOOLS: ToolEntry[] = [
           'No. The image is decoded and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
       }
     ],
-    relatedIds: ['image-compressor', 'photo-signature-resizer'],
+    relatedIds: ['image-compressor', 'photo-signature-resizer', 'crop-rotate-image'],
     keywords: ['image converter', 'png to jpg', 'jpg to png', 'webp converter'],
     features: ['JPG, PNG and WebP', 'Quality control', 'Runs in your browser'],
     actionLabel: 'Open image converter',
