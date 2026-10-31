@@ -48,6 +48,7 @@ export const TOOLS: ToolEntry[] = [
     keywords: ['compress image', 'compress jpg', '20kb', '50kb', '100kb', 'png to webp'],
     features: ['JPG, PNG and WebP', 'Target size in KB', 'Runs in your browser'],
     actionLabel: 'Open image compressor',
+    kind: 'tool',
     version: '3.0.0',
     status: 'live'
   },
@@ -120,6 +121,7 @@ export const TOOLS: ToolEntry[] = [
     keywords: ['photo resizer', 'signature resizer', 'resize photo to 20kb', '300x400 photo', 'passport photo size'],
     features: ['Exact pixels or mm', 'Maximum and minimum KB', 'Fill, fit or stretch'],
     actionLabel: 'Open photo resizer',
+    kind: 'tool',
     version: '1.0.0',
     status: 'live'
   },
@@ -161,7 +163,194 @@ export const TOOLS: ToolEntry[] = [
     keywords: ['cnic photocopy', 'cnic print', 'front and back', 'a4', 'id card'],
     features: ['Front and back on one page', 'A4, Letter, Legal and 3R', 'PDF, PNG or print'],
     actionLabel: 'Open CNIC photocopy',
+    kind: 'tool',
     version: '3.0.0',
+    status: 'live'
+  },
+  {
+    id: 'compress-image-to-20kb',
+    slug: 'compress-image-to-20kb',
+    name: 'Compress Image to 20KB',
+    shortName: '20KB',
+    category: 'photos',
+    icon: 'file-image',
+    description: 'Open the image compressor with a 20KB target for strict upload forms.',
+    metaTitle: 'Compress Image to 20KB Online in Your Browser',
+    metaDescription:
+      'Compress a JPG, PNG or WebP image to 20KB in your browser. Adjust quality and dimensions, check the result and download without uploading.',
+    h1: 'Compress an image to 20KB',
+    intro:
+      'This page opens the image compressor with a 20 KB target already set. Use it for strict forms and small profile photos, then check that the face or text is still readable before you submit.',
+    howToSteps: [
+      {
+        title: 'Add a clean source image',
+        body: 'Use the sharpest photo you have. A simple background and a tight crop leave more detail at a very small file size.'
+      },
+      {
+        title: 'Keep the 20KB target',
+        body: 'The target is already set to 20 KB. Choose JPG unless the form explicitly accepts WebP.'
+      },
+      {
+        title: 'Check the comparison',
+        body: 'Drag the comparison slider and look at the face or signature. If it is too soft, use a smaller crop or a larger allowance.'
+      },
+      {
+        title: 'Download and verify',
+        body: 'Confirm the downloaded file is under 20 KB and that the portal accepts its format.'
+      }
+    ],
+    faq: [
+      {
+        question: 'Can a photo still look good at 20KB?',
+        answer:
+          'A small photo can look acceptable, but fine detail will be reduced. A simple background, good lighting and a tight crop help more than any setting. Check the face at 100% before uploading.'
+      },
+      {
+        question: 'Which format should I use for a 20KB image?',
+        answer:
+          'JPG is the safest choice for older forms and is usually efficient at small sizes. WebP can be smaller when the portal accepts it. PNG is lossless and ignores the target, so it is a poor choice for a strict KB limit.'
+      },
+      {
+        question: 'Why does my image stay above 20KB?',
+        answer:
+          'Detailed textures, noise and a large pixel size all keep the file larger. The tool lowers quality and then resolution until it fits, but a complex image may need a smaller crop. The result panel tells you when the target cannot be reached.'
+      },
+      {
+        question: 'Is 20KB enough for a signature?',
+        answer:
+          'It can be, especially for a small signature box. Use dark ink on white paper and crop close to the signature. If the strokes break up, use a larger KB allowance or a smaller pixel size.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'compress-image-to-50kb'],
+    keywords: ['compress image to 20kb', 'photo to 20kb', 'jpg to 20kb', '20kb image'],
+    features: ['20KB target preset', 'JPG, WebP or PNG', 'Runs in your browser'],
+    actionLabel: 'Open the 20KB compressor',
+    kind: 'landing',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'compress-image-to-50kb',
+    slug: 'compress-image-to-50kb',
+    name: 'Compress Image to 50KB',
+    shortName: '50KB',
+    category: 'photos',
+    icon: 'file-image',
+    description: 'Compare 50KB output with the original and keep more detail than a 20KB target.',
+    metaTitle: 'Compress Image to 50KB Online — No Upload',
+    metaDescription:
+      'Compress a photo to 50KB in your browser. Keep more detail than 20KB, check the before-and-after preview and download the JPG or WebP file.',
+    h1: 'Compress an image to 50KB',
+    intro:
+      'This page starts the image compressor at 50 KB. It is a common middle ground for profile photos and document uploads when 20 KB looks too soft but the portal still has a strict limit.',
+    howToSteps: [
+      {
+        title: 'Start from a good original',
+        body: 'Use the original camera or phone file rather than a screenshot or an already-compressed copy.'
+      },
+      {
+        title: 'Use the 50KB target',
+        body: 'The target is preset. JPG is the compatible default; try WebP only if the form accepts it.'
+      },
+      {
+        title: 'Compare at full size',
+        body: 'Open the preview and inspect the face, text and edges. Increase the target only if the form allows it.'
+      },
+      {
+        title: 'Download the file',
+        body: 'Check the reported KB and the downloaded file before you attach it to the form.'
+      }
+    ],
+    faq: [
+      {
+        question: 'Is 50KB enough for a job application photo?',
+        answer:
+          'It depends on the portal. 50 KB leaves more detail than 20 KB and is often enough for a profile photo, but read the exact rule on the form. The tool cannot guarantee that an unknown portal will accept the result.'
+      },
+      {
+        question: 'Should I choose JPG or WebP at 50KB?',
+        answer:
+          'Choose JPG when the form lists JPEG or JPG, or when you are unsure. WebP often produces a smaller file, but some older portals reject it. Use the format the form names.'
+      },
+      {
+        question: 'Why is my PNG still large at a 50KB target?',
+        answer:
+          'PNG is lossless, so it ignores the KB target. Convert the export to JPG or WebP if the form allows it; those formats can lower quality to approach 50 KB.'
+      },
+      {
+        question: 'Does the result land exactly on 50KB?',
+        answer:
+          'No. The tool aims to stay under the maximum, so the result can be a little smaller. Check the displayed size and choose a different target only if the portal allows it.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'compress-image-to-100kb'],
+    keywords: ['compress image to 50kb', 'photo to 50kb', 'jpg to 50kb', '50kb image'],
+    features: ['50KB target preset', 'Compare before and after', 'No upload'],
+    actionLabel: 'Open the 50KB compressor',
+    kind: 'landing',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'compress-image-to-100kb',
+    slug: 'compress-image-to-100kb',
+    name: 'Compress Image to 100KB',
+    shortName: '100KB',
+    category: 'photos',
+    icon: 'file-image',
+    description: 'Open the compressor at 100KB for forms and profiles that allow more detail.',
+    metaTitle: 'Compress Image to 100KB Online in Your Browser',
+    metaDescription:
+      'Compress a JPG, PNG or WebP image to 100KB without uploading it. Keep more detail for forms, profiles and screens, then download the result.',
+    h1: 'Compress an image to 100KB',
+    intro:
+      'This page starts the image compressor at 100 KB. Use it when the portal allows a little more room and you want a sharper face, document text or signature than a 20 KB or 50 KB target gives you.',
+    howToSteps: [
+      {
+        title: 'Add the original image',
+        body: 'A sharp original keeps more detail after re-encoding. Avoid starting from a screenshot of a compressed photo.'
+      },
+      {
+        title: 'Keep the 100KB target',
+        body: 'The preset is 100 KB. JPG is the compatible default; WebP is an option when the form accepts it.'
+      },
+      {
+        title: 'Inspect the result',
+        body: 'Check the face, small text and fine lines at 100% before downloading.'
+      },
+      {
+        title: 'Confirm the portal rule',
+        body: 'Make sure 100 KB is within the portal limit and that the accepted format matches your download.'
+      }
+    ],
+    faq: [
+      {
+        question: 'What is a 100KB image useful for?',
+        answer:
+          'A 100 KB allowance gives a photo or scanned page more detail than 20 KB or 50 KB. It suits profile photos, form attachments and on-screen documents when the portal permits that size.'
+      },
+      {
+        question: 'Is a 100KB image lossless?',
+        answer:
+          'No. JPG and WebP are re-encoded at a lower quality to approach the target. The comparison slider shows the difference; keep the target higher if the form allows it.'
+      },
+      {
+        question: 'Should I use a preset or the original aspect ratio?',
+        answer:
+          'Use the original aspect ratio unless the form asks for a specific crop. Presets crop to a fixed frame and can remove part of a face or document. The photo resizer tool is better for exact pixel sizes.'
+      },
+      {
+        question: 'Why not upload the original photo?',
+        answer:
+          'A portal may reject a large file or take longer to accept it. Compressing also re-encodes the image, which drops EXIF data such as GPS location. Keep the original file if you may need it later.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'compress-image-to-50kb'],
+    keywords: ['compress image to 100kb', 'photo to 100kb', 'jpg to 100kb', '100kb image'],
+    features: ['100KB target preset', 'More detail for forms', 'Runs in your browser'],
+    actionLabel: 'Open the 100KB compressor',
+    kind: 'landing',
+    version: '1.0.0',
     status: 'live'
   }
 ];
@@ -178,15 +367,25 @@ export function getToolBySlug(slug: string): ToolEntry | undefined {
   return TOOLS.find((tool) => tool.slug === slug);
 }
 
+export function requireTool(slug: string): ToolEntry {
+  const tool = getToolBySlug(slug);
+  if (!tool) throw new Error(`Missing registry entry: ${slug}`);
+  return tool;
+}
+
 export function getLiveTools(): ToolEntry[] {
   return TOOLS.filter((tool) => tool.status === 'live');
+}
+
+export function getNavTools(): ToolEntry[] {
+  return TOOLS.filter((tool) => tool.status === 'live' && tool.kind === 'tool');
 }
 
 export function getLiveToolCategories(): { category: ToolCategory; label: string; tools: ToolEntry[] }[] {
   return TOOL_CATEGORY_ORDER.map((category) => ({
     category,
     label: TOOL_CATEGORY_LABELS[category],
-    tools: getLiveTools().filter((tool) => tool.category === category)
+    tools: getNavTools().filter((tool) => tool.category === category)
   })).filter((group) => group.tools.length > 0);
 }
 

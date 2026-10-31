@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, ShieldCheck, X } from 'lucide-react';
-import { getLiveTools, toolHref } from '@/lib/data/tools';
+import { getNavTools, toolHref } from '@/lib/data/tools';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  ...getLiveTools().map((tool) => ({ href: toolHref(tool), label: tool.name }))
+  ...getNavTools().map((tool) => ({ href: toolHref(tool), label: tool.name }))
 ];
 
 interface HeaderProps {

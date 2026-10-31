@@ -4,12 +4,12 @@ import { ResponsiveAd } from './ResponsiveAd';
 import { FaqList } from './FaqList';
 import { ToolIcon } from './tool/ToolIcon';
 import { FAQ_ITEMS } from '@/lib/data/initialData';
-import { getLiveToolCategories, getLiveTools, toolHref } from '@/lib/data/tools';
+import { getLiveToolCategories, getNavTools, toolHref } from '@/lib/data/tools';
 
 const POPULAR_TASKS = [
-  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 20KB' },
-  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 50KB' },
-  { href: '/image-compressor#compress-jpg', label: 'Compress an image to 100KB' },
+  { href: '/compress-image-to-20kb', label: 'Compress an image to 20KB' },
+  { href: '/compress-image-to-50kb', label: 'Compress an image to 50KB' },
+  { href: '/compress-image-to-100kb', label: 'Compress an image to 100KB' },
   { href: '/photo-signature-resizer', label: 'Resize a photo to 300x400' },
   { href: '/photo-signature-resizer', label: 'Resize a signature to 200x230' },
   { href: '/cnic-photocopy#how-to-print-cnic', label: 'Print CNIC front and back on A4' },
@@ -24,7 +24,7 @@ const STEPS = [
 ] as const;
 
 export function HomeHub() {
-  const liveTools = getLiveTools();
+  const liveTools = getNavTools();
   const primaryTool = liveTools[0];
   const secondaryTool = liveTools[1];
 

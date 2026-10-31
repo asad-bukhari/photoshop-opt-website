@@ -1,9 +1,10 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting three document utilities:
+A browser-only, zero-server web portal hosting three document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
+- **20/50/100 KB pages** (`/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`) — open the image compressor with the target already set, each with its own copy and FAQ.
 - **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
@@ -66,6 +67,7 @@ app/
   page.tsx              Landing page (HomeHub)
   image-compressor/page.tsx  Image compressor page
   photo-signature-resizer/page.tsx  Photo and signature resizer page
+  compress-image-to-20kb/page.tsx  KB-target landing page (same for 50kb and 100kb)
   cnic-photocopy/page.tsx    CNIC photocopy page
   privacy/page.tsx      Privacy policy
   terms/page.tsx        Terms of use
@@ -84,6 +86,9 @@ components/
   ImageOptTool.tsx      Image optimizer UI (dropzone, controls, compare slider)
   PhotoResizeTool.tsx   Resizer UI (crop preview, presets, KB targets, label strip)
   PhotoResizeContent.tsx Resizer long-form content and limits
+  SizeLandingPageView.tsx Shared KB landing page
+  SizeLandingContent.tsx  Per-size sections
+  SizeLandingLinks.tsx    Cross-links between KB targets
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   SecurityModal.tsx     Privacy/security modal
   CornerMarks.tsx       Decorative print marks + scale ruler
@@ -94,6 +99,7 @@ lib/
   data/tools.ts         Tool registry: nav, footer, home, sitemap, related tools
   data/initialData.ts   Presets and FAQ content
   data/photoResizer.ts  Resizer presets, defaults and unit labels
+  data/sizeLandingPages.ts  Unique 20/50/100 KB page sections
   data/ads.ts           Adsterra ad keys and dimensions
   hooks/useObjectUrl.ts Object URL lifecycle for file previews
   utils/objectUrls.ts   Create/revoke object URL helpers
@@ -105,13 +111,15 @@ lib/
   utils/imageFilters.ts    Shared CNIC/image filter functions
   utils/pdfExport.ts       Shared jsPDF loader, paper sizes and JPEG conversion
   utils/printSheet.ts      Shared print-window helper
+  utils/toolSchema.ts      Shared JSON-LD builder
+  utils/toolMetadata.ts    Shared metadata builder
   utils/imageOptimizer.ts  Image processing engine (Canvas)
   utils/cnicOptimizer.ts   CNIC sheet rendering + filters (Canvas)
   utils/*.test.ts       Vitest tests for pure helpers
 vitest.config.mts       Vitest config and `@` alias
 ```
 
-Add a new tool by adding one entry to `lib/data/tools.ts` and one page; header, footer, home hub, sitemap and related-tool links read from the registry.
+Add a new tool by adding one entry to `lib/data/tools.ts` and one page; header, footer, home hub, sitemap and related-tool links read from the registry. Use `kind: 'landing'` for content pages that should stay out of the navigation.
 
 Path alias: `@/*` maps to the project root.
 

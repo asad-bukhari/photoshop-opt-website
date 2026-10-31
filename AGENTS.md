@@ -67,7 +67,7 @@ npm run deploy
 
 Run `npm run dev` and check every changed route before committing:
 
-- `/`, `/image-compressor`, `/photo-signature-resizer`, `/cnic-photocopy`, `/privacy`, `/terms`, `/api/health`, and the changed route return the expected status.
+- `/`, `/image-compressor`, `/photo-signature-resizer`, `/cnic-photocopy`, `/compress-image-to-20kb`, `/compress-image-to-50kb`, `/compress-image-to-100kb`, `/privacy`, `/terms`, `/api/health`, and the changed route return the expected status.
 - The changed UI or copy is present and the removed text is gone.
 - No `class="dark"` or theme toggle appears.
 - The dev log has no server errors.

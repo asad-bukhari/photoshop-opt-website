@@ -40,6 +40,7 @@ export interface PhotoResizeResult {
 
 export type ToolCategory = 'photos' | 'pdf' | 'print';
 export type ToolStatus = 'live' | 'planned';
+export type ToolKind = 'tool' | 'landing';
 export type ToolIconName =
   | 'image'
   | 'printer'
@@ -81,6 +82,7 @@ export interface ToolEntry {
   keywords: string[];
   features: string[];
   actionLabel: string;
+  kind: ToolKind;
   version: string;
   status: ToolStatus;
 }

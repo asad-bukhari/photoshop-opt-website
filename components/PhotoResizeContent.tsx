@@ -1,4 +1,5 @@
 import { ContentSheet } from './ContentSheet';
+import { SizeLandingLinks } from './SizeLandingLinks';
 
 export function PhotoResizeContent() {
   return (
@@ -47,6 +48,7 @@ export function PhotoResizeContent() {
           <li>It does not upload, verify or submit anything to a portal.</li>
         </ul>
       </section>
+      <SizeLandingLinks />
     </ContentSheet>
   );
 }

@@ -37,14 +37,23 @@ const DEFAULT_OPTIONS: ImageOptimizationOptions = {
   preset: 'original'
 };
 
-export function ImageOptTool() {
+interface ImageOptToolProps {
+  initialTargetKB?: number;
+  embedded?: boolean;
+}
+
+export function ImageOptTool({ initialTargetKB, embedded = false }: ImageOptToolProps = {}) {
+  const initialOptions: ImageOptimizationOptions = {
+    ...DEFAULT_OPTIONS,
+    targetSizeKB: initialTargetKB ?? DEFAULT_OPTIONS.targetSizeKB
+  };
   const [files, setFiles] = useState<File[]>([]);
   const [processedItems, setProcessedItems] = useState<ProcessedImageItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<ProcessedImageItem | null>(null);
   const [comparisonSliderPos, setComparisonSliderPos] = useState<number>(50);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [options, setOptions] = useState<ImageOptimizationOptions>(DEFAULT_OPTIONS);
+  const [options, setOptions] = useState<ImageOptimizationOptions>(initialOptions);
   const ownedUrlsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -89,7 +98,7 @@ export function ImageOptTool() {
   const handleReset = () => {
     revokeObjectUrls(ownedUrlsRef.current);
     ownedUrlsRef.current.clear();
-    setOptions({ ...DEFAULT_OPTIONS });
+    setOptions(initialOptions);
     setFiles([]);
     setProcessedItems([]);
     setSelectedItem(null);
@@ -189,16 +198,18 @@ export function ImageOptTool() {
             : ''}
       </p>
 
-      <header className="space-y-3">
-        <p className="font-mono text-xs uppercase tracking-widest text-doc">Image compressor</p>
-        <h1 className="max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
-          Compress an image to 20KB, 50KB or 100KB
-        </h1>
-        <p className="max-w-2xl text-base leading-relaxed text-ink-soft">
-          Choose a target size, add one or more images, and download the compressed files. Processing happens in your
-          browser; the tool does not upload your images.
-        </p>
-      </header>
+      {!embedded && (
+        <header className="space-y-3">
+          <p className="font-mono text-xs uppercase tracking-widest text-doc">Image compressor</p>
+          <h1 className="max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+            Compress an image to 20KB, 50KB or 100KB
+          </h1>
+          <p className="max-w-2xl text-base leading-relaxed text-ink-soft">
+            Choose a target size, add one or more images, and download the compressed files. Processing happens in your
+            browser; the tool does not upload your images.
+          </p>
+        </header>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-12">
         <div className="order-1 space-y-4 lg:order-none lg:col-span-8">
@@ -506,7 +517,7 @@ export function ImageOptTool() {
         </div>
       </div>
 
-      <ResponsiveAd />
+      {!embedded && <ResponsiveAd />}
     </div>
   );
 }
