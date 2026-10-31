@@ -3,7 +3,9 @@
   "private": true,
   "version": "3.0.0",
   "scripts": {
+    "predev": "node scripts/copy-pdf-worker.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/copy-pdf-worker.mjs",
     "build": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" next build",
     "start": "next start",
     "preview": "opennextjs-cloudflare build && NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" wrangler dev",
@@ -16,6 +18,7 @@
     "lucide-react": "^0.546.0",
     "next": "^16.4.3",
     "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

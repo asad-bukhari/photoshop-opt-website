@@ -4,6 +4,59 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — PDF to JPG
+
+Status: TESTED
+Branch: `feature/pdf-to-jpg`
+
+Goal:
+- Add `/pdf-to-jpg` with `pdfjs-dist` (D-5 approved on 2026-10-31), rendering every page to a separate JPG.
+- Serve the pdf.js worker from our own origin and prove it under the OpenNext preview.
+
+Plan:
+- Install `pdfjs-dist`; copy its worker to `public/` on `predev` and `prebuild`.
+- Add `lib/utils/pdfToJpg.ts`: load a PDF, set the local worker, render each page to JPEG at a chosen scale and quality, build stable file names.
+- Add unit tests for quality, names and scales.
+- Add `components/PdfToJpgTool.tsx`: one PDF, page count, scale, quality, sequential progress, per-page JPG downloads (no ZIP).
+- Add the page, registry, home/nav/sitemap links and cross-links.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, worker MIME, bundle split, `git diff --check`.
+
+What changed:
+- `package.json` / `package-lock.json`: added `pdfjs-dist@6.4.299` (Apache-2.0).
+- `scripts/copy-pdf-worker.mjs`, `predev` and `prebuild`: copy `pdfjs-dist/build/pdf.worker.min.mjs` to `public/pdf.worker.min.mjs`. The generated worker is gitignored but is produced by dev, build and OpenNext build.
+- `lib/utils/pdfToJpg.ts`: dynamic `import('pdfjs-dist')`, local worker path, protected/broken file messages, page renderer with white background and JPEG encoding, page names.
+- `lib/utils/pdfToJpg.test.ts`: 3 tests; suite is now 67 tests in 10 files.
+- `components/PdfToJpgTool.tsx`: PDF input, page count/size, scale (1x/1.5x/2x), quality (High/Small), sequential rendering with progress, per-page download, worker cleanup.
+- `components/PdfToJpgContent.tsx`: use cases, scale/quality, protected files and limits.
+- `app/pdf-to-jpg/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, related links from split PDF, home PDF group/popular task, nav/footer and sitemap.
+- Docs: this entry, `IMPROVE.md` unchanged, `README.md`, `CLAUDE.md`, `AGENTS.md`, `TOOLS_PLAN.md` (D-5 approved).
+
+Tests run:
+- `npm run test` — PASS. 10 files, 67 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 19 pages including `/pdf-to-jpg`. The prebuild copied the 1.3 MB worker.
+- Bundle check — PASS. `pdfjs-dist` split into a 448 KB on-demand chunk and a 16 KB loader; neither is in the root main files or the home page.
+- `npm run dev` — PASS. `/`, `/pdf-to-jpg` and all existing routes returned 200. The worker returned 200 with `application/javascript` and 1,264,342 bytes. The new page had one H1 and the expected title. No dev-log errors.
+- `npm run preview` — PASS. The worker returned 200 with `text/javascript` and the same size from the OpenNext/Wrangler origin; every route returned 200; no build or server errors.
+- `git diff --check` — PASS.
+- Actual in-browser PDF rendering, protected PDF handling, large multi-page memory, page images in a viewer and Lighthouse — NOT RUN. No browser is installed.
+- Manual checklist — NOT RUN for browser flows.
+
+Not tested:
+- Real PDF.js rendering and downloads were not exercised; the worker was only verified over HTTP.
+- Search Console indexing and production deployment (deferred).
+
+Commit/PR:
+- Commit `PENDING` — `feat: add pdf to jpg tool`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Next: image converter, then crop/rotate. Page thumbnails for merge/split can now use the same pdf.js worker.
+
+---
+
 ## 2026-10-31 — Document scan cleanup
 
 Status: TESTED
