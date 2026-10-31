@@ -55,8 +55,8 @@ Docs updated:
 - `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add document scan cleanup`.
-- PR `PENDING`.
+- Commit: `4667667` — `feat: add document scan cleanup`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/25.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
