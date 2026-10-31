@@ -7,6 +7,7 @@
     "build": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" next build",
     "start": "next start",
     "preview": "opennextjs-cloudflare build && NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" wrangler dev",
+    "test": "vitest run",
     "deploy": "opennextjs-cloudflare build && NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" wrangler deploy",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
@@ -25,6 +26,7 @@
     "@types/react-dom": "^19.1.2",
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.3",
+    "vitest": "^5.0.5",
     "wrangler": "^4.148.0"
   }
 }

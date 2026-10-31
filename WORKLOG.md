@@ -4,6 +4,58 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Add Vitest for pure functions
+
+Status: TESTED
+Branch: `chore/add-vitest`
+
+Goal:
+- Add the approved test framework (`TOOLS_PLAN.md` D-1) for pure functions, without shipping test code or changing runtime behaviour.
+
+Plan:
+- Install `vitest` as a dev dependency and add `npm run test`.
+- Add `vitest.config.mts` with the `@` alias and a `lib/**/*.test.ts` include.
+- Add initial tests for the extracted pure helpers and the filename/byte formatting helpers.
+- Update `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md` and this log.
+- Run `test`, `typecheck`, `build`, the dev route check and `git diff --check`.
+
+Risks:
+- A test config that is loaded by the Next build could break production.
+- Tests that import browser-only modules would fail in Node.
+
+What changed:
+- `package.json` / `package-lock.json`: added `vitest@5.0.5` (dev only) and `"test": "vitest run"`.
+- `vitest.config.mts`: `@` alias to the project root and `include: ['lib/**/*.test.ts']`. The `.mts` extension avoids the Vite CommonJS config warning.
+- Tests: `lib/utils/format.test.ts` (bytes and filenames), `lib/utils/canvasEncode.test.ts` (`estimateDataUrlSize`), `lib/utils/imageFilters.test.ts` (`clamp255`, `computeOtsuThreshold`). 3 files, 8 tests.
+- Docs: AGENTS testing rules and checklists, CLAUDE commands, README scripts/stack/structure, IMPROVE I-29 moved to Done.
+
+Tests run:
+- `npm run test` — PASS. Vitest 5.0.5, 3 files, 8 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack), all 8 routes generated, TypeScript passed.
+- `npm run dev` — PASS. `/` 200, `/image-compressor` 200, `/cnic-photocopy` 200, `/api/health` 200; no errors in the dev log.
+- `git diff --check` — PASS.
+- `npm run preview` — NOT RUN. Vitest is a dev dependency and is not part of the Worker bundle; no config, routing or runtime dependency changed.
+- Manual browser checks and Lighthouse — NOT RUN. No browser is installed.
+
+Not tested:
+- Canvas, print and PDF behaviour remain manual.
+- `npm audit`: the install reported 5 advisories (1 moderate, 4 high) in the dependency tree; no audit fix was applied.
+
+Docs updated:
+- `WORKLOG.md`, `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md`.
+
+Commit/PR:
+- Commit `PENDING` — `chore: add vitest for pure functions`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Review the reported advisories before the final deploy.
+- Next: `feature/photo-signature-resizer`.
+
+---
+
 ## 2026-10-31 — Extract print and PDF helpers (refactor 3 of 3)
 
 Status: TESTED
