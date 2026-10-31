@@ -51,8 +51,8 @@ Not tested:
 - Search Console indexing and production deployment (deferred).
 
 Commit/PR:
-- Commit `PENDING` — `feat: add crop and rotate tool`.
-- PR `PENDING`.
+- Commit: `31e2db4` — `feat: add crop and rotate tool`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/28.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
