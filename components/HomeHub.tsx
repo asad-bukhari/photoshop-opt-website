@@ -10,13 +10,15 @@ const POPULAR_TASKS = [
   { href: '/image-compressor#compress-jpg', label: 'Compress an image to 20KB' },
   { href: '/image-compressor#compress-jpg', label: 'Compress an image to 50KB' },
   { href: '/image-compressor#compress-jpg', label: 'Compress an image to 100KB' },
+  { href: '/photo-signature-resizer', label: 'Resize a photo to 300x400' },
+  { href: '/photo-signature-resizer', label: 'Resize a signature to 200x230' },
   { href: '/cnic-photocopy#how-to-print-cnic', label: 'Print CNIC front and back on A4' },
   { href: '/cnic-photocopy#cnic-pdf', label: 'Make a CNIC photocopy PDF' },
   { href: '/image-compressor#convert-formats', label: 'Convert PNG to WebP' }
 ] as const;
 
 const STEPS = [
-  'Choose the image compressor or the CNIC photocopy tool.',
+  'Choose a tool.',
   'Add your files. The tool reads them in your browser.',
   'Download the result, or print the CNIC sheet at 100% scale.'
 ] as const;
@@ -37,11 +39,11 @@ export function HomeHub() {
           id="home-title"
           className="mt-3 max-w-3xl font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl"
         >
-          Compress images and print CNIC copies in your browser
+          Compress images, resize photos and print CNIC copies in your browser
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
-          Zaibi Tools has two free tools: an image compressor for JPG, PNG and WebP files, and a CNIC print tool that
-          puts the front and back of an ID card on one A4 page. Both run in your browser.
+          Zaibi Tools has free browser tools for image compression, exact-size photo and signature resizing, and
+          CNIC print sheets. Your files stay on your device.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           {primaryTool && (

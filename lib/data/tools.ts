@@ -44,11 +44,83 @@ export const TOOLS: ToolEntry[] = [
       }
     ],
     faq: IMAGE_FAQ_ITEMS,
-    relatedIds: ['cnic-photocopy'],
+    relatedIds: ['photo-signature-resizer', 'cnic-photocopy'],
     keywords: ['compress image', 'compress jpg', '20kb', '50kb', '100kb', 'png to webp'],
     features: ['JPG, PNG and WebP', 'Target size in KB', 'Runs in your browser'],
     actionLabel: 'Open image compressor',
     version: '3.0.0',
+    status: 'live'
+  },
+  {
+    id: 'photo-signature-resizer',
+    slug: 'photo-signature-resizer',
+    name: 'Photo & Signature Resizer',
+    shortName: 'Resizer',
+    category: 'photos',
+    icon: 'crop',
+    description:
+      'Resize a photo or signature to exact pixels or millimetres, set a maximum KB and download JPG, PNG or WebP.',
+    metaTitle: 'Photo and Signature Resizer — Exact Pixels and KB',
+    metaDescription:
+      'Resize a photo or signature to an exact pixel size or mm at 300 DPI, set a maximum and minimum KB, crop, and download in JPG, PNG or WebP.',
+    h1: 'Resize a photo or signature to exact pixels and KB',
+    intro:
+      'Enter the size and a KB limit, then crop the preview. Processing runs in your browser; the image is not uploaded.',
+    howToSteps: [
+      {
+        title: 'Add a photo or signature',
+        body: 'Use a JPG, PNG, WebP or AVIF image. A signature works best on a plain white background.'
+      },
+      {
+        title: 'Choose the size',
+        body: 'Pick a preset or enter custom pixels, millimetres, centimetres or inches at your chosen DPI.'
+      },
+      {
+        title: 'Set the KB limit and crop',
+        body: 'Enter a maximum KB, optionally a minimum, choose the fit mode and drag the preview to position the crop.'
+      },
+      {
+        title: 'Check and download',
+        body: 'Confirm the pixel size and KB result, then download the JPG, PNG or WebP file.'
+      }
+    ],
+    faq: [
+      {
+        question: 'How do I resize a photo to 300x400 pixels?',
+        answer:
+          'Choose the Photo 300 x 400 px preset, add your image, then download the result. For another size, choose Custom size and enter the width and height in pixels.'
+      },
+      {
+        question: 'Can I set a 20KB or 50KB file size limit?',
+        answer:
+          'Yes. Enter 20 or 50 as the maximum KB. The tool lowers JPEG or WebP quality until the file fits, but it keeps the pixel size you asked for. If the target is impossible at that size, it shows the smallest result and says so.'
+      },
+      {
+        question: 'Does the tool write DPI into the file?',
+        answer:
+          'No. The exported file keeps the pixel dimensions but does not store DPI metadata. Upload forms usually check pixels and file size; printing at a physical size depends on your print app.'
+      },
+      {
+        question: 'Can I resize a signature?',
+        answer:
+          'Yes. Use the Signature 200 x 230 px preset or a custom size. Use a signature photo with a plain white background; the tool does not remove backgrounds.'
+      },
+      {
+        question: 'Does resizing remove EXIF metadata?',
+        answer:
+          'Yes. The image is re-encoded through the Canvas API, which drops EXIF data such as GPS location and camera details.'
+      },
+      {
+        question: 'Is my photo uploaded?',
+        answer:
+          'No. The image is read, cropped and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'cnic-photocopy'],
+    keywords: ['photo resizer', 'signature resizer', 'resize photo to 20kb', '300x400 photo', 'passport photo size'],
+    features: ['Exact pixels or mm', 'Maximum and minimum KB', 'Fill, fit or stretch'],
+    actionLabel: 'Open photo resizer',
+    version: '1.0.0',
     status: 'live'
   },
   {
@@ -85,7 +157,7 @@ export const TOOLS: ToolEntry[] = [
       }
     ],
     faq: CNIC_FAQ_ITEMS,
-    relatedIds: ['image-compressor'],
+    relatedIds: ['photo-signature-resizer', 'image-compressor'],
     keywords: ['cnic photocopy', 'cnic print', 'front and back', 'a4', 'id card'],
     features: ['Front and back on one page', 'A4, Letter, Legal and 3R', 'PDF, PNG or print'],
     actionLabel: 'Open CNIC photocopy',
