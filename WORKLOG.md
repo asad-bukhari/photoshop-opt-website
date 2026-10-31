@@ -4,6 +4,66 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Document scan cleanup
+
+Status: TESTED
+Branch: `feature/scan-cleanup`
+
+Goal:
+- Add `/photo-to-scanned-pdf`, a browser-only tool that turns phone photos of documents into a cleaner multi-page PDF.
+- Reuse the shared image filters and `pdf-lib` path.
+
+Plan:
+- Add scan page types (rotation, crop percentages, filter mode) and default settings.
+- Add `lib/utils/scanPdf.ts`: pure crop-rectangle and rotated-size math, scan filters (Original, Grayscale, B&W, Brighten), A4 page rendering at 150 DPI, and PDF assembly behind a dynamic `pdf-lib` import.
+- Add tests for crop math, rotated dimensions and filter output.
+- Add `components/ScanCleanupTool.tsx`: multi-image list, up/down reorder, remove, per-page rotate, crop sliders, filter buttons, live preview and one PDF download.
+- Add `app/photo-to-scanned-pdf/page.tsx` with metadata, canonical, JSON-LD and shared `ToolPage`; state clearly that v1 has no automatic edge detection or perspective fix.
+- Register the tool, add home/nav/sitemap links and cross-links with image-to-PDF.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- Phone photos are large; cap the working page at A4 150 DPI and process one page at a time.
+- Filters and crop sliders could stutter; debounce the preview.
+- Do not imply automatic deskew or OCR; the page must say the user crops manually.
+
+What changed:
+- `lib/types.ts`: added scan filter/rotation/crop/settings, page input and PDF result types.
+- `lib/utils/scanPdf.ts`: pure `computeCropRect` and `rotatedDimensions`; `applyScanFilter` (Original, Grayscale, B&W, Brighten) reuses `applyImageFilters` and `clamp255`; Cropped sources are capped at 2400 px, rendered onto A4 pages at 150 DPI, and combined into one PDF with a dynamic `pdf-lib` import.
+- `lib/utils/scanPdf.test.ts`: 6 tests for crop math, rotation and filter output. Suite is now 64 tests in 9 files.
+- `components/ScanCleanupTool.tsx`: multi-photo list with thumbnails, selection, up/down order, rotate, remove, clear; per-page crop sliders and filter buttons; debounced live preview; per-page progress; PDF result download.
+- `components/ScanCleanupContent.tsx`: A4/150 DPI behavior, per-page editing, an explicit "no automatic edge detection" section and limits.
+- `app/photo-to-scanned-pdf/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, related link from image-to-PDF, home PDF group/popular task, nav/footer and sitemap.
+- Docs: this entry, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 9 files, 64 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 18 pages including `/photo-to-scanned-pdf`.
+- `npm run dev` — PASS. All tools, landing pages, legal pages, sitemap and health returned 200. The new page had one H1, expected title, three JSON-LD types, the no-edge-detection section, limits and related tools. Nav/footer include it; home PDF group shows four tools; sitemap lists it. No `class="dark"`, no dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served the new page and all existing routes with 200; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (multiple photos, crop sliders, rotate, each filter, preview, PDF pages, large phone photos, memory, viewer) — NOT RUN. No browser or device is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real filter quality, crop/rotation accuracy, 150 DPI PDF output and multi-page memory were not exercised in a browser.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit: `4667667` — `feat: add document scan cleanup`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/25.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- I-36: automatic edge detection and perspective correction remain out of scope; revisit only with a proven on-device approach.
+
+---
+
 ## 2026-10-31 — Passport photo sheet
 
 Status: TESTED

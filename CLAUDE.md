@@ -4,7 +4,7 @@ Read `AGENTS.md` first. It is the source of truth for workflow, branching, testi
 
 ## Project
 
-`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with seven 100% client-side tools: `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/passport-photo-maker` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
+`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with eight 100% client-side tools: `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/photo-to-scanned-pdf`, `/passport-photo-maker` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
 
 Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
@@ -37,6 +37,7 @@ Vitest covers pure functions (`npm run test`, config in `vitest.config.mts`). Us
 - **Tool registry:** `lib/data/tools.ts` drives the header, footer, home hub, sitemap, related tools and JSON-LD. Add a tool as one registry entry plus one page; do not hard-code nav links. `kind: 'landing'` keeps KB-target pages out of the navigation while leaving them in the sitemap; use `getNavTools()` for nav.
 - **Object URLs:** create and revoke them through `lib/utils/objectUrls.ts`. Use `lib/hooks/useObjectUrl.ts` for previews; `ImageOptTool` owns the original comparison URLs and revokes them on reset/unmount.
 - **Shared tool parts:** `components/tool/` holds `ToolPage`, `ToolHero`, `FileDropzone`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `ResultActions` and `ToolIcon` for new tools.
+- **Document scan:** `lib/utils/scanPdf.ts` caps cropped sources at 2400 px, renders A4 pages at 150 DPI and reuses the CNIC filters. There is no automatic edge detection, perspective fix or OCR.
 - **Passport sheet:** `lib/utils/passportSheet.ts` keeps grid math pure and renders at 300 DPI with a 200 fallback. It centre-crops with zoom only, not background removal. `printSheetMm` is the generic print path.
 - **Split PDF:** `parsePageRanges` in `lib/utils/pdfTools.ts` is pure and tested; extraction and every-N splitting use the same dynamic `pdf-lib` path. There is no ZIP; outputs download individually.
 - **Merge PDF:** `lib/utils/pdfTools.ts` inspects and merges PDFs with `pdf-lib` behind a dynamic import. Encrypted PDFs are skipped, not cracked; there are no thumbnails yet.

@@ -1,6 +1,6 @@
 # Zaibi Tools — Browser Image, Photo and CNIC Tools
 
-A browser-only, zero-server web portal hosting seven document utilities plus focused KB-target pages:
+A browser-only, zero-server web portal hosting eight document utilities plus focused KB-target pages:
 
 - **Photo & Signature Resizer** (`/photo-signature-resizer`) — resize a photo or signature to exact pixels or mm at a chosen DPI, set a maximum and minimum KB, crop, add an optional name/date strip, and download JPG, PNG or WebP.
 - **Image Compressor** (`/image-compressor`) — compress JPG, PNG or WebP images to a target size in KB, convert formats, and crop to social-media presets. Re-encoding drops EXIF/GPS metadata; AVIF input is accepted when the browser can decode it.
@@ -9,6 +9,7 @@ A browser-only, zero-server web portal hosting seven document utilities plus foc
 - **Merge PDF** (`/merge-pdf`) — join several PDFs in the chosen file order, with page counts and protected-file handling.
 - **Split PDF** (`/split-pdf`) — extract page ranges into one PDF or split every N pages into separate files, without ZIP.
 - **Passport Photo Sheet** (`/passport-photo-maker`) — crop one photo to 35x45 mm, 2x2 inch or custom, repeat it on 4x6, A4, Letter or 3R, and print or download.
+- **Document Scan Cleanup** (`/photo-to-scanned-pdf`) — crop, rotate and filter phone photos of documents, then export one multi-page A4 PDF.
 - **CNIC Photocopy** (`/cnic-photocopy`) — place CNIC/ID front and back on a card-sized A4, Letter, Legal or 3R sheet with scan-enhancement filters and an optional purpose watermark.
 
 All processing happens **entirely in the browser** using the HTML5 Canvas API. Files are never uploaded to any server.
@@ -26,7 +27,7 @@ All processing happens **entirely in the browser** using the HTML5 Canvas API. F
 | Language | TypeScript (strict) |
 | Hosting | Cloudflare Workers via `@opennextjs/cloudflare` 1.20.14 + Wrangler 4.155 |
 | PDF export (CNIC) | `jsPDF`, loaded on demand from a CDN |
-| PDF build (new tools) | `pdf-lib` 1.17.1 (MIT), dynamic import on `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf` and `/passport-photo-maker` |
+| PDF build (new tools) | `pdf-lib` 1.17.1 (MIT), dynamic import on `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/photo-to-scanned-pdf` and `/passport-photo-maker` |
 | Tests | Vitest (pure functions only) |
 
 No database, no backend API beyond a health check. Vitest covers pure functions; Canvas and print flows are checked by hand.
@@ -78,6 +79,7 @@ app/
   split-pdf/page.tsx    Split PDF page
   cnic-photocopy/page.tsx    CNIC photocopy page
   passport-photo-maker/page.tsx Passport photo sheet page
+  photo-to-scanned-pdf/page.tsx Document scan cleanup page
   privacy/page.tsx      Privacy policy
   terms/page.tsx        Terms of use
   sitemap.ts            Sitemap for the public routes
@@ -107,6 +109,8 @@ components/
   CnicOptTool.tsx       CNIC print UI (uploads, layout controls, live preview)
   PassportPhotoTool.tsx Passport sheet UI (paper, copies, preview, exports)
   PassportPhotoContent.tsx Passport sheet content and limits
+  ScanCleanupTool.tsx   Document scan cleanup UI
+  ScanCleanupContent.tsx Document scan content and limits
   SecurityModal.tsx     Privacy/security modal
   CornerMarks.tsx       Decorative print marks + scale ruler
   AdBanner.tsx          Isolated iframe Adsterra banner unit
@@ -134,6 +138,8 @@ lib/
   utils/pdfTools.ts        PDF inspection, merge, range parsing and split helpers
   utils/passportSheet.ts   Grid math, sheet rendering and passport PDF
   utils/passportSheet.test.ts Passport grid tests
+  utils/scanPdf.ts         Scan crop/filter/render and PDF assembly
+  utils/scanPdf.test.ts    Scan crop/filter tests
   utils/pdfTools.test.ts   Merge integration tests
   utils/toolSchema.ts      Shared JSON-LD builder
   utils/toolMetadata.ts    Shared metadata builder

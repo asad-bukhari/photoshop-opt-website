@@ -189,7 +189,7 @@ export const TOOLS: ToolEntry[] = [
           'No. This tool places images on PDF pages. It does not run OCR, so text inside a photo or scan is not searchable or selectable.'
       }
     ],
-    relatedIds: ['image-compressor', 'photo-signature-resizer', 'merge-pdf'],
+    relatedIds: ['image-compressor', 'photo-signature-resizer', 'merge-pdf', 'photo-to-scanned-pdf'],
     keywords: ['jpg to pdf', 'png to pdf', 'images to pdf', 'convert image to pdf'],
     features: ['JPG, PNG and WebP', 'A4, Letter, Legal or fit', 'Reorder and rotate'],
     actionLabel: 'Open image to PDF',
@@ -332,6 +332,78 @@ export const TOOLS: ToolEntry[] = [
     keywords: ['split pdf', 'extract pdf pages', 'pdf splitter', 'split pdf every n pages'],
     features: ['Extract page ranges', 'Split every N pages', 'Runs in your browser'],
     actionLabel: 'Open split PDF',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
+    id: 'photo-to-scanned-pdf',
+    slug: 'photo-to-scanned-pdf',
+    name: 'Document Scan Cleanup',
+    shortName: 'Scan',
+    category: 'pdf',
+    icon: 'scan',
+    description: 'Crop, rotate and filter photos of documents, then export one multi-page A4 PDF.',
+    metaTitle: 'Photo to Scanned PDF — Clean Up Document Photos',
+    metaDescription:
+      'Turn phone photos of documents into a cleaner multi-page PDF in your browser. Crop, rotate, apply grayscale or B&W, then download.',
+    h1: 'Clean up document photos into a PDF',
+    intro:
+      'Add photos of pages, crop each one, rotate it and apply a grayscale or B&W scan filter. Then download one A4 PDF. The photos are processed in your browser.',
+    howToSteps: [
+      {
+        title: 'Add the page photos',
+        body: 'Use one clear, well-lit photo per page. Each photo becomes one A4 page in the list order.'
+      },
+      {
+        title: 'Crop and rotate',
+        body: 'Select a page and use the crop sliders and rotate button so the document fills the frame upright.'
+      },
+      {
+        title: 'Choose a filter',
+        body: 'Keep Original, use Grayscale, try the B&W scan filter, or Brighten a dark photo.'
+      },
+      {
+        title: 'Create the PDF',
+        body: 'Select Create scanned PDF, check the page count and size, then download the file.'
+      }
+    ],
+    faq: [
+      {
+        question: 'Does this tool detect the document edges automatically?',
+        answer:
+          'No. This version has no automatic edge detection, perspective correction or deskew. You crop and rotate each page by hand with the controls on the page.'
+      },
+      {
+        question: 'Which filters are available?',
+        answer:
+          'Original, Grayscale, B&W scan and Brighten. The B&W filter uses a threshold with a soft edge; Brighten lifts dark pixels while keeping the colours.'
+      },
+      {
+        question: 'Can I combine several pages into one PDF?',
+        answer:
+          'Yes. Add several photos, arrange them with the up and down buttons, then create one PDF. Each photo becomes one A4 page.'
+      },
+      {
+        question: 'Will the PDF contain searchable text?',
+        answer:
+          'No. The pages are images, not OCR text. You cannot select or search the words in the PDF.'
+      },
+      {
+        question: 'Does the tool remove shadows or replace the background?',
+        answer:
+          'No. It can brighten dark pixels and increase contrast, but it does not remove shadows, replace a background or fix a badly lit photo.'
+      },
+      {
+        question: 'Are my document photos uploaded?',
+        answer:
+          'No. The photos are read, filtered and written into the PDF in your browser. The site loads analytics and ads, but your photos are not sent to a server.'
+      }
+    ],
+    relatedIds: ['jpg-to-pdf', 'image-compressor'],
+    keywords: ['scan document online', 'photo to scanned pdf', 'document scan cleanup', 'scanned pdf from photo'],
+    features: ['Crop and rotate each page', 'Grayscale or B&W', 'One multi-page PDF'],
+    actionLabel: 'Open scan cleanup',
     kind: 'tool',
     version: '1.0.0',
     status: 'live'
