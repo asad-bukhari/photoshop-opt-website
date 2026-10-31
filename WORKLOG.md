@@ -72,7 +72,7 @@ Follow-ups:
 
 ## 2026-10-30 — Add the new-tools plan and record decisions
 
-Status: PLANNED
+Status: MERGED
 Branch: `docs/add-tools-plan`
 
 Goal:
@@ -106,10 +106,12 @@ Docs updated:
 
 Commit/PR:
 - Commit: `26c79cd` — `docs: add new tools plan and record decisions`.
-- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/12.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/12 (merged).
+- Merge commit: `6240eca`.
+- Production: docs-only change. `zaibitools.com` `/`, `/api/health` and `/sitemap.xml` returned 200 on 2026-10-31 03:54 UTC. The Cloudflare Workers Build itself was not inspected.
 
 Follow-ups:
-- Phase 0 (`feature/tools-foundation`) needs its own WORKLOG plan entry before coding.
+- Phase 0 is in progress in `feature/tools-foundation` (PR #13).
 - The three engine extractions need separate approval and behaviour-neutral PRs.
 - `pdf-lib` (D-2) and Vitest (D-1) are approved but not installed yet.
 - `pdfjs-dist` (D-5) is still unapproved.
