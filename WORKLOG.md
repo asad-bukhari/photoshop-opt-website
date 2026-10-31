@@ -4,6 +4,69 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Passport photo sheet
+
+Status: TESTED
+Branch: `feature/passport-photo-sheet`
+
+Goal:
+- Add `/passport-photo-maker`, a browser-only tool that repeats a cropped passport photo on a 4x6, A4, Letter or 3R sheet.
+- Reuse the crop math, print helper and PDF/image export path without uploading.
+
+Plan:
+- Add passport settings/grid types, paper sizes and photo presets (35 x 45 mm, 2 x 2 inch, custom).
+- Add pure `computeGrid`, `resolveCopies` and `selectPositions`, with tests for each paper/photo combination and bounds.
+- Add Canvas rendering at 300 DPI with a 200 DPI fallback, optional cut lines, auto or chosen copy count, gap and margin.
+- Add PNG, PDF and Print actions. PDF uses `pdf-lib` behind a dynamic import; print reuses a generalized `printSheetMm`.
+- Add the page, registry entry, related links, home/nav/sitemap updates and honest limits (no background removal, print at 100%).
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- 300 DPI A4 is a large canvas; fall back to 200 DPI with a visible note if allocation or encoding fails.
+- Prints must be at 100% scale; the page must say so.
+- Cropping is centered cover-crop; say that the tool does not remove backgrounds or straighten the photo.
+
+What changed:
+- `lib/types.ts`: added passport photo preset/paper types, sheet settings and grid types.
+- `lib/data/passportSheet.ts`: paper sizes (4x6, A4, Letter, 3R), photo presets (35 x 45 mm, 2 x 2 inch), defaults.
+- `lib/utils/passportSheet.ts`: pure `computeGrid`, `resolveCopies` and `selectPositions`; Canvas rendering at 300 DPI with a 200 DPI fallback; centre cover-crop with zoom; optional cut lines; PDF creation with dynamic `pdf-lib`.
+- `lib/utils/passportSheet.test.ts`: 10 tests for paper/photo combinations, capacity, bounds, copy caps and centred partial rows. Suite is now 58 tests in 8 files.
+- `lib/utils/printSheet.ts`: added generic `printSheetMm`; the CNIC `printSheet` wrapper keeps the same behavior.
+- `components/PassportPhotoTool.tsx`: one-photo upload, photo size/preset/custom, paper, auto or chosen copies, gap, margin, zoom, cut lines, live 150 DPI preview, Print / PDF / PNG exports, fallback note.
+- `components/PassportPhotoContent.tsx`: sizes, paper/copies, print scale, 300/200 DPI and explicit limits.
+- `app/passport-photo-maker/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, related links from the resizer and CNIC tools, home Print sheets group/popular task, nav/footer and sitemap.
+- Docs: this entry, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 8 files, 58 tests.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 17 pages including `/passport-photo-maker`.
+- `npm run dev` — PASS. All tools, landing pages, legal pages, sitemap and health returned 200. `/passport-photo-maker` had one H1, expected title, three JSON-LD types, limits and related tools. Desktop short nav and mobile full nav both list the new tool; home Print sheets shows CNIC and passport. No `class="dark"`, no dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served the new page and all existing routes with 200; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (photo upload, all paper sizes, auto/custom copies, gap/margin, cut lines, print dialog, PDF/PNG downloads, 300/200 DPI fallback, phone/desktop) — NOT RUN. No browser or printer is installed.
+- Real print measurement with a ruler — NOT RUN. No printer is available; this remains a release check.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Actual printed photo size, canvas memory on a low-end phone, and viewer behaviour were not exercised.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `IMPROVE.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit `PENDING` — `feat: add passport photo sheet maker`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Owner must print one sheet at 100% and measure a photo before promoting the size claim.
+- I-35: add drag/touch repositioning beyond the centre crop and zoom.
+
+---
+
 ## 2026-10-31 — Split PDF
 
 Status: TESTED

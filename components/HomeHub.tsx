@@ -13,6 +13,7 @@ const POPULAR_TASKS = [
   { href: '/jpg-to-pdf', label: 'Convert JPG to PDF' },
   { href: '/merge-pdf', label: 'Merge PDF files' },
   { href: '/split-pdf', label: 'Split PDF pages' },
+  { href: '/passport-photo-maker', label: 'Make a passport photo sheet' },
   { href: '/photo-signature-resizer', label: 'Resize a photo to 300x400' },
   { href: '/photo-signature-resizer', label: 'Resize a signature to 200x230' },
   { href: '/cnic-photocopy#how-to-print-cnic', label: 'Print CNIC front and back on A4' },
@@ -46,7 +47,7 @@ export function HomeHub() {
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
           Zaibi Tools has free browser tools for image compression, exact-size photo and signature resizing,
-          image-to-PDF, PDF merge/split and CNIC print sheets. Your files stay on your device.
+          image-to-PDF, PDF merge/split, CNIC and passport photo sheets. Your files stay on your device.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           {primaryTool && (

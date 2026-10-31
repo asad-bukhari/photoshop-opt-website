@@ -117,7 +117,7 @@ export const TOOLS: ToolEntry[] = [
           'No. The image is read, cropped and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
       }
     ],
-    relatedIds: ['image-compressor', 'jpg-to-pdf', 'cnic-photocopy'],
+    relatedIds: ['image-compressor', 'jpg-to-pdf', 'cnic-photocopy', 'passport-photo-maker'],
     keywords: ['photo resizer', 'signature resizer', 'resize photo to 20kb', '300x400 photo', 'passport photo size'],
     features: ['Exact pixels or mm', 'Maximum and minimum KB', 'Fill, fit or stretch'],
     actionLabel: 'Open photo resizer',
@@ -370,12 +370,84 @@ export const TOOLS: ToolEntry[] = [
       }
     ],
     faq: CNIC_FAQ_ITEMS,
-    relatedIds: ['photo-signature-resizer', 'image-compressor'],
+    relatedIds: ['photo-signature-resizer', 'image-compressor', 'passport-photo-maker'],
     keywords: ['cnic photocopy', 'cnic print', 'front and back', 'a4', 'id card'],
     features: ['Front and back on one page', 'A4, Letter, Legal and 3R', 'PDF, PNG or print'],
     actionLabel: 'Open CNIC photocopy',
     kind: 'tool',
     version: '3.0.0',
+    status: 'live'
+  },
+  {
+    id: 'passport-photo-maker',
+    slug: 'passport-photo-maker',
+    name: 'Passport Photo Sheet',
+    shortName: 'Passport',
+    category: 'print',
+    icon: 'passport',
+    description: 'Crop one passport photo and repeat it on a 4x6, A4, Letter or 3R sheet for printing.',
+    metaTitle: 'Passport Photo Sheet Maker — 4x6, A4, Letter, 3R',
+    metaDescription:
+      'Make a passport photo sheet in your browser. Crop a 35x45 mm or 2x2 inch photo, repeat it on 4x6, A4, Letter or 3R, then print or download.',
+    h1: 'Make a passport photo sheet',
+    intro:
+      'Add one photo, choose the passport size and paper, then print or download a sheet of identical copies. The photo is cropped and repeated in your browser.',
+    howToSteps: [
+      {
+        title: 'Add a plain-background photo',
+        body: 'Use a well-lit photo with the face centred and a plain, light background. The tool does not remove the background.'
+      },
+      {
+        title: 'Choose the photo size',
+        body: 'Pick 35 x 45 mm, 2 x 2 inch or a custom size in millimetres. Check the exact rule on your form.'
+      },
+      {
+        title: 'Choose paper and copies',
+        body: 'Select 4 x 6, A4, Letter or 3R, set the gap and margin, and fill the sheet or choose a copy count.'
+      },
+      {
+        title: 'Print or download',
+        body: 'Print at 100% scale, or download a PDF or PNG. Measure one photo on the first print before making more.'
+      }
+    ],
+    faq: [
+      {
+        question: 'What passport photo sizes does this tool support?',
+        answer:
+          '35 x 45 mm, 2 x 2 inch and a custom size in millimetres. These are common sizes, not a claim about a specific portal; read the exact rule on your form.'
+      },
+      {
+        question: 'Which paper sizes can I use?',
+        answer:
+          '4 x 6 inch, A4, Letter and 3R. The tool shows how many photos fit and lets you adjust the gap and page margin.'
+      },
+      {
+        question: 'How many copies can I print?',
+        answer:
+          'Use Fill the sheet to repeat as many as fit, or choose a smaller number. Copies are centred in rows, and cut lines are optional.'
+      },
+      {
+        question: 'Why does the printed size matter?',
+        answer:
+          'Print at 100% scale or actual size. A setting such as “fit to page” changes the photo size on paper. Measure the first print with a ruler before printing a full sheet.'
+      },
+      {
+        question: 'Does the tool remove the background?',
+        answer:
+          'No. It crops the photo and repeats it. Use a plain, light background and keep the head centred. The tool does not replace the background or straighten a tilted photo.'
+      },
+      {
+        question: 'Is my photo uploaded?',
+        answer:
+          'No. The photo is read, cropped and drawn onto the sheet in your browser. The site loads analytics and ads, but your photo is not sent to a server.'
+      }
+    ],
+    relatedIds: ['photo-signature-resizer', 'cnic-photocopy'],
+    keywords: ['passport photo sheet', 'passport photo print', '4x6 passport photo', 'passport size photo'],
+    features: ['35 x 45 mm and 2 x 2 inch', '4x6, A4, Letter, 3R', 'Print, PDF or PNG'],
+    actionLabel: 'Open passport photo maker',
+    kind: 'tool',
+    version: '1.0.0',
     status: 'live'
   },
   {

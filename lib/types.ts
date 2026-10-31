@@ -41,6 +41,36 @@ export interface PdfBuildResult {
   bytes: number;
 }
 
+export type PassportPhotoPresetId = '35x45' | '2x2in' | 'custom';
+export type PassportPaperSize = '4x6' | 'a4' | 'letter' | '3r';
+
+export interface PassportSheetSettings {
+  photoPresetId: PassportPhotoPresetId;
+  photoWidthMm: number;
+  photoHeightMm: number;
+  paperSize: PassportPaperSize;
+  gapMm: number;
+  marginMm: number;
+  copiesMode: 'auto' | 'custom';
+  copies: number;
+  cutLines: boolean;
+  zoom: number;
+}
+
+export interface PassportGrid {
+  columns: number;
+  rows: number;
+  capacity: number;
+  positions: { xMm: number; yMm: number }[];
+  widthMm: number;
+  heightMm: number;
+  paperWidthMm: number;
+  paperHeightMm: number;
+  photoWidthMm: number;
+  photoHeightMm: number;
+  gapMm: number;
+}
+
 export type PhotoResizePresetId =
   | 'custom'
   | 'passport-35x45'

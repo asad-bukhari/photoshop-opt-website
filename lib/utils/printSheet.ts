@@ -1,16 +1,18 @@
 import type { CnicPaperSize } from '../types';
 import { PAPER_SIZE_MM } from './pdfExport';
 
-export function printSheet(
+export function printSheetMm(
   dataUrl: string,
-  paperSize: CnicPaperSize,
+  widthMm: number,
+  heightMm: number,
   pageCount: number,
-  title = 'CNIC print sheet - Zaibi Tools'
+  title: string
 ): boolean {
   const printWindow = window.open('', '_blank');
   if (!printWindow) return false;
 
-  const { w, h } = PAPER_SIZE_MM[paperSize];
+  const w = widthMm;
+  const h = heightMm;
 
   const pages = Array.from(
     { length: pageCount },
@@ -72,4 +74,14 @@ export function printSheet(
   });
 
   return true;
+}
+
+export function printSheet(
+  dataUrl: string,
+  paperSize: CnicPaperSize,
+  pageCount: number,
+  title = 'CNIC print sheet - Zaibi Tools'
+): boolean {
+  const { w, h } = PAPER_SIZE_MM[paperSize];
+  return printSheetMm(dataUrl, w, h, pageCount, title);
 }
