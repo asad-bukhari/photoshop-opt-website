@@ -4,7 +4,7 @@ Read `AGENTS.md` first. It is the source of truth for workflow, branching, testi
 
 ## Project
 
-`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with nine 100% client-side tools: `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/photo-to-scanned-pdf`, `/pdf-to-jpg`, `/passport-photo-maker` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
+`optipack-portal` (branded **Zaibi Tools**) is a Next.js 16 App Router site with ten 100% client-side tools: `/image-compressor`, `/image-converter`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/split-pdf`, `/photo-to-scanned-pdf`, `/pdf-to-jpg`, `/passport-photo-maker` and `/cnic-photocopy`. It runs as a Cloudflare Worker through OpenNext. User files never leave the browser.
 
 Live: https://zaibitools.com (fallback: https://optipack-portal.asadbukhari65813.workers.dev)
 
@@ -35,6 +35,7 @@ Vitest covers pure functions (`npm run test`, config in `vitest.config.mts`). Us
 - **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
 - **GA4:** `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`.
 - **Tool registry:** `lib/data/tools.ts` drives the header, footer, home hub, sitemap, related tools and JSON-LD. Add a tool as one registry entry plus one page; do not hard-code nav links. `kind: 'landing'` keeps KB-target pages out of the navigation while leaving them in the sitemap; use `getNavTools()` for nav.
+- **Image converter:** `lib/utils/imageConvert.ts` re-encodes through Canvas; JPG fills white, PNG/WebP keep transparency. `useObjectUrl` now accepts a Blob for result previews.
 - **Object URLs:** create and revoke them through `lib/utils/objectUrls.ts`. Use `lib/hooks/useObjectUrl.ts` for previews; `ImageOptTool` owns the original comparison URLs and revokes them on reset/unmount.
 - **Shared tool parts:** `components/tool/` holds `ToolPage`, `ToolHero`, `FileDropzone`, `HowToSteps`, `ToolFaq`, `RelatedTools`, `ResultActions` and `ToolIcon` for new tools.
 - **PDF to JPG:** `lib/utils/pdfToJpg.ts` dynamically imports `pdfjs-dist` and sets the worker to `/pdf.worker.min.mjs`. `predev` and `prebuild` copy the worker from `node_modules` into `public/`; the copy is gitignored. Test it under `npm run preview`.

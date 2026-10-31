@@ -41,6 +41,8 @@ export interface PdfBuildResult {
   bytes: number;
 }
 
+export type ImageConvertFormat = 'jpeg' | 'png' | 'webp';
+
 export type ScanFilterMode = 'original' | 'grayscale' | 'bw' | 'brighten';
 export type ScanRotation = 0 | 90 | 180 | 270;
 

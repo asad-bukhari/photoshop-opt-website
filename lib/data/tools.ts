@@ -126,6 +126,73 @@ export const TOOLS: ToolEntry[] = [
     status: 'live'
   },
   {
+    id: 'image-converter',
+    slug: 'image-converter',
+    name: 'Image Converter',
+    shortName: 'Convert',
+    category: 'photos',
+    icon: 'files',
+    description: 'Convert one image between JPG, PNG and WebP with a quality control and a live result preview.',
+    metaTitle: 'Image Converter — JPG, PNG and WebP in Your Browser',
+    metaDescription:
+      'Convert an image between JPG, PNG and WebP in your browser. Choose the format and quality, preview the result and download without uploading.',
+    h1: 'Convert an image to JPG, PNG or WebP',
+    intro:
+      'Add one image, choose the output format and quality, then download the converted file. The image is decoded and encoded in your browser and is not uploaded.',
+    howToSteps: [
+      {
+        title: 'Add an image',
+        body: 'Choose a JPG, PNG, WebP or AVIF image. HEIC is not supported by most browsers.'
+      },
+      {
+        title: 'Choose the output',
+        body: 'Pick JPG for compatibility, PNG for lossless output, or WebP for a smaller web file.'
+      },
+      {
+        title: 'Adjust quality',
+        body: 'JPG and WebP have a quality slider. PNG ignores it because PNG is lossless.'
+      },
+      {
+        title: 'Check and download',
+        body: 'Compare the size and preview, then download the converted file.'
+      }
+    ],
+    faq: [
+      {
+        question: 'Can I convert PNG to JPG?',
+        answer:
+          'Yes. Choose JPG as the output. Transparent areas become white because JPG has no transparency support.'
+      },
+      {
+        question: 'Can I convert JPG to PNG or WebP?',
+        answer:
+          'Yes. Choose PNG for a lossless file or WebP for a smaller web image. The browser re-encodes the pixels; it cannot restore detail that was already lost.'
+      },
+      {
+        question: 'Does the quality slider work for PNG?',
+        answer:
+          'No. PNG is lossless and ignores the quality slider. Use JPG or WebP when you need to trade quality for a smaller file.'
+      },
+      {
+        question: 'Does converting remove EXIF data?',
+        answer:
+          'Yes. The image is re-encoded through the Canvas API, which drops EXIF metadata such as GPS location and camera details.'
+      },
+      {
+        question: 'Is my image uploaded?',
+        answer:
+          'No. The image is decoded and encoded in your browser. The site loads analytics and ads, but your image is not sent to a server.'
+      }
+    ],
+    relatedIds: ['image-compressor', 'photo-signature-resizer'],
+    keywords: ['image converter', 'png to jpg', 'jpg to png', 'webp converter'],
+    features: ['JPG, PNG and WebP', 'Quality control', 'Runs in your browser'],
+    actionLabel: 'Open image converter',
+    kind: 'tool',
+    version: '1.0.0',
+    status: 'live'
+  },
+  {
     id: 'jpg-to-pdf',
     slug: 'jpg-to-pdf',
     name: 'Image to PDF',
