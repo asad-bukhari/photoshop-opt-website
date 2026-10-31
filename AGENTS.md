@@ -129,6 +129,24 @@ After **every** task, in the same commit:
 - **Light-only theme:** `<html lang="en">` with `color-scheme: light`; there is no theme switch or stored theme preference.
 - **No new third-party scripts:** do not add analytics, ads, fonts, or CDN scripts without owner approval.
 
+## New tool checklist
+
+Before a new tool is merged:
+
+- [ ] Entry added to `lib/data/tools.ts`.
+- [ ] `app/<slug>/page.tsx` is a Server Component with metadata, canonical and JSON-LD.
+- [ ] `components/<Name>Tool.tsx` is the single `'use client'` tool component.
+- [ ] `lib/utils/<engine>.ts` keeps pure math separate from Canvas code.
+- [ ] Types live in `lib/types.ts`; pure functions get unit tests.
+- [ ] Heavy libraries load with dynamic `import()` on that page only, never in the shared layout.
+- [ ] Object URLs are released on reset, source change and unmount; file size and decode errors are handled.
+- [ ] Shared parts from `components/tool/` are reused instead of copied.
+- [ ] Mobile works from 320 px, light mode only, tap targets are 44 px.
+- [ ] Ads use the existing components only and respect the one-unit-per-page rule.
+- [ ] Sitemap, header, footer, home hub and related links read from the registry.
+- [ ] Honest limits and "what this tool cannot do" are written on the page.
+- [ ] `WORKLOG.md`, `IMPROVE.md` and `README.md` are updated in the same PR.
+
 ## Safety rules
 
 - Never print, commit, or copy `.env`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, or other secrets.

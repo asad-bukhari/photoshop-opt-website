@@ -15,7 +15,6 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 ## P2 — correctness, performance, SEO, security
 
-- [ ] **I-09 — Revoke object URLs.** `lib/utils/imageOptimizer.ts:80` creates an object URL and stores it in the result; `lib/utils/cnicOptimizer.ts:219` creates one for every CNIC image load; `components/CnicOptTool.tsx:366,393` creates a new URL inside render on every pass. None are revoked. Revoke on reset/unmount or convert thumbnails to data URLs.
 - [ ] **I-10 — Debounce CNIC preview rendering.** `components/CnicOptTool.tsx:98-120` regenerates a 1240x1754 PNG and runs per-pixel filters/unsharp on every option change, including slider drags. Debounce, cancel stale work, and avoid re-rendering unchanged inputs.
 - [ ] **I-13 — Add robots and Open Graph images.** `app/sitemap.ts` now lists the new routes. Still missing: `app/robots.ts` and per-page Open Graph images. Add them in the SEO technical branch.
 - [ ] **I-14 — Add a contact route.** `main` has no contact page. Decide whether the public contact method is a page, a `mailto:` link, or both. **DECISION:** choose the supported contact channel.
@@ -34,9 +33,13 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 ---
 
+- [ ] **I-31 — Split registry content from nav metadata if the bundle grows.** `lib/data/tools.ts` is imported by the client Header and Footer, so it also pulls the FAQ arrays from `initialData.ts` into their chunks. It is small today; revisit if the registry grows or the shared chunks get noticeably larger.
+
 ## Done
 
 Move completed items here with the date and commit.
+
+- [x] **I-09 (2026-10-30)** Object URLs are now created and revoked through `lib/utils/objectUrls.ts`. `ImageOptTool` tracks the original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses the new `useObjectUrl` hook. Commit `PENDING`, PR `PENDING`.
 
 - [x] **I-30 (2026-10-29)** Upgraded Next.js from 15.5.25 to 16.4.3, `@opennextjs/cloudflare` to 1.20.14 and Wrangler to 4.155.0. `npm run preview` now builds and serves without the escape flag. Commit `342c907`, PR #9.
 
