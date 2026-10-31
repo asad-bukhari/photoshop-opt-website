@@ -4,6 +4,65 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-10-31 — Merge PDF
+
+Status: TESTED
+Branch: `feature/merge-pdf`
+
+Goal:
+- Add `/merge-pdf`, a browser-only tool that joins several PDFs in the chosen order.
+- Reuse the approved `pdf-lib` dependency (dynamic import only).
+
+Plan:
+- Add merge/inspect types and `lib/utils/pdfTools.ts` with page-count inspection, protected-file detection and ordered merging.
+- Add unit/integration tests with generated PDFs: page counts, order, broken input.
+- Add `components/MergePdfTool.tsx`: multi-file add, page count/size display, up/down reorder, remove, clear, progress, download.
+- Add `app/merge-pdf/page.tsx` with metadata, canonical, JSON-LD and shared `ToolPage`; write honest limits (no password removal, no thumbnails, no compression).
+- Register the tool, add nav/home/sitemap links and cross-links with image-to-PDF.
+- Checks: `test`, `typecheck`, `build`, `dev`, `preview`, `git diff --check`.
+
+Risks:
+- Encrypted PDFs must be skipped with a clear message, never cracked.
+- Large PDFs can use a lot of memory; process one at a time and show progress.
+- pdf-lib must stay behind a dynamic import.
+
+What changed:
+- `lib/types.ts`: added `PdfFileInfo` and `PdfMergeResult`.
+- `lib/utils/pdfTools.ts`: `inspectPdfFile` reads page counts and detects encrypted PDFs; `mergePdfFiles` loads each file, copies pages in order, updates progress and saves one PDF. `pdf-lib` stays behind `await import('pdf-lib')`.
+- `lib/utils/pdfTools.test.ts`: integration tests with generated PDFs for page count, merge order and page dimensions, progress, broken input and empty input. Suite is now 39 tests in 7 files.
+- `components/MergePdfTool.tsx`: add multiple PDFs, show page count and size, reorder with up/down, remove, clear, merge progress and result download. Protected and broken files are skipped with a message; no thumbnail UI.
+- `components/MergePdfContent.tsx`: order, protected files, large-file memory and explicit limits.
+- `app/merge-pdf/page.tsx`: Server Component with metadata, canonical, JSON-LD and shared `ToolPage`.
+- Registry, nav/footer, home PDF group and popular task, sitemap, and cross-links with image-to-PDF.
+- Docs: this entry, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Tests run:
+- `npm run test` — PASS. 7 files, 39 tests, including real pdf-lib merge output inspected with `PDFDocument.load`.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 15 pages including `/merge-pdf`.
+- `npm run dev` — PASS. `/`, `/image-compressor`, `/photo-signature-resizer`, `/jpg-to-pdf`, `/merge-pdf`, `/cnic-photocopy`, `/compress-image-to-20kb`, `/sitemap.xml`, `/api/health` all 200. `/merge-pdf` had one H1, expected title, three JSON-LD types, limits and related tools. No `class="dark"`; no dev-log errors.
+- `npm run preview` — PASS. OpenNext + Wrangler served `/merge-pdf` and all existing routes with 200; no build or server errors.
+- `git diff --check` — PASS.
+- Manual browser checks (adding multiple PDFs, reorder, protected/broken files, 50 MB PDF, merged output in phone/desktop viewers, no upload in DevTools) — NOT RUN. No browser or device is installed.
+- Lighthouse — NOT RUN.
+
+Not tested:
+- Real protected-PDF detection, large-file memory and viewer compatibility were not exercised in a browser. Encrypted behavior is implemented but not covered by an automated test.
+- Search Console indexing and production deployment (deferred).
+
+Docs updated:
+- `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
+
+Commit/PR:
+- Commit `PENDING` — `feat: add merge pdf tool`.
+- PR `PENDING`.
+
+Follow-ups:
+- Production deploy remains deferred until all new tools are built.
+- Next: `feature/split-pdf`; add page thumbnails later when `pdfjs-dist` is approved.
+
+---
+
 ## 2026-10-31 — Image to PDF
 
 Status: TESTED
