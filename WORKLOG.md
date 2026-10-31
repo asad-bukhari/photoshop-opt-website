@@ -54,8 +54,8 @@ Docs updated:
 - `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`.
 
 Commit/PR:
-- Commit `PENDING` — `feat: add merge pdf tool`.
-- PR `PENDING`.
+- Commit: `fccec86` — `feat: add merge pdf tool`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/22.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
