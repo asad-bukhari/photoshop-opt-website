@@ -83,7 +83,7 @@ Move the two existing tools into it. Keep `REPO_INFO` working until nothing uses
 - `download.ts` — one function to download a Blob/DataURL
 - `format.ts` — KB/MB formatting, filename helpers
 
-### 6.4 [REFACTOR] extractions (separate small PRs, behaviour must not change)
+### 6.4 [REFACTOR] extractions (approved 2026-10-30; separate small PRs, behaviour must not change)
 | Extract | From | To |
 | --- | --- | --- |
 | `tuneToTarget`, `estimateDataUrlSize` | `imageOptimizer.ts` (private) | `lib/utils/canvasEncode.ts` |
@@ -346,6 +346,6 @@ Before adding any package: check license, size, last release date, and that it w
 3. **PDF library (D-3):** use `pdf-lib` for all PDF work.
 4. **Tests:** Vitest approved (D-1).
 5. **ZIP downloads (D-4):** not wanted.
-6. **Refactors:** not yet approved; each behaviour-neutral extraction needs its own approval before work starts.
+6. **Refactors:** approved on 2026-10-30 for the three extractions in 6.4. Each still ships as its own behaviour-neutral PR with before/after checks.
 7. **Analytics event** `tool_used`: no.
 8. **Redesign first:** confirmed; the redesign is merged.
