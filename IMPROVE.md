@@ -38,7 +38,7 @@ Prioritized backlog for Zaibi Tools. Based on `main` at `da3222a` (2026-10-29). 
 
 Move completed items here with the date and commit.
 
-- [x] **I-29 (2026-10-31)** Added Vitest 5.0.5 as a dev dependency, `vitest.config.mts`, the `npm run test` script and 8 pure-function tests for `format`, `estimateDataUrlSize`, `clamp255` and `computeOtsuThreshold`. Canvas/browser flows stay manual; Playwright remains unapproved. Commit `PENDING`, PR `PENDING`.
+- [x] **I-29 (2026-10-31)** Added Vitest 5.0.5 as a dev dependency, `vitest.config.mts`, the `npm run test` script and 8 pure-function tests for `format`, `estimateDataUrlSize`, `clamp255` and `computeOtsuThreshold`. Canvas/browser flows stay manual; Playwright remains unapproved. Commit `f2543b0`, PR #18.
 
 - [x] **I-09 (2026-10-30)** Object URLs are now created and revoked through `lib/utils/objectUrls.ts`. `ImageOptTool` tracks the original preview URLs and revokes them on reset and unmount; `cnicOptimizer.loadImage` revokes its URL after decode; `CnicOptTool` uses the new `useObjectUrl` hook. Commit `f9dc503`, PR #13.
 

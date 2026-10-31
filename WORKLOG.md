@@ -46,8 +46,8 @@ Docs updated:
 - `WORKLOG.md`, `AGENTS.md`, `CLAUDE.md`, `README.md`, `IMPROVE.md`.
 
 Commit/PR:
-- Commit `PENDING` — `chore: add vitest for pure functions`.
-- PR `PENDING`.
+- Commit: `f2543b0` — `chore: add vitest for pure functions`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/18.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
