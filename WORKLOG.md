@@ -44,8 +44,8 @@ Docs updated:
 - `WORKLOG.md`.
 
 Commit/PR:
-- Commit `PENDING` — `refactor: extract print and PDF helpers`.
-- PR `PENDING`.
+- Commit: `e9b2358` — `refactor: extract print and PDF helpers`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/17.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
