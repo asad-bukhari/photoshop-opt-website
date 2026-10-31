@@ -51,8 +51,8 @@ Not tested:
 - Search Console indexing and production deployment (deferred).
 
 Commit/PR:
-- Commit `PENDING` — `feat: add image converter`.
-- PR `PENDING`.
+- Commit: `60fad46` — `feat: add image converter`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/27.
 
 Follow-ups:
 - Production deploy remains deferred until all new tools are built.
