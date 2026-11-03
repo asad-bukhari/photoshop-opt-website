@@ -44,7 +44,8 @@ Not tested:
 - Ahrefs "Recheck installation" — NOT RUN. The owner performs the live check after deploy.
 
 Commit/PR:
-- Pending.
+- Commit: `72b0d88` — `feat: add Ahrefs Analytics script to head`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/31.
 
 ---
 
