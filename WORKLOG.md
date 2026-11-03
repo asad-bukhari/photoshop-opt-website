@@ -4,6 +4,50 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-11-03 — Add Ahrefs Analytics to the raw HTML head
+
+Status: TESTED
+Branch: `feature/ahrefs-analytics`
+
+Goal:
+- Install the Ahrefs Analytics script in the server-rendered `<head>` of every route so the Ahrefs "Recheck installation" check finds it in raw HTML.
+- Keep the existing GA4 script unchanged.
+
+Plan:
+- Inspect `app/layout.tsx`, `next.config.ts`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `IMPROVE.md` and `WORKLOG.md`.
+- Add a `<head>` element as the first child of `<html>` in `app/layout.tsx` containing the Ahrefs script with `src`, `data-key` and `async`.
+- Leave the body, GA4 scripts and CSP/security headers unchanged (no CSP is configured).
+- Checks: `npm run lint`, `npm run build`, production server curl for `/`, `/image-compressor`, `/cnic-photocopy`; confirm Ahrefs and GA4 scripts are present.
+- Update `WORKLOG.md`, `README.md`, `CLAUDE.md` and the `AGENTS.md` analytics note.
+
+Risks:
+- The Ahrefs script is a third-party request; it is approved by the owner for this task.
+- `/image-opt` and `/cnic-opt` redirect to the real routes, so the checks use the real routes.
+
+What changed:
+- `app/layout.tsx`: added a `<head>` element as the first child of `<html>` with the literal async Ahrefs Analytics script (`https://analytics.ahrefs.com/analytics.js`, `data-key="nYIfq1Sq01WsE2PF+Z6tzw"`). The body and GA4 scripts are unchanged.
+- `README.md`: documented Ahrefs Analytics in "Analytics & ads" and the raw-HTML requirement.
+- `CLAUDE.md`: updated the layout analytics line to cover GA4 and Ahrefs.
+- `AGENTS.md`: changed the GA tag note to an analytics-tags note that records the raw `<head>` requirement.
+- `next.config.ts` has no Content-Security-Policy header, so no CSP change was needed.
+
+Tests run:
+- `npm run lint` — PASS (`tsc --noEmit`, no output).
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 21 pages generated; prebuild copied the pdf.js worker.
+- Production server check — PASS with a warning. `npm run start` served `http://localhost:3000` and returned 200, but Next.js warned that `next start` does not fully support `output: "standalone"` and suggested `node .next/standalone/server.js`.
+- `curl` check on `/`, `/image-compressor`, `/cnic-photocopy` — PASS. All three returned 200 with `analytics.ahrefs.com/analytics.js" data-key="nYIfq1Sq01WsE2PF+Z6tzw"` and `G-3QKCPR8SR3` present. A DOM string check confirmed the Ahrefs `src` and `data-key` are inside `<head>` and GA4 is outside `<head>` (in the body). The `/image-opt` and `/cnic-opt` paths returned 301 to `/image-compressor` and `/cnic-photocopy`.
+- Server log — PASS. No server errors after the requests.
+
+Not tested:
+- Browser console errors — NOT RUN. No browser is installed in this environment. The server log had no errors, but that is not a browser console check.
+- Visual checks at 375 px and 1280 px — NOT RUN. This change adds no UI.
+- Ahrefs "Recheck installation" — NOT RUN. The owner performs the live check after deploy.
+
+Commit/PR:
+- Pending.
+
+---
+
 ## 2026-10-31 — All planned tools built; final verification
 
 Status: DEPLOYED
