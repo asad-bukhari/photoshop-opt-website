@@ -6,7 +6,7 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ## 2026-11-03 — Add Ahrefs Analytics to the raw HTML head
 
-Status: TESTED
+Status: DEPLOYED
 Branch: `feature/ahrefs-analytics`
 
 Goal:
@@ -37,14 +37,18 @@ Tests run:
 - Production server check — PASS with a warning. `npm run start` served `http://localhost:3000` and returned 200, but Next.js warned that `next start` does not fully support `output: "standalone"` and suggested `node .next/standalone/server.js`.
 - `curl` check on `/`, `/image-compressor`, `/cnic-photocopy` — PASS. All three returned 200 with `analytics.ahrefs.com/analytics.js" data-key="nYIfq1Sq01WsE2PF+Z6tzw"` and `G-3QKCPR8SR3` present. A DOM string check confirmed the Ahrefs `src` and `data-key` are inside `<head>` and GA4 is outside `<head>` (in the body). The `/image-opt` and `/cnic-opt` paths returned 301 to `/image-compressor` and `/cnic-photocopy`.
 - Server log — PASS. No server errors after the requests.
+- Production deploy — PASS on retry. The first `npm run deploy` built successfully but the Cloudflare API upload timed out; the retry uploaded and deployed version `98cba33f-c659-4079-b213-72d7835188f5`.
+- Live check after deploy — PASS. `https://zaibitools.com` and the `workers.dev` fallback returned 200 for `/`, `/image-compressor` and `/cnic-photocopy`; the Ahrefs `src` and `data-key` are inside `<head>` and GA4 remains in the body.
 
 Not tested:
 - Browser console errors — NOT RUN. No browser is installed in this environment. The server log had no errors, but that is not a browser console check.
 - Visual checks at 375 px and 1280 px — NOT RUN. This change adds no UI.
-- Ahrefs "Recheck installation" — NOT RUN. The owner performs the live check after deploy.
+- Ahrefs "Recheck installation" — NOT RUN. The owner performs the live check in Ahrefs.
 
 Commit/PR:
 - Commit: `72b0d88` — `feat: add Ahrefs Analytics script to head`.
+- Merge commit: `99d6807` — merge of PR #31.
+- Deployed version: `98cba33f-c659-4079-b213-72d7835188f5`.
 - PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/31.
 
 ---
