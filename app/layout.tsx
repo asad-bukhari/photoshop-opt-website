@@ -50,6 +50,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="nYIfq1Sq01WsE2PF+Z6tzw"
+        />
+      </head>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
         <script
           async

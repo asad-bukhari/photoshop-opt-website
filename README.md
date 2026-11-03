@@ -221,6 +221,7 @@ Deployment is **manual** — there is no CI. Pushing to GitHub does not update t
 ## Analytics & ads
 
 - **Google Analytics 4** (`G-3QKCPR8SR3`) is embedded in `app/layout.tsx` as a literal `<script>` (async loader + inline config) so it is present in the initial server HTML on every route and does not depend on the Next.js client runtime.
+- **Ahrefs Analytics** (`nYIfq1Sq01WsE2PF+Z6tzw`) is a literal async `<script>` inside the `<head>` in `app/layout.tsx`. It is server-rendered on every route so the Ahrefs installation check can find it in raw HTML. Keep it in `<head>`; do not move it behind `next/script` or a client-only injection.
 - **Adsterra** banner units are configured in `lib/data/ads.ts` and rendered by `AdBanner.tsx`. Each unit lives in its own `srcDoc` iframe, which isolates Adsterra's global `atOptions` so multiple banners can coexist. The iframe is intentionally **not** sandboxed — Adsterra's `invoke.js` needs cookies/localStorage.
 - Sizes in use: 300x250 (medium rectangle, mobile) and 728x90 (leaderboard, desktop). The sticky 320x50 bar was removed; ads sit after the tool content and reserve their height.
 

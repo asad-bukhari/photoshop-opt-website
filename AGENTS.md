@@ -136,7 +136,7 @@ After **every** task, in the same commit:
 - **EXIF:** Canvas re-encoding drops EXIF automatically. There is no separate strip-EXIF or lossless control.
 - **jsPDF:** loaded at runtime from cdnjs in `CnicOptTool.tsx`. PDF export needs network access. Do not bundle it without approval.
 - **pdf.js worker:** `predev` and `prebuild` copy `pdfjs-dist/build/pdf.worker.min.mjs` to `public/pdf.worker.min.mjs`. Keep it gitignored; verify it returns 200 with a JavaScript MIME in `npm run preview`.
-- **GA tag:** GA4 `G-3QKCPR8SR3` is a literal script in `app/layout.tsx`, not a Next.js analytics package.
+- **Analytics tags:** GA4 `G-3QKCPR8SR3` and Ahrefs Analytics `nYIfq1Sq01WsE2PF+Z6tzw` are literal scripts in `app/layout.tsx`, not Next.js analytics packages. The Ahrefs script must stay in `<head>` so it appears in the raw server HTML; the Ahrefs installation check reads raw HTML.
 - **Output mode:** `next.config.ts` uses `output: "standalone"` because OpenNext needs it.
 - **Light-only theme:** `<html lang="en">` with `color-scheme: light`; there is no theme switch or stored theme preference.
 - **No new third-party scripts:** do not add analytics, ads, fonts, or CDN scripts without owner approval.
