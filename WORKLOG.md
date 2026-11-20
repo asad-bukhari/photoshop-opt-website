@@ -46,7 +46,9 @@ Docs updated:
 - `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`. `IMPROVE.md` needed no change.
 
 Commit/PR:
-- Not created yet. Awaiting owner approval to commit and open the PR.
+- Commit: `2edf95c` — `feat: add global Popunder and Social Bar ads`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/33.
+- Deploy: owner authorized production deployment.
 
 ---
 
