@@ -132,6 +132,7 @@ After **every** task, in the same commit:
 - **Build script:** `package.json` `build` must run `next build` (currently prefixed with the DNS flags). `opennextjs-cloudflare build` internally runs the package `build` script; pointing `build` at OpenNext causes infinite recursion.
 - **DNS/IPv6 flags:** keep `NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"` on `build`, `preview`, and `deploy`. The environment resolves IPv6 first without a route and hangs on font fetches.
 - **Adsterra iframes:** every banner renders in its own `srcDoc` iframe. This isolates the global `atOptions`. Do **not** add `sandbox`; Adsterra's `invoke.js` needs cookies/localStorage and silently fails when sandboxed.
+- **Adsterra global formats:** the Popunder (`abscloud.org`) and Social Bar (`bauval.org`) scripts are literal `data-cfasync="false"` tags at the end of `<body>` in `app/layout.tsx`. They load site-wide; do not move them into a tool page or an iframe.
 - **AVIF fallback:** `imageOptimizer.ts` maps `avif` to `image/webp`. Browser AVIF encoding is unreliable. Do not remove the fallback without a proven encoder.
 - **EXIF:** Canvas re-encoding drops EXIF automatically. There is no separate strip-EXIF or lossless control.
 - **jsPDF:** loaded at runtime from cdnjs in `CnicOptTool.tsx`. PDF export needs network access. Do not bundle it without approval.

