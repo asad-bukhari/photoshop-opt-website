@@ -6,8 +6,8 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ## 2026-11-20 — Add global Popunder and Social Bar ad scripts
 
-Status: TESTED
-Branch: `feature/global-popunder-socialbar-ads`
+Status: DEPLOYED
+Branch: `feature/global-popunder-socialbar-ads` / `docs/record-global-ads-deploy`
 
 Goal:
 - Add Adsterra Popunder and Social Bar scripts so both formats load on every route, alongside the existing banner units.
@@ -41,14 +41,18 @@ Not tested:
 - Visual checks at 375 px and 1280 px — NOT RUN. No browser.
 - Browser DevTools network/console and the no-upload check — NOT RUN. No browser.
 - `npm run preview` — NOT RUN. No config, routing, header or dependency changes.
+- Production deploy — PASS. `npm run deploy` uploaded Worker version `3f530de3-5acd-45b3-8c7e-7c793b466299` after the owner authorized deployment.
+- Live check — PASS. `https://zaibitools.com` and the `workers.dev` fallback returned 200 and both script `src`s are present on `/`, `/image-compressor`, `/cnic-photocopy`, `/privacy` and `/terms`. `/api/health` returned 200 healthy JSON without scripts, as expected.
 
 Docs updated:
 - `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`. `IMPROVE.md` needed no change.
 
 Commit/PR:
 - Commit: `2edf95c` — `feat: add global Popunder and Social Bar ads`.
+- Docs commit: `f27f822` — `docs: record global ad script commit and PR`.
+- Merge commit: `16d8eb0` — merge of PR #33.
+- Deployed version: `3f530de3-5acd-45b3-8c7e-7c793b466299`.
 - PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/33.
-- Deploy: owner authorized production deployment.
 
 ---
 
