@@ -4,6 +4,54 @@ Newest entries go at the top. Keep the project snapshot and deployment log curre
 
 ---
 
+## 2026-11-20 — Add global Popunder and Social Bar ad scripts
+
+Status: TESTED
+Branch: `feature/global-popunder-socialbar-ads`
+
+Goal:
+- Add Adsterra Popunder and Social Bar scripts so both formats load on every route, alongside the existing banner units.
+
+Plan:
+- Add both literal `<script data-cfasync="false">` tags to the root layout body in `app/layout.tsx`.
+- Keep the existing banner iframe isolation and analytics scripts unchanged.
+- Update `README.md`, `CLAUDE.md` and the `AGENTS.md` ad note.
+- Checks: `npm run typecheck`, `npm run test`, `npm run build`, `npm run dev` and raw-HTML checks on `/`, `/image-compressor`, `/privacy`, `/terms`, `/api/health`.
+
+Risks:
+- The scripts are third-party requests; the owner supplied and approved them.
+- Popunder and Social Bar are global formats, so they apply to legal pages as well as tool pages.
+
+What changed:
+- `app/layout.tsx`: added the literal Adsterra Popunder (`abscloud.org`) and Social Bar (`bauval.org`) `<script data-cfasync="false">` tags at the end of `<body>`, after `SiteShell`. Existing banner iframes, GA4 and Ahrefs scripts are unchanged.
+- `README.md`: documented both global formats under "Analytics & ads".
+- `CLAUDE.md`: extended the Adsterra gotcha with the global script placement.
+- `AGENTS.md`: added an intentional-decisions note for the global formats.
+
+Tests run:
+- `npm run typecheck` — PASS.
+- `npm run test` — PASS. 11 files, 69 tests.
+- `npm run build` — PASS. Next.js 16.4.3 (Turbopack); 21 pages generated.
+- `npm run dev` — PASS. `/`, all eleven tool routes, the three KB landing pages, `/privacy` and `/terms` returned 200 and each raw HTML response contained exactly one Popunder `src` and one Social Bar `src`. `/api/health` returned 200 healthy JSON (no scripts, as expected for a JSON endpoint).
+- Dark-mode check — PASS. The home HTML had no `class="dark"`.
+- Dev log — PASS. No server errors or warnings were logged.
+
+Not tested:
+- Actual Popunder/Social Bar rendering — NOT RUN. No browser is installed in this environment; the raw HTML is present but real ad delivery depends on the network and the Adsterra account.
+- Visual checks at 375 px and 1280 px — NOT RUN. No browser.
+- Browser DevTools network/console and the no-upload check — NOT RUN. No browser.
+- `npm run preview` — NOT RUN. No config, routing, header or dependency changes.
+
+Docs updated:
+- `WORKLOG.md`, `README.md`, `CLAUDE.md`, `AGENTS.md`. `IMPROVE.md` needed no change.
+
+Commit/PR:
+- Commit: `2edf95c` — `feat: add global Popunder and Social Bar ads`.
+- PR: https://github.com/asad-bukhari/photoshop-opt-website/pull/33.
+- Deploy: owner authorized production deployment.
+
+---
+
 ## 2026-11-03 — Add Ahrefs Analytics to the raw HTML head
 
 Status: DEPLOYED
